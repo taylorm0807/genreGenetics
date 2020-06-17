@@ -1,0 +1,830 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="./style.css" /> 
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title> Genre Roots - Find the roots of your favorite artist's music</title>
+    <style type="text/css">
+      #login, #loggedin {
+        display: none;
+      }
+      .text-overflow {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 500px;
+      }
+    </style>
+  </head>
+
+  <body style="background-color: #212121">
+    <div>
+      <div id="login" class="login-page">
+        <a href="/login" class="btn login-button" id="spotify-login">Log in with Spotify</a>
+        <div class="modal hide fade" id="loginModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Spotify Authentication</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>Log in with Spotify to continue to the website!</p>
+                </div>
+                <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="loggedin">
+        <div id="create-room" class="login-page">
+            <h1 class="login-text">Genre Roots:</h1>
+            <h2 class="login-subtitle-text">Find the Musical Roots of Your Favorite Artists!</h2>
+            <form>
+                <div class="md-form mb-4" id="add-artist">
+                </div>
+                <input type="button" class="btn add-song-button" id="search-button" value="Find Artist"/>
+                <div class="autocomplete-results" id ="autocomplete-results">
+                </div>
+            </form>
+            <h4 class="login-subtitle-text" id="information-header"></h4>
+        </div>
+        <!-- TO-DO: Add an x button to each card -->
+        <div id="timeline">
+        </div>
+        <div id="oauth">
+        </div>
+        <!-- <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button> -->
+    </div>
+
+    <script id="oauth-template" type="text/x-handlebars-template">
+    </script>
+    <script type="/text/javascript/" src="../app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+    <script>
+      (function() {
+
+/**
+ * Obtains parameters from the hash of the URL
+ * @return Object
+ */
+function getHashParams() {
+    var hashParams = {};
+    var e, r = /([^&;=]+)=?([^&;]*)/g,
+        q = window.location.hash.substring(1);
+    while ( e = r.exec(q)) {
+        hashParams[e[1]] = decodeURIComponent(e[2]);
+    }
+    return hashParams;
+}
+
+function generateRandomString(length) {
+    var text = '';
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (var i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+};
+
+function setUpSearchbar(){
+    document.getElementById('search-button').addEventListener('click', function(){
+        if(isSearchbarOut == false){
+            //open the searchbar
+            var addSongsWrapper = document.getElementById('add-artist');
+            var searchbar = document.createElement("input");
+            var button = document.getElementById('search-button');
+            button.value = "Select Artist";
+            searchbar.className = "form-control-underlined";
+            searchbar.id = "artist-searchbar";
+            searchbar.type = "text";
+            searchbar.autocomplete = "new-password";
+            searchbar.placeholder = "Search For An Arist";
+            searchbar.addEventListener('input', function(){
+                if(searchbar.value != ''){
+                    autocompleteSearch(searchbar.value);
+                }
+            });
+            resetGenres();
+            addDescriptions();
+            addSongsWrapper.appendChild(searchbar);
+            addSongsWrapper.appendChild(button);
+            isSearchbarOut = true;
+        }else{
+            //otherwise find genre of new artist
+            resetGenres();
+            resetPage();
+            getArtist();
+        }
+    });
+}
+
+var windowGlobal = window;
+var isSearchbarOut = false;
+var artistIds = [];
+var artistId = "";
+var userId;    
+var loggedin = false;
+var startingGenre;
+var genreList = [];
+var genreInfo = [];
+var reachedRoots = false;
+var readyToStart = false;
+var start = "";
+var client_id = '3ab7085db74b43c39a18f6954b8cb595'; // Your client id
+var redirect_uri = 'http://localhost:80/callback/'; // Your redirect uri
+/*
+0 - post-teen pop ******
+1 - pop ******
+2 - gospel rap
+3 - neo soul
+4 - new jack swing
+5 - techno
+6 - r&b
+7 - house
+8 - electro
+9 - disco
+10 - rap
+11 - hip hop
+12 - funk
+13 - metal ******
+14 - civil rights freedom songs
+15 - rock
+16 - soul
+17 - soul jazz
+18 - modern jazz trio
+19 - vintage gospel
+20 - rock-and-roll
+21 - hard bop
+22 - urban blues
+23 - rhythm and blues
+24 - bebop
+25 - traditional gospel
+26 - swing
+27 - gospel hymns
+28 - country *****
+29 - boogie-woogie
+30 - new orleans jazz
+31 - traditional blues
+32 - ragtime
+33 - spirituals
+34 - work songs
+35 - syncopated dance
+36 - sacred traditions
+37 - secular traditions
+38 - secular traditions instrumental
+*/
+//The templates for the different "pages" of the website
+var oauthSource = document.getElementById('oauth-template').innerHTML,
+    oauthTemplate = Handlebars.compile(oauthSource),
+    oauthPlaceholder = document.getElementById('oauth');
+
+var params = getHashParams();
+
+var access_token = params.access_token,
+    refresh_token = params.refresh_token,
+    error = params.error;
+
+//$('#loginModal').modal('show');
+setUpSearchbar();
+if (error) {
+    alert('There was an error during the authentication');
+} else {
+    if (access_token) {
+    // render oauth info
+    oauthPlaceholder.innerHTML = oauthTemplate({
+        access_token: access_token,
+        refresh_token: refresh_token
+    });
+
+    //query to get initial data based on users information
+    $.ajax({
+        url: 'https://api.spotify.com/v1/me',
+        headers: {
+            'Authorization': 'Bearer ' + access_token
+        },
+        success: function(response) {
+            userId = response.display_name;
+            if(!loggedin){
+                $('#login').hide();
+                $('#loggedin').show();
+                loggedin = true;
+            }
+            
+        }
+    });
+    } else {
+        // render initial screen
+        $('#login').show();
+        $('#loggedin').hide();
+    } 
+
+
+//gets the playlists from the "Sounds of ____" account
+function getPlaylists(display_name, href){
+    var playlisturl = 'https://api.spotify.com/v1/users/thesoundsofspotify/playlists?limit=50';
+    $.ajax({
+        url: playlisturl,
+        headers: {
+            'Authorization': 'Bearer ' + access_token
+        },
+        success: function(response) {
+        }
+    });
+}
+
+function resetGenres(){
+    genreList = [{"genreName": "pop", "used": false, "href": "https://open.spotify.com/playlist/6gS3HhOiI17QNojjPuPzqc"}, 
+            {"genreName": "post-teen pop", "used": false, "href": "https://open.spotify.com/playlist/10FCW9lj0NdeoYI5VVvVtY"}, 
+            {"genreName": "gospel rap", "used": false, "href": "https://open.spotify.com/playlist/6aASwBqAt129rxQQbkKvKC"}, 
+            {"genreName": "neo soul", "used": false, "href": "https://open.spotify.com/playlist/2zxYQBTWiXgpQEyQggYSTm"},
+            {"genreName": "new jack swing", "used": false, "href": "https://open.spotify.com/playlist/0zn8nuASKC0PISqD9mxCSV"}, 
+            {"genreName": "techno", "used": false, "href": "https://open.spotify.com/playlist/50kZecUV5pY2SuJv3Ie0vy"},
+            {"genreName": "r&b", "used": false, "href": "https://open.spotify.com/playlist/1rLnwJimWCmjp3f0mEbnkY"}, 
+            {"genreName": "house", "used": false, "href": "https://open.spotify.com/playlist/6AzCASXpbvX5o3F8yaj1y0"},
+            {"genreName": "electro-funk", "used": false, "href": ""}, 
+            {"genreName": "disco", "used": false, "href": "https://open.spotify.com/playlist/0ZVSWcJIf7cvycEn9HUvps"},
+            {"genreName": "rap", "used": false, "href": "https://open.spotify.com/playlist/6s5MoZzR70Qef7x4bVxDO1"},
+            {"genreName": "hip hop", "used": false, "href": "https://open.spotify.com/playlist/6MXkE0uYF4XwU4VTtyrpfP"}, 
+            {"genreName": "funk", "used": false, "href": "https://open.spotify.com/playlist/0MBvtOIm5fuBbRHEltDY8A"},
+            {"genreName": "metal", "used": false, "href": "https://open.spotify.com/playlist/3pBfUFu8MkyiCYyZe849Ks"},
+            {"genreName": "civil rights freedom songs", "used": false ,"href": ""},
+            {"genreName": "rock", "used": false, "href": "https://open.spotify.com/playlist/7dowgSWOmvdpwNkGFMUs6e"}, 
+            {"genreName": "soul", "used": false, "href": "https://open.spotify.com/playlist/1YUIw9n6voqxPzawnEf3A2"},
+            {"genreName": "soul jazz", "used": false, "href": "https://open.spotify.com/playlist/51YToRmnFC3U4iPj6LgHgF"}, 
+            {"genreName": "modern jazz trio", "used": false, "href": "https://open.spotify.com/playlist/2dvBbBvx5xENN0yta6YVMZ"},
+            {"genreName": "vintage gospel", "used": false, "href": "https://open.spotify.com/playlist/1nUeq2VFT7rDOsry1KD01T"}, 
+            {"genreName": "rock-and-roll", "used": false, "href": "https://open.spotify.com/playlist/34bhxCaWrYi4kF67mNYiXW"},
+            {"genreName": "hard bop", "used": false, "href": "https://open.spotify.com/playlist/3KIoIajdvsFRWMYN3T5Fa5"}, 
+            {"genreName": "urban blues", "used": false, "href": ""},
+            {"genreName": "rhythm and blues", "used": false, "href": "https://open.spotify.com/playlist/4uSZwUcMhCdfspqtWaQGwD"}, 
+            {"genreName": "bebop", "used": false, "href": "https://open.spotify.com/playlist/55s8gstHcaCyfU47mQgLrB"},
+            {"genreName": "traditional gospel", "used": false, "href": ""}, 
+            {"genreName": "swing", "used": false, "href": "https://open.spotify.com/playlist/20CFvOMJgvNmysKxUH5GJV"},
+            {"genreName": "gospel hymns", "used": false, "href": ""}, 
+            {"genreName": "country", "used": false, "href": "https://open.spotify.com/playlist/4mijVkpSXJziPiOrK7YX4M"},             
+            {"genreName": "boogie-woogie", "used": false, "href": "https://open.spotify.com/playlist/3VvwVEZaPYQfI8ZZbOCW5h"},
+            {"genreName": "new orleans jazz", "used": false, "href": "https://open.spotify.com/playlist/0iMiZcvIy26MqHQln5kkrI"}, 
+            {"genreName": "traditional blues", "used": false, "href": "https://open.spotify.com/playlist/4fPXonBYvsGcigbOEKFudk"},
+            {"genreName": "ragtime", "used": false, "href": "https://open.spotify.com/playlist/7BKZEIdyav6sz9B628eXSx"}, 
+            {"genreName": "spirituals", "used": false, "href": "https://open.spotify.com/playlist/7u9s8sobm0vJDxpdkhC3we"},
+            {"genreName": "work songs", "used": false, "href": ""}, 
+            {"genreName": "syncopated dance", "used": false, "href": ""},
+            {"genreName": "sacred traditions", "used": false, "href": ""}, 
+            {"genreName": "secular traditions", "used": false, "href": ""},
+            {"genreName": "secular traditions instrumental", "used": false, "href": ""}];
+}
+
+function addDescriptions(){
+    genreInfo = [{"genreName": "pop", "description": "Pop music as a genre is meant to encompass “popular” music, which has changed meaning across the centuries, depending on what is most popular. Pop music has been known to take influences from Jazz, Soul, Funk, Rock, and most recently, aspects and elements of Hip-Hop and Disco/Electronic music are seen nearly everywhere in Pop music."}, 
+            {"genreName": "post-teen pop", "description": "Post-Teen Pop is a genre that is an amalgamation of Pop, R&B, Hip-Hop, and Dance, essentially encompassing much of popular music, generally marketed towards “Post-Teens”."}, 
+            {"genreName": "gospel rap", "description": "Originating in the 90’s as a mixture of Gospel music and Hip-Hop, also known as “Christian Rap”, this genre utilizes positive and empowering messages with religious overtones to promote faith through music."}, 
+            {"genreName": "neo soul", "description": "This genre originated in the 90’s as a combination of R&B and Soul music, featuring conscious lyricism and a strong female presence, while also infusing elements from other genres such as Jazz and Funk."},
+            {"genreName": "new jack swing", "description": "This is a fusion of Hip-Hop and R&B that became popular in the 90’s. Containing influence from early Dance music, New Jack Swing also took inspiration from Jazz and Funk, and would later go on to greatly influence Pop music, using drum machines to lay down driving beats under light melody lines with a heavy vocal presence."}, 
+            {"genreName": "techno", "description": "Evolving from Electro-Funk music in the mid 1980’s, Techno focused more on having a repetitive melodic line, generally used for long DJ sets. Techno utilizes synthesizers and drum machines, as well as using digital audio workstations for production as opposed to live recording as was previously the standard."},
+            {"genreName": "r&b", "description": "Emerging in the mid 1980’s, R&B formed as a genre combining elements of Rhythm and Blues, Soul, Funk, and Hip-Hop, along with many other sounds. R&B took a lot of the “raw” elements of those genres and used pitch-correction, drum-machines, and lush vocal performances to create danceable, smooth tracks."}, 
+            {"genreName": "house", "description": "House rose to popularity in the 1980’s as a form of electronic dance music, drawing inspiration from Disco and Punk. House music took Disco and gave heavier basslines and more mechanical beats, becoming widely popular and having wide-reaching influences on many modern genres, including Pop music."},
+            {"genreName": "electro-funk", "description": "Electro, or Electro-Funk, is a descendent of Funk that drew heavily influence from Boogie, utilizing drum machines and distortion like talkboxes and vocoding to create danceable, lively music similar to Disco. Electro rose to popularity in the 1970’s and 1980’s and served to influence 80’s Hip-Hop, while also drawing inspiration from early innovation in the genre."}, 
+            {"genreName": "disco", "description": "Emerging in the 1970’s, Disco was formed from a myriad of various genres, including Dance, Rhythm and Blues, Soul, and Funk music. Largely instrumental tracks with a focus on danceability, Disco tracks normally consisted of electric guitar, high-tempo drums, and a synthesizer."},
+            {"genreName": "rap", "description": ""},
+            {"genreName": "hip hop", "description": "Hip-Hop was developed starting in the 1970’s, drawing influences from Funk, Disco, and Rhythm and Blues amongst others. With an initial focus on lyricism, sampling, and record-scratching, this genre emerged as an outlet for disenfranchised black youth, with hip-hop reflecting their culture and the often harsh realities of their lives."}, 
+            {"genreName": "funk", "description": "Funk originated in the 1960’s as a mixture of Soul, Jazz, and Rhythm and Blues. Funk focused on complex rhythms played by overlapping instruments, emphasizing the downbeat of a measure to create a notion of swing, enhancing dancibility."},
+            {"genreName": "metal", "description": "An evolution of Rock music that spawned in the 1960’s and 1970’s, Metal involved heavier distortion of the guitar, more aggressive vocals, and generally just a louder soundscape than found in Rock."},            
+            {"genreName": "civil rights freedom songs", "description": "As the name suggests, these were songs created and performed during the Civil Rights Movement in the 1950’s and 1960’s, used to express emotions that black people had during the movement, and also served as a way to unify and empower the movement, sparking African-Americans across the nation to fight for radical change."},
+            {"genreName": "rock", "description": "Evolving from Rock and Roll, Rock music was characterized by the introduction of the electric guitar in the 1960’s, as well as the continued influence drawn from other genres such as Electric Blues and Folk music, quickly rising to popularity and immediately producing several sub-genre."}, 
+            {"genreName": "soul", "description": "Originating in the 1950’s and 1960’s, Soul music is characterized by catchy rhythms and improvisational additions, drawing influence from Rock and Roll, as well as Rhythm and Blues music. More so than other genres during this time, Soul music reflected the identity of African-Americans and black culture in general, and the importance of both."},
+            {"genreName": "soul jazz", "description": "A development of Jazz in the 1960’s that is incredibly similar to Hard Bop, but with the addition of influence from Soul music. It is considered to be earthy and blues-based, but with overtones of spirit, due to the injection of Soul into the instrumentation."}, 
+            {"genreName": "modern jazz trio", "description": "A style of Jazz that grew to popularity in the 1960’s as an offshoot of Bebop, focusing heavily on complex instrumentation and melodic structures, but specifically restricting the number of musicians performing to 3, creating a much more structured melodic arrangement."},
+            {"genreName": "vintage gospel", "description": "This is a term for the evolution of Gospel music in the 1960’s and continuing through the 1980’s that began to draw inspirations from other genres, such as Disco, Funk, and Jazz. There was also a larger focus on solo artists and performances as opposed to performing in groups and in the traditional church settings."}, 
+            {"genreName": "rock-and-roll", "description": "A genre that became solidified in the early 1950’s, Rock and Roll drew inspiration from many genres coming before it, namely Jump Blues, Rhythm and Blues, and Jazz. The result was a dance rhythm normally played by a piano or guitar, alongside a double-bass and a drum-kit."},
+            {"genreName": "hard bop", "description": "An extension of Bebop music, this genre arose in the 1950’s and took influences from Rhythm and Blues and Gospel music, creating a more rhythmic form of Bebop music, quickly progressing into the formation of Soul Jazz."}, 
+            {"genreName": "urban blues", "description": "Urban Blues is a term used for the type of blues that originated around the 1940’s, where the performers had to adapt to more urban environments to perform, leading to sub-genres such as “Jump Blues”, which was much more up-tempo and aggressive than prior blues music, paving the way for the emergence of new genres. This was also one of the first uses of drum-kits in the instrumentation, which quickly became a commonplace in later music across genres."},
+            {"genreName": "rhythm and blues", "description": "A direct descendant of “Boogie-Woogie”, Rhythm and Blues took on a grittier jazz-based interpretation, sometimes called “Dirty Boogie”, and quickly rose to popularity in the 1940’s."}, 
+            {"genreName": "bebop", "description": "Bebop arose in the 1940’s as a form of Jazz that focused more on the instrumentation as opposed to dancing, as was common in “Swing”, which Bebop drew inspiration from. This focus on music allowed for faster tempos and more complex chords and arrangements, while also having more structure than the improve-heavy “Swing”, creating a single melody to begin and end the arrangements with."},
+            {"genreName": "traditional gospel", "description": "This is the term for gospel music that came about during the 1930’s, with Traditional Gospel evolving directly from Gospel hymns of the 1900’s. This was considered the most prosperous era for gospel music, largely due to the Civil Rights Movement being incorporated and supported by gospel at the time, leading to nationwide popularity and recognition of the genre."}, 
+            {"genreName": "swing", "description": "A direct offshoot of Jazz, Swing music was developed in the 1930s, sharing many similarities to New Orleans Jazz, such as one instrument playing a standard melody while other instruments improvised, but Swing music put special emphasis on the weaker beat, giving the music a “swing” when played."},
+            {"genreName": "gospel hymns", "description": "A precursor to traditional and modern gospel, gospel hymns are characterized by the mixture of religious gospel songs, and black folk spirituals, featuring simple rhythms with complex melodies and memorable lyrics."}, 
+            {"genreName": "country", "description": "Originated in the Southern US during the 1920’s, Country quickly became one of the biggest genres in America. It is a melting pot of many different cultures and genres, with much of the rhythmic aspects tracing back to African-American influences, with the banjo itself being invented in Africa and heavily used in black culture during this time."}, 
+            {"genreName": "boogie-woogie", "description": "Rising in popularity in the early 1900’s, the Boogie-Woogie was an offshoot and evolution of Traditional Blues that focused more on dancing, oftentimes containing high-tempo rhythms and simple melodies."},
+            {"genreName": "new orleans jazz", "description": "Also known as “Traditional Jazz” or “Dixieland”, this genre emerged in New Orleans at the start of the 20th century and incorporated many Ragtime elements, with a Trumpet playing a known melody while other instruments would improvise around it. New Orleans Jazz laid the groundwork for Jazz to continue to mature and grow throughout the 1900’s, and also spawn several other genres taking influence from Dixieland."}, 
+            {"genreName": "traditional blues", "description": "This genre came about around the 1880s as one of the earliest forms of blues music. Developed in the south by newly freed slaves and sharecroppers, it was a vocal-centric genre that mainly consisted of singing alongside acoustic guitar and occasionally a harmonica."},
+            {"genreName": "ragtime", "description": "A genre that gained popularity around the end of the 19th century into the early 1900’s, Ragtime made use of “ragged” syncopated rhythm taken largely from early black syncopated dance music to create infectious dances and grooves. Ragtime was the first real African-American music to have an impact on the mainstream, but certainly wouldn’t be the last."}, 
+            {"genreName": "spirituals", "description": "This form of music originated around the 1800s, after many slaves began converting to Christianity and other forms of spiritual worship. They were used to describe and express the suffering and longing of African-Americans during this time, combining traditional African rhythms with religious hymns and chanting."},
+            {"genreName": "work songs", "description": "Some of the earliest African-American music in the 1600's that originated as songs that slaves would sing while working, as well as protest songs. These songs often had several purposes, such as expressing anger and hardship through a creative medium, and helping to pass down experiences through generations."}, 
+            {"genreName": "syncopated dance", "description": ""},
+            {"genreName": "sacred traditions", "description": "These were traditions that African Americans practiced and had in the 1600's related to spiritual worship and beliefs. Much of their worship and religion was rooted in music, helping to lay the groundwork for nearly all modern music today!"}, 
+            {"genreName": "secular traditions", "description": "These were traditions that African Americans practiced and had in the 1600's and earlier that weren't inherently based in religious practices or worship, but rather black culture and traditions. As much of their tradition and culture was rooted in music, this helped to lay the groundwork for nearly all modern music today!"},
+            {"genreName": "secular traditions instrumental", "description": ""}];
+}
+
+function resetPage(){
+    var timeline = document.getElementById("timeline");
+    while(timeline.firstChild){
+        timeline.removeChild(timeline.lastChild);
+    }
+    start = "";
+    readyToStart = false;
+}
+
+//called whenever add-song field is updated, queries to find all results and shows them
+function autocompleteSearch(text){
+    //first convert string to something able to be queried for(remove spaces with +)
+    for(let x = 0; x < text.length; x++){
+        if(text.charAt(x) == ' '){
+            text = text.substring(0, x) + "%20" + text.substring(x+1);
+        }
+    }
+    //query for all tracks matching text
+    var queryUrl = "https://api.spotify.com/v1/search?q=" + text + "&type=artist";
+    $.ajax({
+        url: queryUrl,
+        headers: {
+            'Authorization': 'Bearer ' + access_token
+        },
+        success: function(response) {
+            //display all tracks under searchbar
+            displayAutoCompleteArtists(response.artists.items);
+        }
+    });
+}
+//show the autocomplete results under searchbar
+function displayAutoCompleteArtists(items){
+    var parentDiv = document.getElementById("autocomplete-results");
+    //delete previous search results
+    while(parentDiv.firstChild){
+        parentDiv.removeChild(parentDiv.firstChild);
+    }
+    artistIds = [];
+    var length = items.length;
+    if(length > 10){
+        length = 10;
+    }
+    //loop through each track and display the information
+    for(var k = 0; k < length; k++){
+        var data = items[k].name;
+        var result = document.createElement("div");
+        result.id = "" + items[k].id;
+        result.className = "autocomplete-res";
+        result.innerHTML = data;
+        artistIds.push({"id": items[k].id, "artist": data});
+        parentDiv.appendChild(result);
+    }
+    setOnClick();
+}
+
+//set the onclick methods for all the autocomplete searches to fill the textbox
+function setOnClick(){
+    var songs = document.getElementsByClassName("autocomplete-res");
+    for(let i = 0; i < songs.length; i++){
+        songs[i].addEventListener('click', function(){
+            //add onclick to autofill searchbar and set artistId variable
+            var searchbar = document.getElementById('artist-searchbar');
+            artistId = artistIds[i].id;
+            searchbar.value = songs[i].innerHTML;
+        });
+    }
+}
+
+function getArtist(){
+    if(artistId == ''){
+        console.log("Try picking one of the artists below, then press 'Select Artist'");
+    }else{
+        //get artist genres and information
+        var queryUrl = "https://api.spotify.com/v1/artists/" + artistId;
+        $.ajax({
+            url: queryUrl,
+            headers: {
+                'Authorization': 'Bearer ' + access_token
+            },
+            success: function(response) {
+                //display all genres
+                showcaseGenres(response.name, response.genres);
+            }
+        });
+    }
+}
+
+function showcaseGenres(artistName, genres){
+    console.log(genres);
+    var informationHeader = document.getElementById('information-header');
+    if(genres.length == 0){
+        informationHeader.innerText = "Uh oh, it appears that " + artistName + " doesn't have any genres listed"; 
+    }else{
+        var found = false;
+        for(var i = 0; i < genres.length; i++){
+            if(!found){
+                for(var j = 0; j < genreList.length; j++){
+                    if(!found){
+                        if(genreList[j].genreName == genres[i] || getLargerGenre(genres[i]) != genres[i]){
+                            startingGenre = genres[i];
+                            informationHeader.innerText = "You selected " + artistName + ", who's primary genre is " + genres[i];
+                            found = true;
+                        }   
+                    }
+                }
+            }
+        }
+        initiateTimeline();
+        while(!reachedRoots);
+        displayResults();
+    }
+}
+
+function initiateTimeline(){
+    var initGenre = getLargerGenre(startingGenre);
+    start = makeCamelCase(initGenre);
+    readyToStart = true;
+    startTimeline();
+    hipHop();
+}
+
+function startTimeline(){
+    console.log(start);
+    var fn = windowGlobal["hipHop"];
+    console.log(typeof fn);
+    // if(typeof fn === "function"){
+    //     console.log("is function");
+    //     fn();
+    // }else{
+    //     switch(startingMethod){
+    //         case "postTeenPop":
+    //             postTeenPop();
+    //             break;
+    //         case "edm":
+    //             house();
+    //             trap();
+    //             break;
+    //         case "singerSongwriter":
+    //             rock();
+    //             country();
+    //             pop();
+    //             break;
+    //         case "motown":
+    //             funk();
+    //             rB();
+    //             break;
+    //         case "hipHouse":
+    //             hipHop();
+    //             house();
+    //             break;
+    //         case "tripHop":
+    //             hipHop();
+    //             electro();
+    //             break;
+    //         case "urbanContemporary":
+    //             hipHop();
+    //             rB();
+    //             break;
+    //         case "bigRoom":
+    //             house();
+    //             electro();
+    //             break;
+    //     }
+    // }
+    
+}
+
+function getLargerGenre(initGenre){
+    if(initGenre.includes("rap") || initGenre.includes("hip hop") || initGenre.includes("lo-fi") 
+    || initGenre.includes("grime") || initGenre.includes("raggaeton")){
+        return "hip hop";
+    }
+    if(initGenre.includes("rock") || initGenre.includes("grunge") || initGenre == "british invasion" 
+    || initGenre == "mellow gold" || initGenre == "permanent wave" || initGenre == "new wave"
+    || initGenre.includes("punk")){
+        return "rock";
+    }
+    if(initGenre.includes("metal") || initGenre == "screamo" || initGenre.includes("thrash")){
+        return "metal";
+    }
+    if(initGenre.includes("country") || initGenre == "bluegrass"){
+        return "country";
+    }
+    if(initGenre.includes("soul") && !initGenre.includes("soul jazz")){
+        return "soul";
+    }
+    if(initGenre.includes("neo soul")){
+        return "neo soul";
+    }
+    if(initGenre.includes("funk")){
+        return "funk";
+    }
+    if(initGenre.includes("r&b")){
+        return "r&b";
+    }
+    if(initGenre.includes("techno")){
+        return "techno";
+    }
+    if(initGenre.includes("house")){
+        return "house";
+    }
+    if(initGenre.includes("disco")){
+        return "disco";
+    }
+    var exactMatch = false;
+    for(var i = 0; i < genreList.length; i++){
+        if(genreList[i].genreName == initGenre){
+            exactMatch = true;
+        }
+    }
+    if(!exactMatch && initGenre.includes("gospel")){
+        return "vintage gospel";
+    }
+    if(!exactMatch && initGenre.includes("jazz")){
+        return "modern jazz trio";
+    }
+    if(initGenre == "dance pop" || initGenre == "art pop"){
+        return "pop";
+    }
+    return initGenre;
+}
+
+function makeCamelCase(initGenre){
+    var newString = "";
+    console.log(initGenre);
+    //first convert initGenre into camel case form
+    for(var c = 0; c < initGenre.length; c++){
+        if(initGenre.charAt(c) != ' ' && initGenre.charAt(c) != '-' && initGenre.charAt(c) != '&'){
+            newString = newString.concat(initGenre.charAt(c));
+        }else{
+            c++;
+            var upper = initGenre.toUpperCase();
+            newString = newString.concat(upper.charAt(c));
+        }
+        console.log(newString);
+    }
+    return newString;
+}
+
+//after the genres have been traced to the roots, show the path on the website
+function displayResults(){
+    var timeline = document.getElementById("timeline");
+    createCard(startingGenre, timeline);
+    for(var i = 0; i < genreList.length; i++){
+        if(genreList[i].used == true){
+            var timelineConnector = document.createElement("div");
+            timelineConnector.className = "autocomplete-res";
+            timelineConnector.innerHTML = "|";
+            timeline.appendChild(timelineConnector);
+            createCard(genreList[i].genreName, timeline);
+        }
+    }
+}
+
+function createCard(header, parent){
+    var curGenre = document.createElement("div");
+    curGenre.id = header;
+    curGenre.className = "card";
+    var cardBody = document.createElement("div");
+    var cardTitle = document.createElement("h5");
+    cardTitle.className = "card-title"
+    cardTitle.innerHTML = header;
+    cardBody.appendChild(cardTitle);
+    curGenre.appendChild(cardBody);
+    parent.appendChild(curGenre);
+    curGenre.addEventListener('click', function(){
+        toggleCard(header);
+    });
+}
+
+function toggleCard(cardId){
+    var card = document.getElementById(cardId);
+    if(card.childElementCount > 1){
+        card.removeChild(card.lastChild);
+        card.removeChild(card.lastChild);
+    }else{
+        //add playlist link
+        var link = document.createElement("a");
+        link.className = "card-subtitle";
+        //check if genre has a link in the data structure
+        var i = 0;
+        var found = 0;
+        while(!found && i < genreList.length){
+            found = (genreList[i].genreName == cardId);
+            i++;
+        }
+        if(found && genreList[i].href != "" && i < genreList.length){
+            link.href = genreList[i-1].href;
+            link.innerHTML = "Sounds of '" + cardId + "' " + "Spotify Playlist";
+        }
+        card.appendChild(link);
+        //add body-text
+        var cardBody = document.createElement("p");
+        cardBody.className = "card-text";
+        if(i < genreList.length){
+            cardBody.innerHTML = genreInfo[i-1].description;
+        }else{
+            //TO-DO: Find starting genre spotify playlist (time-consuming)
+        }
+        card.appendChild(cardBody);
+    }
+
+}
+
+function metal(){
+    genreList[13].used = true;
+    rock();
+}
+
+function country(){
+    genreList[28].used = true;
+    spirituals();
+    workSongs();
+}
+
+function pop(){
+    genreList[1].used = true;
+    hipHop();
+    house();
+}
+
+function postTeenPop(){
+    genreList[0].used = true;s
+    hipHop();
+    rockAndRoll();
+    rB();
+    pop();
+}
+
+function gospelHymns(){
+    genreList[27].used = true;
+    spirituals();
+}
+
+function trap(){
+    hipHop();
+}
+
+function newJackSwing(){
+    genreList[4].used = true;  
+    soulJazz();
+}
+
+function soulJazz(){
+    genreList[17].used = true;    
+    hardBop();
+}
+
+function rock(){
+    genreList[15].used = true;
+    rockAndRoll();
+}
+
+function modernJazzTrio(){
+    genreList[18].used = true;
+    bebop();
+}
+
+function bebop(){
+    genreList[24].used = true;
+    swing();
+}
+
+function swing(){
+    genreList[26].used = true;
+    newOrleansJazz();
+}
+
+function ragtime(){
+    genreList[32].used = true;
+    syncopatedDance();
+}
+
+function newOrleansJazz(){
+    genreList[30].used = true;
+    ragtime();
+}
+
+function syncopatedDance(){
+    genreList[35].used = true;
+    secular();
+}
+
+function vintageGospel(){
+    genreList[19].used = true;
+    traditionalGospel();
+}
+
+function traditionalGospel(){
+    genreList[25].used = true;
+    gospelHymns();
+}
+
+function civilRightsFreedomSongs(){
+    genreList[14].used = true;
+    spirituals();
+}
+
+function neoSoul(){
+    genreList[3].used = true;
+    rB();
+}
+
+function rB(){
+    genreList[6].used = true;
+    soul();
+}
+
+function electro(){
+    genreList[8].used = true;
+    funk();
+    hipHop();
+}
+
+function techno(){
+    genreList[5].used = true;
+    house();
+}
+
+function house(){
+    genreList[7].used = true;
+    disco();
+}
+
+function disco(){
+    genreList[9].used = true;
+    soul();
+}
+
+function hipHop(){
+    genreList[11].used = true;
+    funk();
+}
+
+function funk(){
+    genreList[12].used = true;
+    soul();
+}
+
+function soul(){
+    genreList[16].used = true;
+    rockAndRoll();
+}
+
+function rockAndRoll(){
+    genreList[20].used = true;
+    urbanBlues();
+    rhythmAndBlues();
+}
+
+function urbanBlues(){
+    genreList[22].used = true;
+    traditionalGospel();
+}
+
+function hardBop(){
+    genreList[21].used = true;
+    bebop();
+}
+
+function traditionalBlues(){
+    genreList[31].used = true;
+    workSongs();
+}
+
+function rhythmAndBlues(){
+    genreList[23].used = true;
+    boogieWoogie();
+}
+
+function boogieWoogie(){
+    genreList[29].used = true;
+    traditionalBlues();
+}
+
+function spirituals(){
+    genreList[33].used = true;
+    sacred();
+}
+
+function sacred(){
+    genreList[36].used = true;
+    reachedRoots = true;
+}
+
+function workSongs(){
+    genreList[34].used = true;
+    secular();
+}
+
+function secular(){
+    genreList[37].used = true;
+    reachedRoots = true;
+}
+
+
+
+}
+      })();
+    </script>
+  </body>
+</html>
