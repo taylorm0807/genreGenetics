@@ -41,19 +41,26 @@
             </div>
         </div>
     </div>
-    <div id="loggedin">
+    <div id="loggedin" class="loggedin">
         <div id="create-room" class="login-page">
-            <h1 class="login-text">Genre Roots:</h1>
-            <h2 class="login-subtitle-text">Find the Musical Roots of Your Favorite Artists!</h2>
+            <div class="child1">
+                <div class="title-text">Genre Roots:</div>
+                <div class="title-line"></div>
+                <h2 class="subtitle-text">See if your favorite artist’s music is rooted in African-American influence (it probably is)
+                </h2>
+            </div>
             <form>
-                <div class="md-form mb-4" id="add-artist">
-                </div>
-                <input type="button" class="btn add-song-button" id="search-button" value="Find Artist"/>
-                <div class="autocomplete-results" id ="autocomplete-results">
+                <div class="card child2 rounded-lg border-dark border-2">
+                    <div class="mb-3 md-form" id="add-artist">
+                        <input class="form-control-underlined searchbar" id="artist-searchbar" type="text" autocomplete="new-password" placeholder="Search For An Artist"/>
+                        <input type="button" class="btn add-song-button" id="search-button" value="Select Artist"/>
+                    </div>
+                    <div class="autocomplete-results" id ="autocomplete-results">
+                    </div>
                 </div>
             </form>
-            <h4 class="login-subtitle-text" id="information-header"></h4>
         </div>
+        <h4 class="artist-genre-text" id="information-header"></h4>
         <!-- TO-DO: Add an x button to each card -->
         <div id="timeline">
         </div>
@@ -97,39 +104,21 @@ function generateRandomString(length) {
 };
 
 function setUpSearchbar(){
-    document.getElementById('search-button').addEventListener('click', function(){
-        if(isSearchbarOut == false){
-            //open the searchbar
-            var addSongsWrapper = document.getElementById('add-artist');
-            var searchbar = document.createElement("input");
-            var button = document.getElementById('search-button');
-            button.value = "Select Artist";
-            searchbar.className = "form-control-underlined";
-            searchbar.id = "artist-searchbar";
-            searchbar.type = "text";
-            searchbar.autocomplete = "new-password";
-            searchbar.placeholder = "Search For An Arist";
-            searchbar.addEventListener('input', function(){
-                if(searchbar.value != ''){
-                    autocompleteSearch(searchbar.value);
-                }
-            });
-            resetGenres();
-            addDescriptions();
-            addSongsWrapper.appendChild(searchbar);
-            addSongsWrapper.appendChild(button);
-            isSearchbarOut = true;
-        }else{
-            //otherwise find genre of new artist
-            resetGenres();
-            resetPage();
-            getArtist();
+    document.getElementById('artist-searchbar').addEventListener('input', function(){
+        var searchbar = document.getElementById("artist-searchbar");
+        if(searchbar.value != ''){
+            autocompleteSearch(searchbar.value);
         }
+    });
+    document.getElementById('search-button').addEventListener('click', function(){
+        closeResults();
+        resetGenres();
+        resetPage();
+        getArtist();
     });
 }
 
 var windowGlobal = window;
-var isSearchbarOut = false;
 var artistIds = [];
 var artistId = "";
 var userId;    
@@ -137,9 +126,9 @@ var loggedin = false;
 var startingGenre;
 var genreList = [];
 var genreInfo = [];
+var subGenreList = ["big room", "urban contemporary", "trip hop", "hip house", "motown", "singer-songwriter", "edm"]
 var reachedRoots = false;
-var readyToStart = false;
-var start = "";
+var startingLink = "";
 var client_id = '3ab7085db74b43c39a18f6954b8cb595'; // Your client id
 var redirect_uri = 'http://localhost:80/callback/'; // Your redirect uri
 /*
@@ -214,6 +203,7 @@ if (error) {
         },
         success: function(response) {
             userId = response.display_name;
+            addDescriptions();
             if(!loggedin){
                 $('#login').hide();
                 $('#loggedin').show();
@@ -228,23 +218,9 @@ if (error) {
         $('#loggedin').hide();
     } 
 
-
-//gets the playlists from the "Sounds of ____" account
-function getPlaylists(display_name, href){
-    var playlisturl = 'https://api.spotify.com/v1/users/thesoundsofspotify/playlists?limit=50';
-    $.ajax({
-        url: playlisturl,
-        headers: {
-            'Authorization': 'Bearer ' + access_token
-        },
-        success: function(response) {
-        }
-    });
-}
-
 function resetGenres(){
-    genreList = [{"genreName": "pop", "used": false, "href": "https://open.spotify.com/playlist/6gS3HhOiI17QNojjPuPzqc"}, 
-            {"genreName": "post-teen pop", "used": false, "href": "https://open.spotify.com/playlist/10FCW9lj0NdeoYI5VVvVtY"}, 
+    genreList = [{"genreName": "post-teen pop", "used": false, "href": "https://open.spotify.com/playlist/10FCW9lj0NdeoYI5VVvVtY"}, 
+            {"genreName": "pop", "used": false, "href": "https://open.spotify.com/playlist/6gS3HhOiI17QNojjPuPzqc"}, 
             {"genreName": "gospel rap", "used": false, "href": "https://open.spotify.com/playlist/6aASwBqAt129rxQQbkKvKC"}, 
             {"genreName": "neo soul", "used": false, "href": "https://open.spotify.com/playlist/2zxYQBTWiXgpQEyQggYSTm"},
             {"genreName": "new jack swing", "used": false, "href": "https://open.spotify.com/playlist/0zn8nuASKC0PISqD9mxCSV"}, 
@@ -285,8 +261,8 @@ function resetGenres(){
 }
 
 function addDescriptions(){
-    genreInfo = [{"genreName": "pop", "description": "Pop music as a genre is meant to encompass “popular” music, which has changed meaning across the centuries, depending on what is most popular. Pop music has been known to take influences from Jazz, Soul, Funk, Rock, and most recently, aspects and elements of Hip-Hop and Disco/Electronic music are seen nearly everywhere in Pop music."}, 
-            {"genreName": "post-teen pop", "description": "Post-Teen Pop is a genre that is an amalgamation of Pop, R&B, Hip-Hop, and Dance, essentially encompassing much of popular music, generally marketed towards “Post-Teens”."}, 
+    genreInfo = [{"genreName": "post-teen pop", "description": "Post-Teen Pop is a genre that is an amalgamation of Pop, R&B, Hip-Hop, and Dance, essentially encompassing much of popular music, generally marketed towards “Post-Teens”."}, 
+            {"genreName": "pop", "description": "Pop music as a genre is meant to encompass “popular” music, which has changed meaning across the centuries, depending on what is most popular. Pop music has been known to take influences from Jazz, Soul, Funk, Rock, and most recently, aspects and elements of Hip-Hop and Disco/Electronic music are seen nearly everywhere in Pop music."}, 
             {"genreName": "gospel rap", "description": "Originating in the 90’s as a mixture of Gospel music and Hip-Hop, also known as “Christian Rap”, this genre utilizes positive and empowering messages with religious overtones to promote faith through music."}, 
             {"genreName": "neo soul", "description": "This genre originated in the 90’s as a combination of R&B and Soul music, featuring conscious lyricism and a strong female presence, while also infusing elements from other genres such as Jazz and Funk."},
             {"genreName": "new jack swing", "description": "This is a fusion of Hip-Hop and R&B that became popular in the 90’s. Containing influence from early Dance music, New Jack Swing also took inspiration from Jazz and Funk, and would later go on to greatly influence Pop music, using drum machines to lay down driving beats under light melody lines with a heavy vocal presence."}, 
@@ -326,13 +302,20 @@ function addDescriptions(){
             {"genreName": "secular traditions instrumental", "description": ""}];
 }
 
+//when find artist button is clicked, collapse autocomplete search results
+function closeResults(){
+    var results = document.getElementById("autocomplete-results");
+    while(results.firstChild){
+        results.removeChild(results.lastChild);
+    }
+}
+
 function resetPage(){
     var timeline = document.getElementById("timeline");
     while(timeline.firstChild){
         timeline.removeChild(timeline.lastChild);
     }
-    start = "";
-    readyToStart = false;
+    startingLink = "";
 }
 
 //called whenever add-song field is updated, queries to find all results and shows them
@@ -422,6 +405,15 @@ function showcaseGenres(artistName, genres){
         var found = false;
         for(var i = 0; i < genres.length; i++){
             if(!found){
+                for(var k = 0; k < subGenreList.length; k++){
+                    if(!found){
+                        if(subGenreList[k] == genres[i]){
+                            startingGenre = genres[i];
+                            informationHeader.innerText = "You selected " + artistName + ", who's primary genre is " + genres[i];
+                            found = true;
+                        }
+                    }
+                }
                 for(var j = 0; j < genreList.length; j++){
                     if(!found){
                         if(genreList[j].genreName == genres[i] || getLargerGenre(genres[i]) != genres[i]){
@@ -433,6 +425,7 @@ function showcaseGenres(artistName, genres){
                 }
             }
         }
+        getPlaylist(startingGenre);
         initiateTimeline();
         while(!reachedRoots);
         displayResults();
@@ -441,61 +434,58 @@ function showcaseGenres(artistName, genres){
 
 function initiateTimeline(){
     var initGenre = getLargerGenre(startingGenre);
-    start = makeCamelCase(initGenre);
-    readyToStart = true;
-    startTimeline();
-    hipHop();
+    var start = makeCamelCase(initGenre);
+    console.log(start);
+    startTimeline(start);
 }
 
-function startTimeline(){
-    console.log(start);
-    var fn = windowGlobal["hipHop"];
-    console.log(typeof fn);
-    // if(typeof fn === "function"){
-    //     console.log("is function");
-    //     fn();
-    // }else{
-    //     switch(startingMethod){
-    //         case "postTeenPop":
-    //             postTeenPop();
-    //             break;
-    //         case "edm":
-    //             house();
-    //             trap();
-    //             break;
-    //         case "singerSongwriter":
-    //             rock();
-    //             country();
-    //             pop();
-    //             break;
-    //         case "motown":
-    //             funk();
-    //             rB();
-    //             break;
-    //         case "hipHouse":
-    //             hipHop();
-    //             house();
-    //             break;
-    //         case "tripHop":
-    //             hipHop();
-    //             electro();
-    //             break;
-    //         case "urbanContemporary":
-    //             hipHop();
-    //             rB();
-    //             break;
-    //         case "bigRoom":
-    //             house();
-    //             electro();
-    //             break;
-    //     }
-    // }
-    
+function startTimeline(start){
+    switch(start){
+        case "edm":
+            house();
+            trap();
+            break;
+        case "singerSongwriter":
+            rock();
+            country();
+            pop();
+            break;
+        case "motown":
+            funk();
+            rB();
+            break;
+        case "hipHouse":
+            hipHop();
+            house();
+            break;
+        case "tripHop":
+            hipHop();
+            electro();
+            break;
+        case "urbanContemporary":
+            hipHop();
+            rB();
+            break;
+        case "bigRoom":
+            house();
+            electro();
+            break;
+        default:
+            start += "()";
+            eval(start);
+            break;
+    }
+
 }
 
 function getLargerGenre(initGenre){
+    for(var i = 0; i < subGenreList.length; i++){
+        if(subGenreList[i] == initGenre){
+            return initGenre;
+        }
+    }
     if(initGenre.includes("rap") || initGenre.includes("hip hop") || initGenre.includes("lo-fi") 
-    || initGenre.includes("grime") || initGenre.includes("raggaeton")){
+    || initGenre.includes("grime") || initGenre.includes("raggaeton") || initGenre == "afrofuturism"){
         return "hip hop";
     }
     if(initGenre.includes("rock") || initGenre.includes("grunge") || initGenre == "british invasion" 
@@ -550,7 +540,6 @@ function getLargerGenre(initGenre){
 
 function makeCamelCase(initGenre){
     var newString = "";
-    console.log(initGenre);
     //first convert initGenre into camel case form
     for(var c = 0; c < initGenre.length; c++){
         if(initGenre.charAt(c) != ' ' && initGenre.charAt(c) != '-' && initGenre.charAt(c) != '&'){
@@ -560,7 +549,6 @@ function makeCamelCase(initGenre){
             var upper = initGenre.toUpperCase();
             newString = newString.concat(upper.charAt(c));
         }
-        console.log(newString);
     }
     return newString;
 }
@@ -591,7 +579,8 @@ function createCard(header, parent){
     cardBody.appendChild(cardTitle);
     curGenre.appendChild(cardBody);
     parent.appendChild(curGenre);
-    curGenre.addEventListener('click', function(){
+
+    cardTitle.addEventListener('click', function(){
         toggleCard(header);
     });
 }
@@ -605,6 +594,7 @@ function toggleCard(cardId){
         //add playlist link
         var link = document.createElement("a");
         link.className = "card-subtitle";
+        link.target = "_blank";
         //check if genre has a link in the data structure
         var i = 0;
         var found = 0;
@@ -616,18 +606,42 @@ function toggleCard(cardId){
             link.href = genreList[i-1].href;
             link.innerHTML = "Sounds of '" + cardId + "' " + "Spotify Playlist";
         }
-        card.appendChild(link);
         //add body-text
         var cardBody = document.createElement("p");
         cardBody.className = "card-text";
         if(i < genreList.length){
             cardBody.innerHTML = genreInfo[i-1].description;
         }else{
-            //TO-DO: Find starting genre spotify playlist (time-consuming)
+            link.href = startingLink;
+            link.innerHTML = "Sounds of '" + cardId + "' " + "Spotify Playlist";
         }
+        card.appendChild(link);
         card.appendChild(cardBody);
     }
 
+}
+
+//gets the playlists from the "Sounds of ____" account
+function getPlaylist(cardId){
+    var genreName = "";
+    for(var c = 0; c < cardId.length; c++){
+        if(cardId.charAt(c) != ' '){
+            genreName = genreName.concat(cardId.charAt(c));
+        }else{
+            genreName = genreName.concat("%20");
+        }
+    }
+    var playlisturl = "https://api.spotify.com/v1/search?q=The%20Sound%20of%20" + genreName + "&type=playlist";
+    console.log(playlisturl);
+    $.ajax({
+        url: playlisturl,
+        headers: {
+            'Authorization': 'Bearer ' + access_token
+        },
+        success: function(response) {
+            startingLink = response.playlists.items[0].external_urls.spotify;
+        }
+    });
 }
 
 function metal(){

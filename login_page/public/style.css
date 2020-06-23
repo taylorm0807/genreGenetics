@@ -1,32 +1,59 @@
-.login-page{
-    margin-top: 12.5%;
+.loggedin{
     text-align: center;
 }
 
-.queue-page{
+.login-page{
+    padding-top: 1%;
     text-align: center;
+    background-color: #797a9eff;
+    position: relative;
+}
+
+.child1{
+    text-align: center;
+}
+
+.child2{
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    -ms-transform: translateY(50%);
+    transform: translateY(50%);
+}
+
+.border-2 {
+    border-width:2px !important;
 }
 
 .login-page-playlists{
     text-align: center;
 }
 
-.login-text{
-    color: #1db954;
+.title-text{
+    color: #272932;
+    font-size: 48pt;
 }
 
-.room-id-text{
-    color: #1db954;
-    float: left;
-    text-align: left;
-    margin-left: 10%;
-    width: 40%;
+.title-line{
+    width: 75%;
+    height: 4px;
+    background-color: #272932;
+    margin: auto;
+    margin-bottom: 8px;
+}
+
+
+.subtitle-text{
+    padding-top: 8px;
+    color: #272932;
+    width: 50%;
+    margin: auto;
 }
 
 .login-button{
     margin-top: 16px;
-    color: white; 
-    background-color: #1db954;
+    color: #272932; 
+    background-color: #797a9eff;
     padding-bottom: 8px;
 }
 
@@ -42,76 +69,50 @@
     margin-right: 10%;
 }
 
+md-form{
+    padding-bottom: 0px;
+    margin-bottom: 0px !important;
+}
+
+.searchbar{
+    width: 40%;
+    margin: 0;
+}
+
 .add-song-button{
-    margin-top: 16px;
-    color: white; 
-    background-color: #1db954;
-    padding-bottom: 8px;
+    color: #272932; 
+    background-color: #797a9eff;
+    width: 17.5%;
+    height: 100%;
     margin-left: 16px;
 }
 
-.login-subtitle-text{
-    padding-top: 8px;
-    color: #b3b3b3;
-}
-
-.playlist-name{
-    color: white;
-    margin-top: 4px;
-    margin-bottom: 4px;
-}
-
-.song-data-row{
-    width: 60%;
-    margin-left: 20%;
-    border-radius: 20px;
-}
-
-.song-name{
-    color: #b3b3b3;
-    font-size: large;
-}
-
-.queue-table-header{
-    color: #b3b3b3;
-}
-
-.queue-table-row{
-    color: #b3b3b3;
-}
-
-.table th,td,tbody,thead{
-    text-align: left;
+.artist-genre-text{
+    padding-top: 48px;
+    color: #9e90a2;
 }
 
 .autocomplete-results{
     text-align: left;
     padding-left: 22.5%;
-    color: white;
+    color: #272932;
 }
 
 input[type=text]{
-    width: 50%;
-    color: white;
-    background-color: #212121;
+    width: 70%;
+    color: #9e90a2;
     border-top-width: 0px;
     border-left-width: 0px;
     border-right-width: 0px;
-    border-color: #1db954;
+    border-color: #9e90a2;
+}
+
+.card{
+    width: 65%;
+    margin: auto;
+    padding-top: 16px;
 }
 
 input:focus{
     outline-width: 0px;
-}
-
-.not-pressed{
-    color: #b3b3b3 !important;
-}
-
-.icon-thumbs-down{
-    color: red;
-}
-
-.icon-thumbs-up{
-    color: #1db954;
 }
