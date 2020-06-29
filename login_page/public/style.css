@@ -9,12 +9,30 @@
     position: relative;
 }
 
+.card-title{
+    position: relative;
+    top: 14px;
+    padding-bottom: 16px;
+}
+
+.card-subtitle{
+    padding-bottom: 8px;
+}
+
+.card-text{
+    padding-bottom: 8px;
+    padding-left: 12px;
+    padding-right: 4px;
+    text-align: left;
+}
+
 .child1{
     text-align: center;
 }
 
 .child2{
     position: absolute;
+    z-index: 2;
     margin: 0;
     top: 50%;
     -ms-transform: translateY(50%);
@@ -31,11 +49,11 @@
 
 .title-text{
     color: #272932;
-    font-size: 48pt;
+    font-size: 40pt;
 }
 
 .title-line{
-    width: 75%;
+    width: 65%;
     height: 4px;
     background-color: #272932;
     margin: auto;
@@ -90,6 +108,12 @@ md-form{
 .artist-genre-text{
     padding-top: 48px;
     color: #9e90a2;
+    padding-bottom: 24px;
+}
+
+.genre-info-wrapper{
+    text-align: center;
+    margin: auto;
 }
 
 .autocomplete-results{
@@ -108,9 +132,81 @@ input[type=text]{
 }
 
 .card{
-    width: 65%;
+    width: 60%;
     margin: auto;
     padding-top: 16px;
+}
+
+.info-wrapper-left{
+    width: 40% !important;
+    margin: auto;
+    margin-right: 50%;
+    padding-top: 32px;
+    height: 80px;
+}
+
+.info-wrapper-right{
+    width: 40% !important;
+    margin: auto;
+    margin-left: 50%;
+    padding-top: 32px;
+    height: 80px;
+}
+
+.card-date{
+    color: #9e90a2;
+    grid-row: 1;
+    grid-column: 1;
+}
+
+.date-wrapper{
+    width: 20% !important;
+    position: relative;
+    height: 56px;
+    display: grid;
+    top: -20px;
+}
+
+.genre-card{
+    margin: 0;
+    padding: 0;
+    width: 50% !important;
+}
+
+.timeline-cap{
+    position: absolute;
+    margin: auto;
+    z-index: 1;
+    border-radius: 50%;
+    background-color: #06b4db;
+    -ms-transform: translateX(50%);
+    transform: translateX(50%);
+    left: 45vw;
+    width: 5vw;
+    height: 5vw;
+}
+
+.timeline{
+    position: absolute;
+    margin: auto;
+    z-index: 1;
+    left: 48.5%;
+    background-color: #06b4db;
+    width: 1.5%;
+    -ms-transform: translateX(50%);
+    transform: translateX(50%);
+}
+
+.timeline-connector{
+    position: relative;
+    background-color: #06b4db;
+    z-index: 1;
+    height: 10px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    grid-row: 2;
+    grid-column: 1;
 }
 
 input:focus{

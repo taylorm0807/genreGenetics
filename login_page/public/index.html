@@ -61,12 +61,13 @@
             </form>
         </div>
         <h4 class="artist-genre-text" id="information-header"></h4>
+        <div class="timeline-cap" id="circle-beginning"></div>
         <!-- TO-DO: Add an x button to each card -->
-        <div id="timeline">
+        <div class="genre-info-wrapper" id="timeline">
         </div>
+        <div class="timeline-cap" id="circle-end"></div>
         <div id="oauth">
         </div>
-        <!-- <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button> -->
     </div>
 
     <script id="oauth-template" type="text/x-handlebars-template">
@@ -104,6 +105,8 @@ function generateRandomString(length) {
 };
 
 function setUpSearchbar(){
+    document.getElementById("circle-beginning").style.visibility = "hidden";
+    document.getElementById("circle-end").style.visibility = "hidden";
     document.getElementById('artist-searchbar').addEventListener('input', function(){
         var searchbar = document.getElementById("artist-searchbar");
         if(searchbar.value != ''){
@@ -121,6 +124,7 @@ function setUpSearchbar(){
 var windowGlobal = window;
 var artistIds = [];
 var artistId = "";
+var numCards = 0;
 var userId;    
 var loggedin = false;
 var startingGenre;
@@ -219,45 +223,45 @@ if (error) {
     } 
 
 function resetGenres(){
-    genreList = [{"genreName": "post-teen pop", "used": false, "href": "https://open.spotify.com/playlist/10FCW9lj0NdeoYI5VVvVtY"}, 
-            {"genreName": "pop", "used": false, "href": "https://open.spotify.com/playlist/6gS3HhOiI17QNojjPuPzqc"}, 
-            {"genreName": "gospel rap", "used": false, "href": "https://open.spotify.com/playlist/6aASwBqAt129rxQQbkKvKC"}, 
-            {"genreName": "neo soul", "used": false, "href": "https://open.spotify.com/playlist/2zxYQBTWiXgpQEyQggYSTm"},
-            {"genreName": "new jack swing", "used": false, "href": "https://open.spotify.com/playlist/0zn8nuASKC0PISqD9mxCSV"}, 
-            {"genreName": "techno", "used": false, "href": "https://open.spotify.com/playlist/50kZecUV5pY2SuJv3Ie0vy"},
-            {"genreName": "r&b", "used": false, "href": "https://open.spotify.com/playlist/1rLnwJimWCmjp3f0mEbnkY"}, 
-            {"genreName": "house", "used": false, "href": "https://open.spotify.com/playlist/6AzCASXpbvX5o3F8yaj1y0"},
-            {"genreName": "electro-funk", "used": false, "href": ""}, 
-            {"genreName": "disco", "used": false, "href": "https://open.spotify.com/playlist/0ZVSWcJIf7cvycEn9HUvps"},
-            {"genreName": "rap", "used": false, "href": "https://open.spotify.com/playlist/6s5MoZzR70Qef7x4bVxDO1"},
-            {"genreName": "hip hop", "used": false, "href": "https://open.spotify.com/playlist/6MXkE0uYF4XwU4VTtyrpfP"}, 
-            {"genreName": "funk", "used": false, "href": "https://open.spotify.com/playlist/0MBvtOIm5fuBbRHEltDY8A"},
-            {"genreName": "metal", "used": false, "href": "https://open.spotify.com/playlist/3pBfUFu8MkyiCYyZe849Ks"},
-            {"genreName": "civil rights freedom songs", "used": false ,"href": ""},
-            {"genreName": "rock", "used": false, "href": "https://open.spotify.com/playlist/7dowgSWOmvdpwNkGFMUs6e"}, 
-            {"genreName": "soul", "used": false, "href": "https://open.spotify.com/playlist/1YUIw9n6voqxPzawnEf3A2"},
-            {"genreName": "soul jazz", "used": false, "href": "https://open.spotify.com/playlist/51YToRmnFC3U4iPj6LgHgF"}, 
-            {"genreName": "modern jazz trio", "used": false, "href": "https://open.spotify.com/playlist/2dvBbBvx5xENN0yta6YVMZ"},
-            {"genreName": "vintage gospel", "used": false, "href": "https://open.spotify.com/playlist/1nUeq2VFT7rDOsry1KD01T"}, 
-            {"genreName": "rock-and-roll", "used": false, "href": "https://open.spotify.com/playlist/34bhxCaWrYi4kF67mNYiXW"},
-            {"genreName": "hard bop", "used": false, "href": "https://open.spotify.com/playlist/3KIoIajdvsFRWMYN3T5Fa5"}, 
-            {"genreName": "urban blues", "used": false, "href": ""},
-            {"genreName": "rhythm and blues", "used": false, "href": "https://open.spotify.com/playlist/4uSZwUcMhCdfspqtWaQGwD"}, 
-            {"genreName": "bebop", "used": false, "href": "https://open.spotify.com/playlist/55s8gstHcaCyfU47mQgLrB"},
-            {"genreName": "traditional gospel", "used": false, "href": ""}, 
-            {"genreName": "swing", "used": false, "href": "https://open.spotify.com/playlist/20CFvOMJgvNmysKxUH5GJV"},
-            {"genreName": "gospel hymns", "used": false, "href": ""}, 
-            {"genreName": "country", "used": false, "href": "https://open.spotify.com/playlist/4mijVkpSXJziPiOrK7YX4M"},             
-            {"genreName": "boogie-woogie", "used": false, "href": "https://open.spotify.com/playlist/3VvwVEZaPYQfI8ZZbOCW5h"},
-            {"genreName": "new orleans jazz", "used": false, "href": "https://open.spotify.com/playlist/0iMiZcvIy26MqHQln5kkrI"}, 
-            {"genreName": "traditional blues", "used": false, "href": "https://open.spotify.com/playlist/4fPXonBYvsGcigbOEKFudk"},
-            {"genreName": "ragtime", "used": false, "href": "https://open.spotify.com/playlist/7BKZEIdyav6sz9B628eXSx"}, 
-            {"genreName": "spirituals", "used": false, "href": "https://open.spotify.com/playlist/7u9s8sobm0vJDxpdkhC3we"},
-            {"genreName": "work songs", "used": false, "href": ""}, 
-            {"genreName": "syncopated dance", "used": false, "href": ""},
-            {"genreName": "sacred traditions", "used": false, "href": ""}, 
-            {"genreName": "secular traditions", "used": false, "href": ""},
-            {"genreName": "secular traditions instrumental", "used": false, "href": ""}];
+    genreList = [{"genreName": "post-teen pop", "date": "2000", "used": false, "href": "https://open.spotify.com/playlist/10FCW9lj0NdeoYI5VVvVtY"}, 
+            {"genreName": "pop", "date": "2000", "used": false, "href": "https://open.spotify.com/playlist/6gS3HhOiI17QNojjPuPzqc"}, 
+            {"genreName": "gospel rap", "date": "1990", "used": false, "href": "https://open.spotify.com/playlist/6aASwBqAt129rxQQbkKvKC"}, 
+            {"genreName": "neo soul", "date": "1990", "used": false, "href": "https://open.spotify.com/playlist/2zxYQBTWiXgpQEyQggYSTm"},
+            {"genreName": "new jack swing", "date": "1990", "used": false, "href": "https://open.spotify.com/playlist/0zn8nuASKC0PISqD9mxCSV"}, 
+            {"genreName": "techno", "date": "1980", "used": false, "href": "https://open.spotify.com/playlist/50kZecUV5pY2SuJv3Ie0vy"},
+            {"genreName": "r&b", "date": "1980", "used": false, "href": "https://open.spotify.com/playlist/1rLnwJimWCmjp3f0mEbnkY"}, 
+            {"genreName": "house", "date": "1980", "used": false, "href": "https://open.spotify.com/playlist/6AzCASXpbvX5o3F8yaj1y0"},
+            {"genreName": "electro-funk", "date": "1980", "used": false, "href": ""}, 
+            {"genreName": "disco", "date": "1970", "used": false, "href": "https://open.spotify.com/playlist/0ZVSWcJIf7cvycEn9HUvps"},
+            {"genreName": "rap", "date": "1970", "used": false, "href": "https://open.spotify.com/playlist/6s5MoZzR70Qef7x4bVxDO1"},
+            {"genreName": "hip hop", "date": "1970", "used": false, "href": "https://open.spotify.com/playlist/6MXkE0uYF4XwU4VTtyrpfP"}, 
+            {"genreName": "funk", "date": "1960", "used": false, "href": "https://open.spotify.com/playlist/0MBvtOIm5fuBbRHEltDY8A"},
+            {"genreName": "metal", "date": "1960", "used": false, "href": "https://open.spotify.com/playlist/3pBfUFu8MkyiCYyZe849Ks"},
+            {"genreName": "civil rights freedom songs", "date": "1960", "used": false ,"href": ""},
+            {"genreName": "rock", "date": "1960", "used": false, "href": "https://open.spotify.com/playlist/7dowgSWOmvdpwNkGFMUs6e"}, 
+            {"genreName": "soul", "date": "1950", "used": false, "href": "https://open.spotify.com/playlist/1YUIw9n6voqxPzawnEf3A2"},
+            {"genreName": "soul jazz", "date": "1900", "used": false, "href": "https://open.spotify.com/playlist/51YToRmnFC3U4iPj6LgHgF"}, 
+            {"genreName": "modern jazz trio", "date": "1960", "used": false, "href": "https://open.spotify.com/playlist/2dvBbBvx5xENN0yta6YVMZ"},
+            {"genreName": "vintage gospel", "date": "1960", "used": false, "href": "https://open.spotify.com/playlist/1nUeq2VFT7rDOsry1KD01T"}, 
+            {"genreName": "rock-and-roll", "date": "1950", "used": false, "href": "https://open.spotify.com/playlist/34bhxCaWrYi4kF67mNYiXW"},
+            {"genreName": "hard bop", "date": "1950", "used": false, "href": "https://open.spotify.com/playlist/3KIoIajdvsFRWMYN3T5Fa5"}, 
+            {"genreName": "urban blues", "date": "1940", "used": false, "href": ""},
+            {"genreName": "rhythm and blues", "date": "1940", "used": false, "href": "https://open.spotify.com/playlist/4uSZwUcMhCdfspqtWaQGwD"}, 
+            {"genreName": "bebop", "date": "1940", "used": false, "href": "https://open.spotify.com/playlist/55s8gstHcaCyfU47mQgLrB"},
+            {"genreName": "traditional gospel", "date": "1930", "used": false, "href": ""}, 
+            {"genreName": "swing", "date": "1930", "used": false, "href": "https://open.spotify.com/playlist/20CFvOMJgvNmysKxUH5GJV"},
+            {"genreName": "gospel hymns", "date": "1900", "used": false, "href": ""}, 
+            {"genreName": "country", "date": "1920", "used": false, "href": "https://open.spotify.com/playlist/4mijVkpSXJziPiOrK7YX4M"},             
+            {"genreName": "boogie-woogie", "date": "1900", "used": false, "href": "https://open.spotify.com/playlist/3VvwVEZaPYQfI8ZZbOCW5h"},
+            {"genreName": "new orleans jazz", "date": "1900", "used": false, "href": "https://open.spotify.com/playlist/0iMiZcvIy26MqHQln5kkrI"}, 
+            {"genreName": "traditional blues", "date": "1880", "used": false, "href": "https://open.spotify.com/playlist/4fPXonBYvsGcigbOEKFudk"},
+            {"genreName": "ragtime", "date": "1900", "used": false, "href": "https://open.spotify.com/playlist/7BKZEIdyav6sz9B628eXSx"}, 
+            {"genreName": "spirituals", "date": "1800", "used": false, "href": "https://open.spotify.com/playlist/7u9s8sobm0vJDxpdkhC3we"},
+            {"genreName": "work songs", "date": "1600", "used": false, "href": ""}, 
+            {"genreName": "syncopated dance", "date": "1600", "used": false, "href": ""},
+            {"genreName": "sacred traditions", "date": "1500", "used": false, "href": ""}, 
+            {"genreName": "secular traditions", "date": "1500", "used": false, "href": ""},
+            {"genreName": "secular traditions instrumental", "date": "1500", "used": false, "href": ""}];
 }
 
 function addDescriptions(){
@@ -316,6 +320,7 @@ function resetPage(){
         timeline.removeChild(timeline.lastChild);
     }
     startingLink = "";
+    numCards = 0;
 }
 
 //called whenever add-song field is updated, queries to find all results and shows them
@@ -435,7 +440,6 @@ function showcaseGenres(artistName, genres){
 function initiateTimeline(){
     var initGenre = getLargerGenre(startingGenre);
     var start = makeCamelCase(initGenre);
-    console.log(start);
     startTimeline(start);
 }
 
@@ -556,7 +560,18 @@ function makeCamelCase(initGenre){
 //after the genres have been traced to the roots, show the path on the website
 function displayResults(){
     var timeline = document.getElementById("timeline");
-    createCard(startingGenre, timeline);
+    document.getElementById("circle-beginning").style.visibility = "";
+    document.getElementById("circle-end").style.visibility = "";
+    var skip = false;
+    //check if startingGenre is equal to one of the genres that alrady exists, if so, then skip it
+    for(var i = 0; i < genreList.length; i++){
+        if(genreList[i].genreName == startingGenre)
+            skip = true;
+    }
+    if(!skip){
+        createCard(startingGenre, timeline);
+        numCards++;
+    }
     for(var i = 0; i < genreList.length; i++){
         if(genreList[i].used == true){
             var timelineConnector = document.createElement("div");
@@ -564,33 +579,98 @@ function displayResults(){
             timelineConnector.innerHTML = "|";
             timeline.appendChild(timelineConnector);
             createCard(genreList[i].genreName, timeline);
+            numCards++;
         }
     }
+    updateTimelineLength(0,0,0);
 }
 
+/*For reference: card html heirarchy
+<cardWrapper>
+    <infoWrapper>
+        <curGenre>
+            <cardTitle>
+            <cardLink>
+            <cardText>
+        <dateWrapper>
+            <timelineConnector>
+            <curDate>
+*/
 function createCard(header, parent){
+    var cardWrapper = document.createElement("div");
+    parent.appendChild(cardWrapper);
     var curGenre = document.createElement("div");
     curGenre.id = header;
-    curGenre.className = "card";
+    curGenre.className = "card genre-card border-dark border-2";
+    var cardDate = document.createElement("h3");
+    cardDate.className = "card-date";
+    cardDate.innerHTML = getDate(header);
     var cardBody = document.createElement("div");
     var cardTitle = document.createElement("h5");
-    cardTitle.className = "card-title"
+    cardTitle.className = "card-title";
     cardTitle.innerHTML = header;
+    var timelineConnector = document.createElement("div");
+    timelineConnector.className = "timeline-connector";
+    if(cardDate.innerHTML == ""){
+        timelineConnector.style.top = "18px";
+    }
+    var infoWrapper = document.createElement("div");
+    var dateWrapper = document.createElement("div");
+    dateWrapper.className = "date-wrapper";
+    if(numCards%2 == 0){
+        infoWrapper.className = "info-wrapper-right";
+        curGenre.style.float = "left";
+        dateWrapper.style.float = "left";
+        cardDate.style.paddingLeft = "8px";
+        dateWrapper.appendChild(cardDate);
+        dateWrapper.appendChild(timelineConnector);
+        infoWrapper.appendChild(dateWrapper);
+        infoWrapper.appendChild(curGenre);
+    }else{
+        infoWrapper.className = "info-wrapper-left";
+        dateWrapper.style.float = "right";
+        curGenre.style.float = "right";
+        cardDate.style.paddingRight = "8px";
+        dateWrapper.appendChild(timelineConnector);
+        dateWrapper.appendChild(cardDate);
+        infoWrapper.appendChild(dateWrapper);
+        infoWrapper.appendChild(curGenre);
+    }
+    cardWrapper.appendChild(infoWrapper);
     cardBody.appendChild(cardTitle);
     curGenre.appendChild(cardBody);
-    parent.appendChild(curGenre);
-
+    curGenre.style.height = "56px";
     cardTitle.addEventListener('click', function(){
         toggleCard(header);
     });
 }
 
+function getDate(cardId){
+    var i = 0;
+    var found = 0;
+    while(!found && i < genreList.length){
+        found = (genreList[i].genreName == cardId);
+        i++;
+    }
+    if(i < genreList.length){
+        return genreList[i-1].date;
+    }else{
+        return "";
+    }
+
+}
+
 function toggleCard(cardId){
     var card = document.getElementById(cardId);
     if(card.childElementCount > 1){
+        var heightDiff = card.offsetHeight - 56;
+        card.style.height = "56px";
+        card.style.setProperty('width', '50%', 'important');
         card.removeChild(card.lastChild);
         card.removeChild(card.lastChild);
+        updateTimelineLength(-1,cardId, heightDiff);
     }else{
+        card.style.setProperty('width', '80%', 'important');
         //add playlist link
         var link = document.createElement("a");
         link.className = "card-subtitle";
@@ -617,8 +697,41 @@ function toggleCard(cardId){
         }
         card.appendChild(link);
         card.appendChild(cardBody);
+        card.style.height = "";
+        var heightDiff = card.offsetHeight - 56;
+        updateTimelineLength(1,cardId, heightDiff);
     }
 
+}
+
+function updateTimelineLength(modifier, cardId, heightDiff){
+    if(cardId != 0){
+        var card = document.getElementById(cardId);
+    }
+    //initialize timeline length
+    if(modifier == 0){
+        //get the position of the text element under the searchbar (lowest element of website at this point)
+        //Set absolute position of a div to lowestPos - 16px and make it a fixed width
+        var timeline = document.createElement('div');
+        var timelineWrapper = document.getElementById('timeline');
+        timelineWrapper.insertBefore(timeline, timelineWrapper.firstChild);
+        timeline.id = "line";
+        timeline.className = "timeline";
+        timeline.style.height = numCards*104 + "px";
+        var timelineTop = document.getElementById("circle-beginning");
+        var timelineBottom = document.getElementById("circle-end");
+        timelineTop.style.top = timeline.getBoundingClientRect().top - 12 + "px";
+        timelineBottom.style.top = timeline.getBoundingClientRect().bottom + "px";
+    }else{
+        //increase the size of the line by a set amount
+        var timeline = document.getElementById("line");
+        var height = parseInt(timeline.style.height.substr(0, (timeline.style.height.length - 2)));
+        timeline.style.height = (height + (modifier)*heightDiff) + "px";
+        var timelineTop = document.getElementById("circle-beginning");
+        var timelineBottom = document.getElementById("circle-end");
+        var height = parseInt(timelineTop.style.top.substr(0, (timelineTop.style.top.length - 2)));
+        timelineBottom.style.top = height + timeline.getBoundingClientRect().height + "px";
+    }
 }
 
 //gets the playlists from the "Sounds of ____" account
@@ -632,7 +745,6 @@ function getPlaylist(cardId){
         }
     }
     var playlisturl = "https://api.spotify.com/v1/search?q=The%20Sound%20of%20" + genreName + "&type=playlist";
-    console.log(playlisturl);
     $.ajax({
         url: playlisturl,
         headers: {
