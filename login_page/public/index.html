@@ -4,10 +4,11 @@
     <link rel="stylesheet" href="./style.css" /> 
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 
     <title> Genre Roots - Find the roots of your favorite artist's music</title>
     <style type="text/css">
-      #login, #loggedin {
+      #login, #loggedin, #timeline-view, #tree-view  {
         display: none;
       }
       .text-overflow {
@@ -19,7 +20,7 @@
     </style>
   </head>
 
-  <body style="background-color: #212121">
+  <body id="body" style="background-color: #212121">
     <div>
       <div id="login" class="login-page">
         <a href="/login" class="btn login-button" id="spotify-login">Log in with Spotify</a>
@@ -60,16 +61,196 @@
                 </div>
             </form>
         </div>
-        <h4 class="artist-genre-text" id="information-header"></h4>
-        <div class="timeline-cap" id="circle-beginning"></div>
-        <!-- TO-DO: Add an x button to each card -->
-        <div class="genre-info-wrapper" id="timeline">
+        <h4 class="artist-genre-text" id="information-header">Roots of <span class="blue-text">{{Genre}}</span></h4>
+        <label class="toggle-button" id="toggle-label">
+            <input type="checkbox" id="toggle-button" checked data-toggle="toggle" data-style="switch" data-onstyle="secondary" data-offstyle="secondary" data-on="Timeline" data-off="Tree" data-width="128" data-height="48">
+        </label>
+        <div id="timeline-view">
+            <div class="timeline-cap" id="circle-beginning"></div>
+            <div class="genre-info-wrapper" id="timeline">
+            </div>
+            <div class="timeline-cap" id="circle-end"></div>
+            </div>
+            <div class="contact-section" id="contact-section">
+                <div class="resource-text" id="resource-text"></div>
+                <div class="disclaimer-text" id="disclaimer-text"></div>
         </div>
-        <div class="timeline-cap" id="circle-end"></div>
-        <div id="oauth">
-        </div>
-    </div>
+        <div id="tree-view">
+            <svg id="svg" class="background" width="500" height="500"></svg>
+            <div class="row">
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="sacred-traditions-tree"></div>
+                    <h4 class="tree-genre-text">African American Sacred Traditions</h4>
+                </div>
+                <div class="col-md-2 offset-md-2">
+                    <div class="genre-circle" id="secular-traditions-tree"></div>
+                    <h4 class="tree-genre-text">African American Secular Traditions</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="spirituals-tree"></div>
+                    <h4 class="tree-genre-text">Folk Spirituals</h4>
 
+                </div>
+                <div class="col-md-2 offset-md-1">
+                    <div class="genre-circle" id="work-songs-tree"></div>
+                    <h4 class="tree-genre-text">Work/Protest Songs</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 offset-md-1">
+                    <div class="genre-circle" id="country-tree"></div>
+                    <h4 class="tree-genre-text">Country</h4>
+                </div>
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="traditional-blues-tree"></div>
+                    <h4 class="tree-genre-text">Traditional Blues</h4>
+
+                </div>
+                <div class="col-md-2 offset-md-1">
+                    <div class="genre-circle" id="ragtime-tree"></div>
+                    <h4 class="tree-genre-text">Ragtime</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="gospel-hymns-tree"></div>
+                    <h4 class="tree-genre-text">Gospel Hymns</h4>
+
+                </div>
+                <div class="col-md-2 offset-md-2">
+                    <div class="genre-circle" id="boogie-woogie-tree"></div>
+                    <h4 class="tree-genre-text">Boogie-Woogie</h4>
+                </div>
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="new-orleans-jazz-tree"></div>
+                    <h4 class="tree-genre-text">New Orleans Jazz</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 offset-md-6">
+                    <div class="genre-circle" id="swing-tree"></div>
+                    <h4 class="tree-genre-text">Swing</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="traditional-gospel-tree"></div>
+                    <h4 class="tree-genre-text">Traditional Gospel</h4>
+                </div>
+                <div class="col-md-2 offset-md-1">
+                    <div class="genre-circle" id="urban-blues-tree"></div>
+                    <h4 class="tree-genre-text">Urban Blues</h4>
+                </div>
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="rhythm-and-blues-tree"></div>
+                    <h4 class="tree-genre-text">Rhythm And Blues</h4>
+                </div>
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="bebop-tree"></div>
+                    <h4 class="tree-genre-text">Bebop</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 offset-md-1">
+                    <div class="genre-circle" id="civil-rights-freedom-songs-tree"></div>
+                    <h4 class="tree-genre-text">Civil Rights Freedom Songs</h4>
+                </div>
+                <div class="col-md-2 offset-md-1">
+                    <div class="genre-circle" id="rock-and-roll-tree"></div>
+                    <h4 class="tree-genre-text">Rock And Roll</h4>
+                </div>
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="hard-bop-tree"></div>
+                    <h4 class="tree-genre-text">Hard Bop</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 offset-md-2">
+                    <div class="genre-circle" id="rock-tree"></div>
+                    <h4 class="tree-genre-text">Rock</h4>
+                </div>
+                <div class="col-md-2 offset-md-2">
+                    <div class="genre-circle" id="soul-jazz-tree"></div>
+                    <h4 class="tree-genre-text">Soul Jazz</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 offset-md-2">
+                    <div class="genre-circle" id="metal-tree"></div>
+                    <h4 class="tree-genre-text">Metal</h4>
+                </div>
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="soul-tree"></div>
+                    <h4 class="tree-genre-text">Soul</h4>
+                </div>
+                <div class="col-md-2 offset-md-1">
+                    <div class="genre-circle" id="modern-jazz-trio-tree"></div>
+                    <h4 class="tree-genre-text">Modern Jazz Trio</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="vintage-gospel-tree"></div>
+                    <h4 class="tree-genre-text">Vintage Gospel</h4>
+                </div>
+                <div class="col-md-2 offset-md-1">
+                    <div class="genre-circle" id="disco-tree"></div>
+                    <h4 class="tree-genre-text">Disco</h4>
+                </div>
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="funk-tree"></div>
+                    <h4 class="tree-genre-text">Funk</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 offset-md-2">
+                    <div class="genre-circle" id="house-tree"></div>
+                    <h4 class="tree-genre-text">House</h4>
+                </div>                
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="hip-hop-tree"></div>
+                    <h4 class="tree-genre-text">Rap/Hip-Hop</h4>
+                </div>
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="electro-funk-tree"></div>
+                    <h4 class="tree-genre-text">Electro-Funk</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 offset-md-2">
+                    <div class="genre-circle" id="techno-tree"></div>
+                    <h4 class="tree-genre-text">Techno</h4>
+                </div>                
+                <div class="col-md-2 offset-md-1">
+                    <div class="genre-circle" id="r&b-tree"></div>
+                    <h4 class="tree-genre-text">R&B</h4>
+                </div>
+            </div>
+            <div class="row">              
+                <div class="col-md-2 offset-md-3">
+                    <div class="genre-circle" id="pop-tree"></div>
+                    <h4 class="tree-genre-text">Pop</h4>
+                </div>
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="neo-soul-tree"></div>
+                    <h4 class="tree-genre-text">Neo Soul</h4>
+                </div>
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="new-jack-swing-tree"></div>
+                    <h4 class="tree-genre-text">New Jack Swing</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 offset-md-3">
+                    <div class="genre-circle" id="post-teen-pop-tree"></div>
+                    <h4 class="tree-genre-text">Post-Teen Pop</h4>
+                </div>                
+            </div>
+        </div>
+        <div id="oauth"></div>
+    </div>
     <script id="oauth-template" type="text/x-handlebars-template">
     </script>
     <script type="/text/javascript/" src="../app.js"></script>
@@ -77,6 +258,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
     <script>
       (function() {
 
@@ -104,9 +286,13 @@ function generateRandomString(length) {
     return text;
 };
 
+
 function setUpSearchbar(){
     document.getElementById("circle-beginning").style.visibility = "hidden";
     document.getElementById("circle-end").style.visibility = "hidden";
+    document.getElementById("contact-section").style.visibility = "hidden";
+    document.getElementById("information-header").style.visibility = "hidden";
+    document.getElementById("toggle-label").style.visibility = "hidden";
     document.getElementById('artist-searchbar').addEventListener('input', function(){
         var searchbar = document.getElementById("artist-searchbar");
         if(searchbar.value != ''){
@@ -118,10 +304,20 @@ function setUpSearchbar(){
         resetGenres();
         resetPage();
         getArtist();
+        $('#timeline-view').show();
+
     });
 }
 
+//Intitializes the contact information and disclaimer info for the website
+function setUpBottomSection(){
+    var disclaimer = document.getElementById("disclaimer-text");
+    disclaimer.innerHTML = "\nDISCLAIMER: This website was made utilizing Spotify's genre labeling for artists, along with information about different genres' history found online. Due to these limitiations and the sheer number of genres that Spotify uses (>1000), genres may be wrongly catagorized, misrepresented, or even ommited. If you believe there is a genre that should be included, changed, or if there is any other feature/modification you would like to see in this website, please reach out to me at taylor0807@gmail.com"
+    var infoText = document.getElementById("resource-text");
+    infoText.innerHTML = "This website was made in support of the Black Lives Matter movement as a resource to educate and bring light to the influence and importance of African-Americans in the field of music, as well as in society as a whole. At the time of writing this, 83 of the top 100 worldwide genres on Spotify can be traced back to early 1600's African-American traditions, and many of the other top 100 likely have influence as well. If you would like to support the fight for equality and end of systemic racism and oppression in the United States, please visit and donate to the links below."
+}
 var windowGlobal = window;
+var view = 0;
 var artistIds = [];
 var artistId = "";
 var numCards = 0;
@@ -130,6 +326,42 @@ var loggedin = false;
 var startingGenre;
 var genreList = [];
 var genreInfo = [];
+var connections = [
+    {"start": "sacred traditions", "connections": ["spirituals"], "init": false},
+    {"start": "secular traditions", "connections": ["work songs", "ragtime"], "init": false},
+    {"start": "spirituals", "connections": ["gospel hymns", "civil rights freedom songs", "country"], "init": false},
+    {"start": "work songs", "connections": ["traditional blues", "country"], "init": false},
+    {"start": "country", "connections": [], "init": false},
+    {"start": "traditional blues", "connections": ["boogie-woogie"], "init": false},
+    {"start": "ragtime", "connections": ["new orleans jazz"], "init": false},
+    {"start": "gospel hymns", "connections": ["traditional gospel"], "init": false},
+    {"start": "boogie-woogie", "connections": ["urban blues", "rhythm and blues"], "init": false},
+    {"start": "new orleans jazz", "connections": ["swing"], "init": false},
+    {"start": "swing", "connections": ["bebop"], "init": false},
+    {"start": "traditional gospel", "connections": ["vintage gospel"], "init": false},
+    {"start": "urban blues", "connections": ["rock-and-roll"], "init": false},
+    {"start": "rhythm and blues", "connections": ["rock-and-roll", "soul", "hard bop"], "init": false},
+    {"start": "bebop", "connections": ["hard bop"], "init": false},
+    {"start": "civil rights freedom songs", "connections": [], "init": false},
+    {"start": "rock-and-roll", "connections": ["rock", "soul"], "init": false},
+    {"start": "hard bop", "connections": ["soul jazz", "modern jazz trio"], "init": false},
+    {"start": "rock", "connections": ["metal"], "init": false},
+    {"start": "soul jazz", "connections": ["new jack swing"], "init": false},
+    {"start": "metal", "connections": [], "init": false},
+    {"start": "soul", "connections": ["disco", "hip hop", "funk", "r&b"], "init": false},
+    {"start": "modern jazz trio", "connections": ["new jack swing"], "init": false},
+    {"start": "vintage gospel", "connections": [], "init": false},
+    {"start": "disco", "connections": ["house", "hip hop"], "init": false},
+    {"start": "funk", "connections": ["electro-funk", "hip hop"], "init": false},
+    {"start": "house", "connections": ["techno"], "init": false},
+    {"start": "hip hop", "connections": ["pop"], "init": false},
+    {"start": "electro-funk", "connections": ["pop"], "init": false},
+    {"start": "techno", "connections": [], "init": false},
+    {"start": "r&b", "connections": ["neo soul"], "init": false},
+    {"start": "pop", "connections": ["post-teen pop"], "init": false},
+    {"start": "neo soul", "connections": [], "init": false},
+    {"start": "new jack swing", "connections": [], "init": false},
+    {"start": "post-teen pop", "connections": [], "init": false}];
 var subGenreList = ["big room", "urban contemporary", "trip hop", "hip house", "motown", "singer-songwriter", "edm"]
 var reachedRoots = false;
 var startingLink = "";
@@ -189,6 +421,7 @@ var access_token = params.access_token,
 
 //$('#loginModal').modal('show');
 setUpSearchbar();
+setUpBottomSection();
 if (error) {
     alert('There was an error during the authentication');
 } else {
@@ -315,6 +548,7 @@ function closeResults(){
 }
 
 function resetPage(){
+    //reset timeline
     var timeline = document.getElementById("timeline");
     while(timeline.firstChild){
         timeline.removeChild(timeline.lastChild);
@@ -401,9 +635,63 @@ function getArtist(){
     }
 }
 
+function capitalize(word){
+    return word.charAt(0).toUpperCase() + word.substr(1);
+}
+
+function getID(name){
+    var newString = "";
+    //convert name into the id name
+    for(var c = 0; c < name.length; c++){
+        if(name.charAt(c) != ' '){
+            newString = newString.concat(name.charAt(c));
+        }else{
+            newString = newString.concat("-");
+        }
+    }
+    curGenre = document.getElementById(newString + "-tree");
+    return curGenre;
+}
+
+function setTreePath(){
+    genreList.forEach(function(item, i) {
+        var curGenre = getID(item.genreName);
+        if(item.used == true){
+            curGenre.className = "genre-circle-path";
+        }
+        else{
+            if(curGenre != null){
+                curGenre.className = "genre-circle";
+            }
+        }
+    });
+}
+
 function showcaseGenres(artistName, genres){
-    console.log(genres);
+    document.getElementById("circle-beginning").style.visibility = "";
+    document.getElementById("toggle-label").style.visibility = "";
+    document.getElementById('toggle-label').addEventListener('click', function(){
+        if(view == 0){
+            $('#timeline-view').hide();
+            $('#tree-view').show();
+            view = 1;
+            setTreePath();
+            initializeTree();
+            document.getElementById("contact-section").style.top = document.getElementById("loggedin").getBoundingClientRect().bottom + 64 + "px";
+            var pageSize = document.getElementById("body").getBoundingClientRect();
+            var svg = document.getElementById("svg");
+            svg.style.height = pageSize.height + "px";
+            svg.style.width = pageSize.width + "px";
+        }else{
+            $('#tree-view').hide();
+            $('#timeline-view').show();
+            view = 0;
+            updateTimelineLength(0,0,0);
+        }
+                
+    });
     var informationHeader = document.getElementById('information-header');
+    informationHeader.style.visibility = "";
     if(genres.length == 0){
         informationHeader.innerText = "Uh oh, it appears that " + artistName + " doesn't have any genres listed"; 
     }else{
@@ -414,7 +702,7 @@ function showcaseGenres(artistName, genres){
                     if(!found){
                         if(subGenreList[k] == genres[i]){
                             startingGenre = genres[i];
-                            informationHeader.innerText = "You selected " + artistName + ", who's primary genre is " + genres[i];
+                            informationHeader.innerText = "Roots of " + capitalize(genres[i]) + ":";
                             found = true;
                         }
                     }
@@ -423,18 +711,98 @@ function showcaseGenres(artistName, genres){
                     if(!found){
                         if(genreList[j].genreName == genres[i] || getLargerGenre(genres[i]) != genres[i]){
                             startingGenre = genres[i];
-                            informationHeader.innerText = "You selected " + artistName + ", who's primary genre is " + genres[i];
+                            informationHeader.innerText = "Roots of " + capitalize(genres[i]) + ":";
                             found = true;
                         }   
                     }
                 }
             }
         }
+        if(!found){
+            informationHeader.innerText = "Unfortunatly " + artistName + ", who's primary genre is '" + genres[0] + "', cannot be traced back to African-American roots";
+        }
         getPlaylist(startingGenre);
         initiateTimeline();
         while(!reachedRoots);
         displayResults();
     }
+}
+
+//This function spawns in all of the connectors between the nodes on the tree, making sure they are scaled and set
+//to the correct screen resolution(otherwise this would be hard-coded and done in the html section)
+function initializeTree(){
+    var vw = 100.0/document.documentElement.clientWidth;
+    //get coords for starting circle
+    var sacred = document.getElementById("sacred-traditions-tree")
+    var start1 = sacred.getBoundingClientRect();
+    var sacredOffset = sacred.parentElement.lastChild.previousSibling.getBoundingClientRect().height;
+    var secular = document.getElementById("secular-traditions-tree");
+    var start2 = secular.getBoundingClientRect();  
+    var secularOffset = secular.parentElement.lastChild.previousSibling.getBoundingClientRect().height;     
+    connectTree(start1, "sacred traditions", vw, sacredOffset);
+    connectTree(start2, "secular traditions", vw, secularOffset); 
+}
+
+//recursive method to connect the parent (start) to all of the children then make the child the parent and continue
+function connectTree(startPos, name, scale, textHeight){
+    //find start in the connections array 
+    var found = false;
+    var i = 0;
+    while (!found){
+        if(connections[i].start == name){
+            found = true;
+        }else{
+            i++;
+        }
+    }
+    if(connections[i].init == false){
+        connections[i].init = true;
+        //loop through connections
+        children = connections[i].connections;
+        children.forEach(function(item, i) {
+            childName = getID((item));
+            var endPos = childName.getBoundingClientRect();
+            //create line from parent to child
+            var newLine = document.createElementNS('http://www.w3.org/2000/svg','line');
+            newLine.setAttribute('id', name + "-" + item);
+            newLine.setAttribute('x1', startPos.left + 1.5/scale);
+            newLine.setAttribute('y1', startPos.top + 3/scale + textHeight + 8);
+            newLine.setAttribute('x2', endPos.left + 1.5/scale);
+            newLine.setAttribute('y2', endPos.top);
+            var inPath = checkIfInPath(name, item);
+            if(inPath){
+                newLine.setAttribute("stroke", "#7fcd91")
+
+            }else{
+                newLine.setAttribute("stroke", "#06b4db")
+            }
+            newLine.setAttribute("stroke-width", "4");
+            $("svg").append(newLine);
+            //get text size of child
+            var text = childName.parentElement.lastChild.previousSibling;
+            connectTree(endPos, item, scale, text.getBoundingClientRect().height);
+        });
+    }
+}
+
+function checkIfInPath(parent, child){
+    var parentFound = false;
+    var childFound = false;
+    var inPath = true;
+    var index = 0;
+    while(index < genreList.length && ((!parentFound && !childFound) || inPath)){
+        var curGenre = genreList[index];
+        if(curGenre.genreName == parent){
+            parentFound = true;
+            inPath = curGenre.used;
+        }
+        if(curGenre.genreName == child){
+            childFound = true;
+            inPath = curGenre.used;
+        }
+        index++;
+    }
+    return inPath;
 }
 
 function initiateTimeline(){
@@ -562,6 +930,8 @@ function displayResults(){
     var timeline = document.getElementById("timeline");
     document.getElementById("circle-beginning").style.visibility = "";
     document.getElementById("circle-end").style.visibility = "";
+    document.getElementById("contact-section").style.visibility = "";
+    document.getElementById("contact-section").style.top = document.getElementById("circle-end").getBoundingClientRect().top + 72 + "px";;
     var skip = false;
     //check if startingGenre is equal to one of the genres that alrady exists, if so, then skip it
     for(var i = 0; i < genreList.length; i++){
@@ -608,7 +978,7 @@ function createCard(header, parent){
     var cardBody = document.createElement("div");
     var cardTitle = document.createElement("h5");
     cardTitle.className = "card-title";
-    cardTitle.innerHTML = header;
+    cardTitle.innerHTML = capitalize(header);
     var timelineConnector = document.createElement("div");
     timelineConnector.className = "timeline-connector";
     if(cardDate.innerHTML == ""){
@@ -684,7 +1054,7 @@ function toggleCard(cardId){
         }
         if(found && genreList[i].href != "" && i < genreList.length){
             link.href = genreList[i-1].href;
-            link.innerHTML = "Sounds of '" + cardId + "' " + "Spotify Playlist";
+            link.innerHTML = "Sounds of '" + capitalize(cardId) + "' " + "Spotify Playlist";
         }
         //add body-text
         var cardBody = document.createElement("p");
@@ -693,7 +1063,7 @@ function toggleCard(cardId){
             cardBody.innerHTML = genreInfo[i-1].description;
         }else{
             link.href = startingLink;
-            link.innerHTML = "Sounds of '" + cardId + "' " + "Spotify Playlist";
+            link.innerHTML = "Sounds of '" + capitalize(cardId) + "' " + "Spotify Playlist";
         }
         card.appendChild(link);
         card.appendChild(cardBody);
@@ -717,11 +1087,12 @@ function updateTimelineLength(modifier, cardId, heightDiff){
         timelineWrapper.insertBefore(timeline, timelineWrapper.firstChild);
         timeline.id = "line";
         timeline.className = "timeline";
-        timeline.style.height = numCards*104 + "px";
+        timeline.style.height = numCards*104 + 32 + "px";
         var timelineTop = document.getElementById("circle-beginning");
         var timelineBottom = document.getElementById("circle-end");
-        timelineTop.style.top = timeline.getBoundingClientRect().top - 12 + "px";
-        timelineBottom.style.top = timeline.getBoundingClientRect().bottom + "px";
+        timelineTop.style.top = timeline.getBoundingClientRect().top - 32 + "px";
+        timelineBottom.style.top = timeline.getBoundingClientRect().bottom - 4 + "px";
+        document.getElementById("contact-section").style.top = timeline.getBoundingClientRect().bottom + 64 + "px";
     }else{
         //increase the size of the line by a set amount
         var timeline = document.getElementById("line");
@@ -731,6 +1102,7 @@ function updateTimelineLength(modifier, cardId, heightDiff){
         var timelineBottom = document.getElementById("circle-end");
         var height = parseInt(timelineTop.style.top.substr(0, (timelineTop.style.top.length - 2)));
         timelineBottom.style.top = height + timeline.getBoundingClientRect().height + "px";
+        document.getElementById("contact-section").style.top = height + timeline.getBoundingClientRect().height + 64 + "px";
     }
 }
 
@@ -774,7 +1146,7 @@ function pop(){
 }
 
 function postTeenPop(){
-    genreList[0].used = true;s
+    genreList[0].used = true;
     hipHop();
     rockAndRoll();
     rB();
@@ -822,17 +1194,12 @@ function swing(){
 
 function ragtime(){
     genreList[32].used = true;
-    syncopatedDance();
+    secular();
 }
 
 function newOrleansJazz(){
     genreList[30].used = true;
     ragtime();
-}
-
-function syncopatedDance(){
-    genreList[35].used = true;
-    secular();
 }
 
 function vintageGospel(){
@@ -884,6 +1251,8 @@ function disco(){
 function hipHop(){
     genreList[11].used = true;
     funk();
+    soul();
+    disco();
 }
 
 function funk(){
@@ -904,7 +1273,7 @@ function rockAndRoll(){
 
 function urbanBlues(){
     genreList[22].used = true;
-    traditionalGospel();
+    boogieWoogie();
 }
 
 function hardBop(){

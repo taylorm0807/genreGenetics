@@ -9,6 +9,16 @@
     position: relative;
 }
 
+
+.contact-section{
+    padding-top: 1%;
+    text-align: center;
+    background-color: #797a9eff;
+    position: absolute;
+    margin: auto;
+    width: 100%;
+}
+
 .card-title{
     position: relative;
     top: 14px;
@@ -68,6 +78,20 @@
     margin: auto;
 }
 
+.disclaimer-text{
+    padding-top: 24px;
+    color: #272932;
+}
+
+.resource-text{
+    color: #272932;
+    padding-top: 8px;
+}
+
+.blue-text{
+    color: #06b4db;
+}
+
 .login-button{
     margin-top: 16px;
     color: #272932; 
@@ -108,12 +132,21 @@ md-form{
 .artist-genre-text{
     padding-top: 48px;
     color: #9e90a2;
-    padding-bottom: 24px;
+    padding-bottom: 48px;
+    display: inline-block;
+    margin-left: 256px;
+    margin-right: 128px;
+}
+
+.toggle-button{
+    display: inline-block;
+    width: auto !important;
 }
 
 .genre-info-wrapper{
     text-align: center;
     margin: auto;
+    padding-top: 32px;
 }
 
 .autocomplete-results{
@@ -179,21 +212,19 @@ input[type=text]{
     z-index: 1;
     border-radius: 50%;
     background-color: #06b4db;
-    -ms-transform: translateX(50%);
-    transform: translateX(50%);
-    left: 45vw;
+    left: 45%;
     width: 5vw;
     height: 5vw;
+    transform: translateX(50%);
 }
 
 .timeline{
     position: absolute;
     margin: auto;
     z-index: 1;
-    left: 48.5%;
+    left: 49%;
     background-color: #06b4db;
-    width: 1.5%;
-    -ms-transform: translateX(50%);
+    width: 1%;
     transform: translateX(50%);
 }
 
@@ -212,3 +243,56 @@ input[type=text]{
 input:focus{
     outline-width: 0px;
 }
+
+.toggle.switch .toggle-group label {
+    font-size: 20px;
+}
+
+.genre-circle{
+    margin: auto;
+    margin-top: 8px;
+    z-index: 1;
+    border-radius: 50%;
+    background-color: #06b4db;
+    width: 3vw;
+    height: 3vw;
+    top: 0;
+}
+
+.genre-circle-path{
+    margin: auto;
+    margin-top: 8px;
+    z-index: 1;
+    border-radius: 50%;
+    background-color: #06b4db;
+    width: 3vw;
+    height: 3vw;
+    border-style: solid;
+    border-color: #7fcd91;   
+}
+
+.genre-circle-clicked{
+    margin: auto;
+    margin-top: 8px;
+    z-index: 1;
+    border-radius: 50%;
+    background-color: #7fcd91;
+    width: 3vw;
+    height: 3vw;
+}
+
+.tree-genre-text{
+    font-size: 16px;
+    color: #797a9eff;
+    top: 3vw;
+}
+
+.background{
+    position: absolute;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+  
