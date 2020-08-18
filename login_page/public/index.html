@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 
-    <title> Genre Roots - Find the roots of your favorite artist's music</title>
+    <title> Genre Genetics - Find the roots of your favorite artist's music</title>
     <style type="text/css">
       #login, #loggedin, #timeline-view, #tree-view  {
         display: none;
@@ -45,7 +45,7 @@
     <div id="loggedin" class="loggedin">
         <div id="create-room" class="login-page">
             <div class="child1">
-                <div class="title-text">Genre Roots:</div>
+                <div class="title-text">Genre Genetics:</div>
                 <div class="title-line"></div>
                 <h2 class="subtitle-text">See if your favorite artist’s music is rooted in African-American influence (it probably is)
                 </h2>
@@ -78,7 +78,7 @@
         <div id="tree-view">
             <svg id="svg" class="background" width="500" height="500"></svg>
             <div class="row">
-                <div class="col-md-2 offset-md-0">
+                <div class="col-md-2 offset-md-0" id="row-1-tree">
                     <div class="genre-circle" id="sacred-traditions-tree"></div>
                     <h4 class="tree-genre-text">African American Sacred Traditions</h4>
                 </div>
@@ -219,23 +219,23 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-2 offset-md-2">
+                <div class="col-md-2 offset-md-1">
                     <div class="genre-circle" id="techno-tree"></div>
                     <h4 class="tree-genre-text">Techno</h4>
                 </div>                
-                <div class="col-md-2 offset-md-1">
+                <div class="col-md-2 offset-md-0">
                     <div class="genre-circle" id="r&b-tree"></div>
                     <h4 class="tree-genre-text">R&B</h4>
                 </div>
             </div>
-            <div class="row">              
+            <div class="row"> 
                 <div class="col-md-2 offset-md-3">
-                    <div class="genre-circle" id="pop-tree"></div>
-                    <h4 class="tree-genre-text">Pop</h4>
-                </div>
-                <div class="col-md-2 offset-md-0">
                     <div class="genre-circle" id="neo-soul-tree"></div>
                     <h4 class="tree-genre-text">Neo Soul</h4>
+                </div>             
+                <div class="col-md-2 offset-md-0">
+                    <div class="genre-circle" id="pop-tree"></div>
+                    <h4 class="tree-genre-text">Pop</h4>
                 </div>
                 <div class="col-md-2 offset-md-0">
                     <div class="genre-circle" id="new-jack-swing-tree"></div>
@@ -243,7 +243,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-2 offset-md-3">
+                <div class="col-md-2 offset-md-5">
                     <div class="genre-circle" id="post-teen-pop-tree"></div>
                     <h4 class="tree-genre-text">Post-Teen Pop</h4>
                 </div>                
@@ -300,12 +300,13 @@ function setUpSearchbar(){
         }
     });
     document.getElementById('search-button').addEventListener('click', function(){
+        view = 0;
+        $('#timeline-view').show();
+        $('#tree-view').hide();
         closeResults();
         resetGenres();
         resetPage();
         getArtist();
-        $('#timeline-view').show();
-
     });
 }
 
@@ -322,6 +323,7 @@ var artistIds = [];
 var artistId = "";
 var numCards = 0;
 var userId;    
+var init = false;
 var loggedin = false;
 var startingGenre;
 var genreList = [];
@@ -555,6 +557,13 @@ function resetPage(){
     }
     startingLink = "";
     numCards = 0;
+    //reset tree
+    // svg = document.getElementById("svg");
+    // while(svg.firstChild){
+    //     svg.removeChild(svg.firstChild);
+    // }
+    if(document.getElementById("tree-card") != undefined)
+        document.getElementById("tree-card").remove();
 }
 
 //called whenever add-song field is updated, queries to find all results and shows them
@@ -636,7 +645,21 @@ function getArtist(){
 }
 
 function capitalize(word){
-    return word.charAt(0).toUpperCase() + word.substr(1);
+    var newWord = "";
+    var nextCap = true;
+    for(var c = 0; c < word.length; c++){
+        if(nextCap){
+            nextCap = false;
+            newWord = newWord.concat(word.charAt(c).toUpperCase());
+        }
+        else{
+            newWord = newWord.concat(word.charAt(c));
+        }
+        if(word.charAt(c) == " " || word.charAt(c) == "-"){
+            nextCap = true;
+        }
+    }
+    return newWord;
 }
 
 function getID(name){
@@ -653,7 +676,45 @@ function getID(name){
     return curGenre;
 }
 
-function setTreePath(){
+function showTreeCard(genreName){
+    //reset all circles to un-clicked state
+    resetCircles();
+    var card = document.getElementById("tree-card");
+    if(card == undefined){
+        //create card object
+        cardWrapper = document.createElement("div");
+        cardWrapper.className = "tree-card-wrapper";
+        cardWrapper.id = "tree-card-wrapper";
+        var row1 = document.getElementById("row-1-tree");
+        cardWrapper.style.top = row1.offsetTop + "px";
+        document.getElementById("tree-view").appendChild(cardWrapper);
+        var card = document.createElement("div");
+        card.className = "card tree-card rounded-lg border-dark border-2";
+        card.id = "tree-card"
+        var titleLine = document.createElement("div");
+        titleLine.className ="tree-title-line";
+        var cardBody = document.createElement("div");
+        var cardTitle = document.createElement("h5");
+        cardTitle.id = "tree-card-title";
+        cardTitle.className = "card-title";
+        cardBody.appendChild(cardTitle);
+        card.appendChild(cardBody);
+        card.appendChild(titleLine);
+        card.style.height = "";
+        cardWrapper.appendChild(card);
+    }else{
+        //remove all children of card
+        card.removeChild(document.getElementById("tree-card-link-title"));
+        card.removeChild(document.getElementById("tree-card-link"));
+        card.removeChild(document.getElementById("tree-card-text"));
+    }
+    displayCardInfo(card, genreName);
+    //turn clicked circle green
+    getID(genreName).className = "genre-circle-clicked";
+    
+}
+
+function resetCircles(){
     genreList.forEach(function(item, i) {
         var curGenre = getID(item.genreName);
         if(item.used == true){
@@ -667,29 +728,88 @@ function setTreePath(){
     });
 }
 
+function displayCardInfo(card, genreName){
+    var cardTitle = document.getElementById("tree-card-title");
+    cardTitle.innerHTML = capitalize(genreName);
+    var link = document.createElement("a");
+    link.className = "tree-card-link";
+    link.id = "tree-card-link";
+    link.target = "_blank";
+    var linkTitle = document.createElement("p");
+    linkTitle.id = "tree-card-link-title";
+    linkTitle.className = "tree-card-link-title";
+    //check if genre has a link in the data structure
+    var i = 0;
+    var found = 0;
+    while(!found && i < genreList.length){
+        found = (genreList[i].genreName == genreName);
+        i++;
+    }
+    if(found && genreList[i].href != "" && i < genreList.length){
+        link.href = genreList[i-1].href;
+        link.innerHTML = "Sounds of '" + capitalize(genreName) + "' " + "Spotify Playlist";
+        linkTitle.innerHTML = "'" + capitalize(genreName) + "' Spotify Playlist:"
+    }
+    //add body-text
+    var cardBody = document.createElement("p");
+    cardBody.className = "tree-card-text";
+    cardBody.id = "tree-card-text";
+    if(i < genreList.length){
+        cardBody.innerHTML = genreInfo[i-1].description;
+    }
+    card.appendChild(linkTitle);
+    card.appendChild(link);
+    card.appendChild(cardBody);
+    card.style.height = "";
+}
+
+function setTreePath(){
+    genreList.forEach(function(item, i) {
+        var curGenre = getID(item.genreName);
+        if(item.used == true){
+            curGenre.className = "genre-circle-path";
+            curGenre.addEventListener("click", function(){
+                showTreeCard(item.genreName);
+            });
+        }
+        else{
+            if(curGenre != null){
+                curGenre.className = "genre-circle";
+                curGenre.addEventListener("click", function(){
+                    showTreeCard(item.genreName);
+                });
+            }
+        }
+    });
+}
+
 function showcaseGenres(artistName, genres){
     document.getElementById("circle-beginning").style.visibility = "";
     document.getElementById("toggle-label").style.visibility = "";
-    document.getElementById('toggle-label').addEventListener('click', function(){
-        if(view == 0){
-            $('#timeline-view').hide();
-            $('#tree-view').show();
-            view = 1;
-            setTreePath();
-            initializeTree();
-            document.getElementById("contact-section").style.top = document.getElementById("loggedin").getBoundingClientRect().bottom + 64 + "px";
-            var pageSize = document.getElementById("body").getBoundingClientRect();
-            var svg = document.getElementById("svg");
-            svg.style.height = pageSize.height + "px";
-            svg.style.width = pageSize.width + "px";
-        }else{
-            $('#tree-view').hide();
-            $('#timeline-view').show();
-            view = 0;
-            updateTimelineLength(0,0,0);
-        }
-                
-    });
+    if(init == false){
+        init = true;
+        document.getElementById('toggle-label').addEventListener('click', function(){
+            console.log("click!");
+            if(view == 0){
+                $('#timeline-view').hide();
+                $('#tree-view').show();
+                view = 1;
+                setTreePath();
+                initializeTree();
+                document.getElementById("contact-section").style.top = document.getElementById("loggedin").offsetTop + document.getElementById("loggedin").offsetHeight + 64 + "px";
+                var pageSize = document.getElementById("body");
+                var svg = document.getElementById("svg");
+                svg.style.height = pageSize.offsetHeight + "px";
+                svg.style.width = pageSize.offsetWidth + "px";
+            }else{
+                $('#tree-view').hide();
+                $('#timeline-view').show();
+                view = 0;
+                updateTimelineLength(0,0,0);
+            }
+                    
+        });
+    }
     var informationHeader = document.getElementById('information-header');
     informationHeader.style.visibility = "";
     if(genres.length == 0){
@@ -735,10 +855,10 @@ function initializeTree(){
     //get coords for starting circle
     var sacred = document.getElementById("sacred-traditions-tree")
     var start1 = sacred.getBoundingClientRect();
-    var sacredOffset = sacred.parentElement.lastChild.previousSibling.getBoundingClientRect().height;
+    var sacredOffset = sacred.parentElement.lastChild.previousSibling.offsetHeight;
     var secular = document.getElementById("secular-traditions-tree");
     var start2 = secular.getBoundingClientRect();  
-    var secularOffset = secular.parentElement.lastChild.previousSibling.getBoundingClientRect().height;     
+    var secularOffset = secular.parentElement.lastChild.previousSibling.offsetHeight;     
     connectTree(start1, "sacred traditions", vw, sacredOffset);
     connectTree(start2, "secular traditions", vw, secularOffset); 
 }
@@ -768,7 +888,7 @@ function connectTree(startPos, name, scale, textHeight){
             newLine.setAttribute('x1', startPos.left + 1.5/scale);
             newLine.setAttribute('y1', startPos.top + 3/scale + textHeight + 8);
             newLine.setAttribute('x2', endPos.left + 1.5/scale);
-            newLine.setAttribute('y2', endPos.top);
+            newLine.setAttribute('y2', endPos.top + 4);
             var inPath = checkIfInPath(name, item);
             if(inPath){
                 newLine.setAttribute("stroke", "#7fcd91")
@@ -780,7 +900,7 @@ function connectTree(startPos, name, scale, textHeight){
             $("svg").append(newLine);
             //get text size of child
             var text = childName.parentElement.lastChild.previousSibling;
-            connectTree(endPos, item, scale, text.getBoundingClientRect().height);
+            connectTree(endPos, item, scale, text.offsetHeight);
         });
     }
 }
@@ -931,7 +1051,7 @@ function displayResults(){
     document.getElementById("circle-beginning").style.visibility = "";
     document.getElementById("circle-end").style.visibility = "";
     document.getElementById("contact-section").style.visibility = "";
-    document.getElementById("contact-section").style.top = document.getElementById("circle-end").getBoundingClientRect().top + 72 + "px";;
+    document.getElementById("contact-section").style.top = document.getElementById("circle-end").offsetTop + 72 + "px";;
     var skip = false;
     //check if startingGenre is equal to one of the genres that alrady exists, if so, then skip it
     for(var i = 0; i < genreList.length; i++){
@@ -1090,9 +1210,9 @@ function updateTimelineLength(modifier, cardId, heightDiff){
         timeline.style.height = numCards*104 + 32 + "px";
         var timelineTop = document.getElementById("circle-beginning");
         var timelineBottom = document.getElementById("circle-end");
-        timelineTop.style.top = timeline.getBoundingClientRect().top - 32 + "px";
-        timelineBottom.style.top = timeline.getBoundingClientRect().bottom - 4 + "px";
-        document.getElementById("contact-section").style.top = timeline.getBoundingClientRect().bottom + 64 + "px";
+        timelineTop.style.top = timeline.offsetTop - 32 + "px";
+        timelineBottom.style.top = timeline.offsetTop + timeline.offsetHeight - 4 + "px";
+        document.getElementById("contact-section").style.top = timeline.offsetTop + timeline.offsetHeight + 64 + "px";
     }else{
         //increase the size of the line by a set amount
         var timeline = document.getElementById("line");
@@ -1101,8 +1221,8 @@ function updateTimelineLength(modifier, cardId, heightDiff){
         var timelineTop = document.getElementById("circle-beginning");
         var timelineBottom = document.getElementById("circle-end");
         var height = parseInt(timelineTop.style.top.substr(0, (timelineTop.style.top.length - 2)));
-        timelineBottom.style.top = height + timeline.getBoundingClientRect().height + "px";
-        document.getElementById("contact-section").style.top = height + timeline.getBoundingClientRect().height + 64 + "px";
+        timelineBottom.style.top = height + timeline.offsetHeight + "px";
+        document.getElementById("contact-section").style.top = height + timeline.offsetHeight + 64 + "px";
     }
 }
 

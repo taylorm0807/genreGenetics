@@ -281,10 +281,48 @@ input:focus{
     height: 3vw;
 }
 
+.tree-card-wrapper{
+    position: absolute;
+    left: 70vw;
+}
+
+.tree-card{
+    margin: 0;
+    padding: 0;
+    width: 25vw !important;
+    background-color: #797a9eff !important;
+    margin-bottom: 24px;
+}
+
+.tree-title-line{
+    width: 24vw !important;
+    height: 4px;
+    background-color: #272932;
+    margin: auto;
+    margin-bottom: 8px;
+}
+
+.tree-card-link-title{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
 .tree-genre-text{
     font-size: 16px;
     color: #797a9eff;
     top: 3vw;
+}
+
+.tree-card-link{
+    padding-bottom: 4px;
+}
+
+.tree-card-text{
+    padding-top: 4px;
+    padding-bottom: 8px;
+    padding-left: 12px;
+    padding-right: 4px;
+    text-align: left;
 }
 
 .background{
