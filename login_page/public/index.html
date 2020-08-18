@@ -72,7 +72,13 @@
             <div class="timeline-cap" id="circle-end"></div>
             </div>
             <div class="contact-section" id="contact-section">
-                <div class="resource-text" id="resource-text"></div>
+                <div class="resource-text" id="resource-text">
+                </div>
+                <a target="_blank" href="https://blacklivesmatters.carrd.co/?fbclid=IwAR3AElHjCXqTGsUkIFF6126GY8sMy3i0ZSwMS_D64oI_IEAiogyQhRgyR8g#petitions">Petitions to sign<br></a>
+                <a target="_blank" href="https://secure.actblue.com/donate/bail_funds_george_floyd?fbclid=IwAR3On2z03MOOExpwWiayV3Ba87JZ3tDVaTrRqPGTDvYARyMnD_gFF0IAiJY">National & Local Bail Fund<br></a>
+                <a target="_blank" href="https://nymag.com/strategist/article/where-to-donate-for-black-lives-matter.html#victim-memorial">List of orgs to donate to<br></a>
+                <a target="_blank" href="https://www.aaihs.org/resources/charlestonsyllabus/">Black literature<br></a>
+                <a target="_blank" href="https://moreblminfo.carrd.co/?fbclid=IwAR2C7wR247iJ-AwcInwIHbFotoqSQ9dJbmQtnwlg6Oq3ynrDUSJgi_uldws">Additional resources<br></a>
                 <div class="disclaimer-text" id="disclaimer-text"></div>
         </div>
         <div id="tree-view">
@@ -315,7 +321,7 @@ function setUpBottomSection(){
     var disclaimer = document.getElementById("disclaimer-text");
     disclaimer.innerHTML = "\nDISCLAIMER: This website was made utilizing Spotify's genre labeling for artists, along with information about different genres' history found online. Due to these limitiations and the sheer number of genres that Spotify uses (>1000), genres may be wrongly catagorized, misrepresented, or even ommited. If you believe there is a genre that should be included, changed, or if there is any other feature/modification you would like to see in this website, please reach out to me at taylor0807@gmail.com"
     var infoText = document.getElementById("resource-text");
-    infoText.innerHTML = "This website was made in support of the Black Lives Matter movement as a resource to educate and bring light to the influence and importance of African-Americans in the field of music, as well as in society as a whole. At the time of writing this, 83 of the top 100 worldwide genres on Spotify can be traced back to early 1600's African-American traditions, and many of the other top 100 likely have influence as well. If you would like to support the fight for equality and end of systemic racism and oppression in the United States, please visit and donate to the links below."
+    infoText.innerHTML = "This website was made in support of the Black Lives Matter movement as a resource to educate and bring light to the influence and importance of African-Americans in the field of music, as well as in society as a whole. At the time of writing this, 83 of the top 100 worldwide genres on Spotify can be traced back to early 1600's African-American traditions, and many of the other top 100 likely have influence as well. If you would like to support the fight for equality and end of systemic racism and oppression in the United States, please visit and donate to the links below:"
 }
 var windowGlobal = window;
 var view = 0;
@@ -467,9 +473,9 @@ function resetGenres(){
             {"genreName": "r&b", "date": "1980", "used": false, "href": "https://open.spotify.com/playlist/1rLnwJimWCmjp3f0mEbnkY"}, 
             {"genreName": "house", "date": "1980", "used": false, "href": "https://open.spotify.com/playlist/6AzCASXpbvX5o3F8yaj1y0"},
             {"genreName": "electro-funk", "date": "1980", "used": false, "href": ""}, 
+            {"genreName": "hip hop", "date": "1970", "used": false, "href": "https://open.spotify.com/playlist/6MXkE0uYF4XwU4VTtyrpfP"}, 
             {"genreName": "disco", "date": "1970", "used": false, "href": "https://open.spotify.com/playlist/0ZVSWcJIf7cvycEn9HUvps"},
             {"genreName": "rap", "date": "1970", "used": false, "href": "https://open.spotify.com/playlist/6s5MoZzR70Qef7x4bVxDO1"},
-            {"genreName": "hip hop", "date": "1970", "used": false, "href": "https://open.spotify.com/playlist/6MXkE0uYF4XwU4VTtyrpfP"}, 
             {"genreName": "funk", "date": "1960", "used": false, "href": "https://open.spotify.com/playlist/0MBvtOIm5fuBbRHEltDY8A"},
             {"genreName": "metal", "date": "1960", "used": false, "href": "https://open.spotify.com/playlist/3pBfUFu8MkyiCYyZe849Ks"},
             {"genreName": "civil rights freedom songs", "date": "1960", "used": false ,"href": ""},
@@ -558,10 +564,10 @@ function resetPage(){
     startingLink = "";
     numCards = 0;
     //reset tree
-    // svg = document.getElementById("svg");
-    // while(svg.firstChild){
-    //     svg.removeChild(svg.firstChild);
-    // }
+    svg = document.getElementById("svg");
+    while(svg.firstChild){
+        svg.removeChild(svg.firstChild);
+    }
     if(document.getElementById("tree-card") != undefined)
         document.getElementById("tree-card").remove();
 }
@@ -814,6 +820,9 @@ function showcaseGenres(artistName, genres){
     informationHeader.style.visibility = "";
     if(genres.length == 0){
         informationHeader.innerText = "Uh oh, it appears that " + artistName + " doesn't have any genres listed"; 
+        document.getElementById("toggle-label").style.visibility = "hidden";
+        document.getElementById("circle-beginning").style.visibility = "hidden";
+        document.getElementById("circle-end").style.visibility = "hidden";
     }else{
         var found = false;
         for(var i = 0; i < genres.length; i++){
@@ -854,10 +863,10 @@ function initializeTree(){
     var vw = 100.0/document.documentElement.clientWidth;
     //get coords for starting circle
     var sacred = document.getElementById("sacred-traditions-tree")
-    var start1 = sacred.getBoundingClientRect();
+    var start1 = sacred;
     var sacredOffset = sacred.parentElement.lastChild.previousSibling.offsetHeight;
     var secular = document.getElementById("secular-traditions-tree");
-    var start2 = secular.getBoundingClientRect();  
+    var start2 = secular;  
     var secularOffset = secular.parentElement.lastChild.previousSibling.offsetHeight;     
     connectTree(start1, "sacred traditions", vw, sacredOffset);
     connectTree(start2, "secular traditions", vw, secularOffset); 
@@ -875,20 +884,17 @@ function connectTree(startPos, name, scale, textHeight){
             i++;
         }
     }
-    if(connections[i].init == false){
-        connections[i].init = true;
         //loop through connections
         children = connections[i].connections;
         children.forEach(function(item, i) {
             childName = getID((item));
-            var endPos = childName.getBoundingClientRect();
             //create line from parent to child
             var newLine = document.createElementNS('http://www.w3.org/2000/svg','line');
             newLine.setAttribute('id', name + "-" + item);
-            newLine.setAttribute('x1', startPos.left + 1.5/scale);
-            newLine.setAttribute('y1', startPos.top + 3/scale + textHeight + 8);
-            newLine.setAttribute('x2', endPos.left + 1.5/scale);
-            newLine.setAttribute('y2', endPos.top + 4);
+            newLine.setAttribute('x1', startPos.getBoundingClientRect().left + 1.5/scale);
+            newLine.setAttribute('y1', startPos.parentElement.parentElement.offsetTop + 3/scale + textHeight + 20);
+            newLine.setAttribute('x2', childName.getBoundingClientRect().left + 1.5/scale);
+            newLine.setAttribute('y2', childName.parentElement.parentElement.offsetTop + 12);
             var inPath = checkIfInPath(name, item);
             if(inPath){
                 newLine.setAttribute("stroke", "#7fcd91")
@@ -900,9 +906,8 @@ function connectTree(startPos, name, scale, textHeight){
             $("svg").append(newLine);
             //get text size of child
             var text = childName.parentElement.lastChild.previousSibling;
-            connectTree(endPos, item, scale, text.offsetHeight);
+            connectTree(childName, item, scale, text.offsetHeight);
         });
-    }
 }
 
 function checkIfInPath(parent, child){
@@ -977,7 +982,8 @@ function getLargerGenre(initGenre){
         }
     }
     if(initGenre.includes("rap") || initGenre.includes("hip hop") || initGenre.includes("lo-fi") 
-    || initGenre.includes("grime") || initGenre.includes("raggaeton") || initGenre == "afrofuturism"){
+    || initGenre.includes("grime") || initGenre.includes("raggaeton") || initGenre == "afrofuturism"
+    || initGenre.includes("drill")){
         return "hip hop";
     }
     if(initGenre.includes("rock") || initGenre.includes("grunge") || initGenre == "british invasion" 
@@ -1364,12 +1370,12 @@ function house(){
 }
 
 function disco(){
-    genreList[9].used = true;
+    genreList[10].used = true;
     soul();
 }
 
 function hipHop(){
-    genreList[11].used = true;
+    genreList[9].used = true;
     funk();
     soul();
     disco();
