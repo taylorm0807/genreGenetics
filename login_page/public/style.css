@@ -16,6 +16,7 @@
     background-color: #797a9eff;
     position: absolute;
     margin: auto;
+    margin-top: 16px;
     width: 100%;
 }
 
@@ -85,7 +86,7 @@
 
 .resource-text{
     color: #272932;
-    padding-top: 8px;
+    padding-top: 4px;
 }
 
 .blue-text{
