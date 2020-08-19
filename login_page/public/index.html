@@ -849,6 +849,9 @@ function showcaseGenres(artistName, genres){
         }
         if(!found){
             informationHeader.innerText = "Unfortunatly " + artistName + ", who's primary genre is '" + genres[0] + "', cannot be traced back to African-American roots";
+            document.getElementById("toggle-label").style.visibility = "hidden";
+            document.getElementById("circle-beginning").style.visibility = "hidden";
+            document.getElementById("circle-end").style.visibility = "hidden";
         }
         getPlaylist(startingGenre);
         initiateTimeline();
@@ -888,13 +891,24 @@ function connectTree(startPos, name, scale, textHeight){
         children = connections[i].connections;
         children.forEach(function(item, i) {
             childName = getID((item));
-            //create line from parent to child
-            var newLine = document.createElementNS('http://www.w3.org/2000/svg','line');
+            //create curved line from parent to child
+            var newLine = document.createElementNS('http://www.w3.org/2000/svg','path');
             newLine.setAttribute('id', name + "-" + item);
-            newLine.setAttribute('x1', startPos.getBoundingClientRect().left + 1.5/scale);
-            newLine.setAttribute('y1', startPos.parentElement.parentElement.offsetTop + 3/scale + textHeight + 20);
-            newLine.setAttribute('x2', childName.getBoundingClientRect().left + 1.5/scale);
-            newLine.setAttribute('y2', childName.parentElement.parentElement.offsetTop + 12);
+            //calculate start and end pos of line
+            var x1 = startPos.getBoundingClientRect().left + 1.5/scale;
+            var x2 = childName.getBoundingClientRect().left + 1.5/scale;
+            var y1 = startPos.parentElement.parentElement.offsetTop + 3/scale + textHeight + 16;
+            var y2 = childName.parentElement.parentElement.offsetTop + 8;
+            //move cursor to starting position
+            var attribString = "M " + x1 + " " + y1;
+            //get 1/4 of the distance for start and end of curve and start + end pos
+            var curvePtWt = (x2 - x1)/4;
+            var curvePtHt = (y2 - y1)/4;
+            //construct path
+            attribString = attribString.concat(" C " + x1 + " " + (y1 + (7/8)*curvePtHt) + ", " 
+                                                + x2 + " " + (y2 - (1/8)*curvePtHt) + ", "
+                                                + x2 + " " + y2);            
+            newLine.setAttribute("d", attribString);
             var inPath = checkIfInPath(name, item);
             if(inPath){
                 newLine.setAttribute("stroke", "#7fcd91")
@@ -903,6 +917,7 @@ function connectTree(startPos, name, scale, textHeight){
                 newLine.setAttribute("stroke", "#06b4db")
             }
             newLine.setAttribute("stroke-width", "4");
+            newLine.setAttribute("fill", "transparent");
             $("svg").append(newLine);
             //get text size of child
             var text = childName.parentElement.lastChild.previousSibling;
