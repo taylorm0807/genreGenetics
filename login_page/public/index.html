@@ -429,8 +429,6 @@ var access_token = params.access_token,
     error = params.error;
 
 //$('#loginModal').modal('show');
-setUpSearchbar();
-setUpBottomSection();
 if (error) {
     alert('There was an error during the authentication');
 } else {
@@ -448,6 +446,8 @@ if (error) {
             'Authorization': 'Bearer ' + access_token
         },
         success: function(response) {
+            setUpSearchbar();
+            setUpBottomSection();
             userId = response.display_name;
             addDescriptions();
             if(!loggedin){
