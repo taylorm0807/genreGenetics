@@ -323,6 +323,13 @@ function setUpBottomSection(){
     var infoText = document.getElementById("resource-text");
     infoText.innerHTML = "This website was made in support of the Black Lives Matter movement as a resource to educate and bring light to the influence and importance of African-Americans in the field of music, as well as in society as a whole. At the time of writing this, 83 of the top 100 worldwide genres on Spotify can be traced back to early 1600's African-American traditions, and many of the other top 100 likely have influence as well. If you would like to support the fight for equality and end of systemic racism and oppression in the United States, please visit and donate to the links below:"
 }
+
+var params = getHashParams();
+
+var access_token = params.access_token,
+    refresh_token = params.refresh_token,
+    error = params.error;
+
 var windowGlobal = window;
 var view = 0;
 var artistIds = [];
@@ -421,12 +428,6 @@ var redirect_uri = 'http://www.genregenetics.com/callback'; // Your redirect uri
 var oauthSource = document.getElementById('oauth-template').innerHTML,
     oauthTemplate = Handlebars.compile(oauthSource),
     oauthPlaceholder = document.getElementById('oauth');
-
-var params = getHashParams();
-
-var access_token = params.access_token,
-    refresh_token = params.refresh_token,
-    error = params.error;
 
 //$('#loginModal').modal('show');
 if (error) {
