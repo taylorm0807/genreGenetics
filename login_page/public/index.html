@@ -2,13 +2,11 @@
 <html>
   <head>
     <link rel="stylesheet" href="./style.css" /> 
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
-
-    <title> Genre Genetics - Find the roots of your favorite artist's music</title>
+    <title>RQueue - Listen And Queue Music With Friends</title>
     <style type="text/css">
-      #login, #loggedin, #timeline-view, #tree-view  {
+      #login, #loggedin {
         display: none;
       }
       .text-overflow {
@@ -20,251 +18,89 @@
     </style>
   </head>
 
-  <body id="body" style="background-color: #212121">
+  <body style="background-color: #212121">
     <div>
       <div id="login" class="login-page">
+        <h1 class="login-text">Log In To Create or Join a Party!</h1>
         <a href="/login" class="btn login-button" id="spotify-login">Log in with Spotify</a>
-        <div class="modal hide fade" id="loginModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Spotify Authentication</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <p>Log in with Spotify to continue to the website!</p>
-                </div>
-                <div class="modal-footer">
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- <a class="btn login-button" id="spotify-login">Log in with Spotify</a> -->
     </div>
-    <div id="loggedin" class="loggedin">
-        <div id="create-room" class="login-page">
-            <div class="child1">
-                <div class="title-text">Genre Genetics:</div>
-                <div class="title-line"></div>
-                <h2 class="subtitle-text">See if your favorite artist’s music is rooted in African-American influence (it probably is)
-                </h2>
-            </div>
-            <form>
-                <div class="card child2 rounded-lg border-dark border-2">
-                    <div class="mb-3 md-form" id="add-artist">
-                        <input class="form-control-underlined searchbar" id="artist-searchbar" type="text" autocomplete="new-password" placeholder="Search For An Artist"/>
-                        <input type="button" class="btn add-song-button" id="search-button" value="Select Artist"/>
-                    </div>
-                    <div class="autocomplete-results" id ="autocomplete-results">
-                    </div>
-                </div>
-            </form>
+      <div id="loggedin">
+        <div id="create-room" class="queue-page">
         </div>
-        <h4 class="artist-genre-text" id="information-header">Roots of <span class="blue-text">{{Genre}}</span></h4>
-        <label class="toggle-button" id="toggle-label">
-            <input type="checkbox" id="toggle-button" checked data-toggle="toggle" data-style="switch" data-onstyle="secondary" data-offstyle="secondary" data-on="Timeline" data-off="Tree" data-width="128" data-height="48">
-        </label>
-        <div id="timeline-view">
-            <div class="timeline-cap" id="circle-beginning"></div>
-            <div class="genre-info-wrapper" id="timeline">
-            </div>
-            <div class="timeline-cap" id="circle-end"></div>
-            </div>
-            <div class="contact-section" id="contact-section">
-                <div class="resource-text" id="resource-text">
-                </div>
-                <a target="_blank" href="https://blacklivesmatters.carrd.co/?fbclid=IwAR3AElHjCXqTGsUkIFF6126GY8sMy3i0ZSwMS_D64oI_IEAiogyQhRgyR8g#petitions">Petitions to sign<br></a>
-                <a target="_blank" href="https://secure.actblue.com/donate/bail_funds_george_floyd?fbclid=IwAR3On2z03MOOExpwWiayV3Ba87JZ3tDVaTrRqPGTDvYARyMnD_gFF0IAiJY">National & Local Bail Fund<br></a>
-                <a target="_blank" href="https://nymag.com/strategist/article/where-to-donate-for-black-lives-matter.html#victim-memorial">List of orgs to donate to<br></a>
-                <a target="_blank" href="https://www.aaihs.org/resources/charlestonsyllabus/">Black literature<br></a>
-                <a target="_blank" href="https://moreblminfo.carrd.co/?fbclid=IwAR2C7wR247iJ-AwcInwIHbFotoqSQ9dJbmQtnwlg6Oq3ynrDUSJgi_uldws">Additional resources<br></a>
-                <div class="disclaimer-text" id="disclaimer-text"></div>
+        <div id="oauth">
         </div>
-        <div id="tree-view">
-            <svg id="svg" class="background" width="500" height="500"></svg>
-            <div class="row">
-                <div class="col-md-2 offset-md-0" id="row-1-tree">
-                    <div class="genre-circle" id="sacred-traditions-tree"></div>
-                    <h4 class="tree-genre-text">African American Sacred Traditions</h4>
-                </div>
-                <div class="col-md-2 offset-md-2">
-                    <div class="genre-circle" id="secular-traditions-tree"></div>
-                    <h4 class="tree-genre-text">African American Secular Traditions</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2 offset-md-0">
-                    <div class="genre-circle" id="spirituals-tree"></div>
-                    <h4 class="tree-genre-text">Folk Spirituals</h4>
-
-                </div>
-                <div class="col-md-2 offset-md-1">
-                    <div class="genre-circle" id="work-songs-tree"></div>
-                    <h4 class="tree-genre-text">Work/Protest Songs</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2 offset-md-1">
-                    <div class="genre-circle" id="country-tree"></div>
-                    <h4 class="tree-genre-text">Country</h4>
-                </div>
-                <div class="col-md-2 offset-md-0">
-                    <div class="genre-circle" id="traditional-blues-tree"></div>
-                    <h4 class="tree-genre-text">Traditional Blues</h4>
-
-                </div>
-                <div class="col-md-2 offset-md-1">
-                    <div class="genre-circle" id="ragtime-tree"></div>
-                    <h4 class="tree-genre-text">Ragtime</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2 offset-md-0">
-                    <div class="genre-circle" id="gospel-hymns-tree"></div>
-                    <h4 class="tree-genre-text">Gospel Hymns</h4>
-
-                </div>
-                <div class="col-md-2 offset-md-2">
-                    <div class="genre-circle" id="boogie-woogie-tree"></div>
-                    <h4 class="tree-genre-text">Boogie-Woogie</h4>
-                </div>
-                <div class="col-md-2 offset-md-0">
-                    <div class="genre-circle" id="new-orleans-jazz-tree"></div>
-                    <h4 class="tree-genre-text">New Orleans Jazz</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2 offset-md-6">
-                    <div class="genre-circle" id="swing-tree"></div>
-                    <h4 class="tree-genre-text">Swing</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2 offset-md-0">
-                    <div class="genre-circle" id="traditional-gospel-tree"></div>
-                    <h4 class="tree-genre-text">Traditional Gospel</h4>
-                </div>
-                <div class="col-md-2 offset-md-1">
-                    <div class="genre-circle" id="urban-blues-tree"></div>
-                    <h4 class="tree-genre-text">Urban Blues</h4>
-                </div>
-                <div class="col-md-2 offset-md-0">
-                    <div class="genre-circle" id="rhythm-and-blues-tree"></div>
-                    <h4 class="tree-genre-text">Rhythm And Blues</h4>
-                </div>
-                <div class="col-md-2 offset-md-0">
-                    <div class="genre-circle" id="bebop-tree"></div>
-                    <h4 class="tree-genre-text">Bebop</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2 offset-md-1">
-                    <div class="genre-circle" id="civil-rights-freedom-songs-tree"></div>
-                    <h4 class="tree-genre-text">Civil Rights Freedom Songs</h4>
-                </div>
-                <div class="col-md-2 offset-md-1">
-                    <div class="genre-circle" id="rock-and-roll-tree"></div>
-                    <h4 class="tree-genre-text">Rock And Roll</h4>
-                </div>
-                <div class="col-md-2 offset-md-0">
-                    <div class="genre-circle" id="hard-bop-tree"></div>
-                    <h4 class="tree-genre-text">Hard Bop</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2 offset-md-2">
-                    <div class="genre-circle" id="rock-tree"></div>
-                    <h4 class="tree-genre-text">Rock</h4>
-                </div>
-                <div class="col-md-2 offset-md-2">
-                    <div class="genre-circle" id="soul-jazz-tree"></div>
-                    <h4 class="tree-genre-text">Soul Jazz</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2 offset-md-2">
-                    <div class="genre-circle" id="metal-tree"></div>
-                    <h4 class="tree-genre-text">Metal</h4>
-                </div>
-                <div class="col-md-2 offset-md-0">
-                    <div class="genre-circle" id="soul-tree"></div>
-                    <h4 class="tree-genre-text">Soul</h4>
-                </div>
-                <div class="col-md-2 offset-md-1">
-                    <div class="genre-circle" id="modern-jazz-trio-tree"></div>
-                    <h4 class="tree-genre-text">Modern Jazz Trio</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2 offset-md-0">
-                    <div class="genre-circle" id="vintage-gospel-tree"></div>
-                    <h4 class="tree-genre-text">Vintage Gospel</h4>
-                </div>
-                <div class="col-md-2 offset-md-1">
-                    <div class="genre-circle" id="disco-tree"></div>
-                    <h4 class="tree-genre-text">Disco</h4>
-                </div>
-                <div class="col-md-2 offset-md-0">
-                    <div class="genre-circle" id="funk-tree"></div>
-                    <h4 class="tree-genre-text">Funk</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2 offset-md-2">
-                    <div class="genre-circle" id="house-tree"></div>
-                    <h4 class="tree-genre-text">House</h4>
-                </div>                
-                <div class="col-md-2 offset-md-0">
-                    <div class="genre-circle" id="hip-hop-tree"></div>
-                    <h4 class="tree-genre-text">Rap/Hip-Hop</h4>
-                </div>
-                <div class="col-md-2 offset-md-0">
-                    <div class="genre-circle" id="electro-funk-tree"></div>
-                    <h4 class="tree-genre-text">Electro-Funk</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2 offset-md-1">
-                    <div class="genre-circle" id="techno-tree"></div>
-                    <h4 class="tree-genre-text">Techno</h4>
-                </div>                
-                <div class="col-md-2 offset-md-0">
-                    <div class="genre-circle" id="r&b-tree"></div>
-                    <h4 class="tree-genre-text">R&B</h4>
-                </div>
-            </div>
-            <div class="row"> 
-                <div class="col-md-2 offset-md-3">
-                    <div class="genre-circle" id="neo-soul-tree"></div>
-                    <h4 class="tree-genre-text">Neo Soul</h4>
-                </div>             
-                <div class="col-md-2 offset-md-0">
-                    <div class="genre-circle" id="pop-tree"></div>
-                    <h4 class="tree-genre-text">Pop</h4>
-                </div>
-                <div class="col-md-2 offset-md-0">
-                    <div class="genre-circle" id="new-jack-swing-tree"></div>
-                    <h4 class="tree-genre-text">New Jack Swing</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2 offset-md-5">
-                    <div class="genre-circle" id="post-teen-pop-tree"></div>
-                    <h4 class="tree-genre-text">Post-Teen Pop</h4>
-                </div>                
-            </div>
+        <!-- <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button> -->
+      </div>
+      <div id="room-page" class="queue-page">
+          <div id="room">
+          </div>
+      </div>
+      <div id="main-queue">
+        <div id="queue" class="queue-page">
         </div>
-        <div id="oauth"></div>
+      </div>
     </div>
+
+    <!-- <script id="create-or-join-room-template" type="text/x-handlebars-template">
+        <h1 class="login-text">Logged in as {{display_name}}</h1>
+        <h4 class="login-subtitle-text">Current Playlists</h4>  
+        <h4 class="login-subtitle-text">Create or Join a Room to Start The Party"></h4>
+        <input type="button" class="btn login-button" id="playlist-button" value="Create Room"/>
+        <input type="button" class="btn login-button" id="playlist-button" value="Join Room"/>
+    </script> -->
+
+
+
+    <script id="create-or-join-room-template" type="text/x-handlebars-template">
+      <h1 class="login-text">Logged in as {{display_name}}</h1>
+      <h4 class="login-subtitle-text">Create or Join a Room to Start The Party!</h4>
+      <div id="parentDiv"></div>
+      <input type="button" class="btn login-button" id="create-room-button" value="Create Room"/>
+      <input type="button" class="btn login-button" id="join-room-button" value="Join Room"/>
+      <div class="md-form mb-4" id="type-roomid">
+        </div>
+    </script>
+
+    <script id="queue-template" type="text/x-handlebars-template">
+        <h1 class="login-text">Songs in queue for {{playlist_name}}</h1>
+        <h4 class="room-id-text">Room ID: {{room_id}}</h4>
+        <div class="subtitle-div">
+            <input type="button" class="btn end-session-button" id="end-session-button" value="End Session"/>
+        </div>
+        <table class="table" width="50%">
+            <thead>
+                <tr class="queue-table-row">
+                    <th scope="col">Priority</th>
+                    <th scope="col">Like</th>
+                    <th scope="col">Song Name</th>
+                    <th scope="col">Artist Name(s)</th>
+                    <th scope="col">Runtime</th>
+                    <th scope="col">Added By</th>
+                </tr>
+            </thead>
+            <tbody id="queue-body">
+            </tbody>
+        </table>
+        <form>
+            <div class="md-form mb-4" id="add-songs">
+            </div>
+            <input type="button" class="btn add-song-button" id="search-button" value="Add More Songs"/>
+            <div class="autocomplete-results" id ="autocomplete-results">
+            </div>
+        </form>
+    </script>
+
     <script id="oauth-template" type="text/x-handlebars-template">
+      <!-- <h2>oAuth info</h2>
+      <dl class="dl-horizontal">
+        <dt>Access token</dt><dd class="text-overflow">{{access_token}}</dd>
+        <dt>Refresh token</dt><dd class="text-overflow">{{refresh_token}}</dd>
+      </dl> -->
     </script>
     <script type="/text/javascript/" src="../app.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script>
       (function() {
 
@@ -292,37 +128,68 @@ function generateRandomString(length) {
     return text;
 };
 
+var playlistArr;
+//queue of song objects 
+// song {
+//     string priority,
+//     boolean liked;
+//     string artist_name,
+//     string song_name,
+//     string runtime,
+//     string added_by,
+//     string songId
+// }
+var queue = [];
+//array of liked_info objects
+// keeps track of which songs each user has liked, to persist their likes and dislikes through
+// all the requeries and updates
+// likedInfo{
+//      string songId;
+//      boolean liked
+// }
+var likedTracks = [];
+//instruction stack for use of owner. Anytime a trigger is sent by a user of the room,
+//it is added to this stack to avoid any potential race conditions with two users trying to 
+//alter the queue at the same time
+var instructionStack = [];
+//boolean to check if owner.
+//Owner responsibilities:
+    //delete playlist
+    //create room
+    //The one who actually alters the priorities of tracks
+    //Actually adds the tracks
+    //Updates the table with every change
+    //Listens for song changes, removes old songs from queue
+var owner = false;
+var queuePlaying = false;
+var playingSongId = "";
+var isSearchbarOut = false;
+var isRoomFieldOut = false;
+var songIds = [];
+var songUris = [];
+var songId = "";
+var userId;    
+var playlist_id;    
+var loggedin = false;
+var client_id = 'e3a9ee0df38642d591d70229cca7d58a'; // Your client id
+var redirect_uri = 'http://www.genregenetics.com/callback'; // Your redirect uri
 
-function setUpSearchbar(){
-    document.getElementById("circle-beginning").style.visibility = "hidden";
-    document.getElementById("circle-end").style.visibility = "hidden";
-    document.getElementById("contact-section").style.visibility = "hidden";
-    document.getElementById("information-header").style.visibility = "hidden";
-    document.getElementById("toggle-label").style.visibility = "hidden";
-    document.getElementById('artist-searchbar').addEventListener('input', function(){
-        var searchbar = document.getElementById("artist-searchbar");
-        if(searchbar.value != ''){
-            autocompleteSearch(searchbar.value);
-        }
-    });
-    document.getElementById('search-button').addEventListener('click', function(){
-        view = 0;
-        $('#timeline-view').show();
-        $('#tree-view').hide();
-        closeResults();
-        resetGenres();
-        resetPage();
-        getArtist();
-    });
-}
+//The templates for the different "pages" of the website
+var queueSource = document.getElementById('queue-template').innerHTML,
+    queueTemplate = Handlebars.compile(queueSource),
+    queuePlaceholder = document.getElementById('queue');
 
-//Intitializes the contact information and disclaimer info for the website
-function setUpBottomSection(){
-    var disclaimer = document.getElementById("disclaimer-text");
-    disclaimer.innerHTML = "\nDISCLAIMER: This website was made utilizing Spotify's genre labeling for artists, along with information about different genres' history found online. Due to these limitiations and the sheer number of genres that Spotify uses (>1000), genres may be wrongly catagorized, misrepresented, or even ommited. If you believe there is a genre that should be included, changed, or if there is any other feature/modification you would like to see in this website, please reach out to me at taylor0807@gmail.com"
-    var infoText = document.getElementById("resource-text");
-    infoText.innerHTML = "This website was made in support of the Black Lives Matter movement as a resource to educate and bring light to the influence and importance of African-Americans in the field of music, as well as in society as a whole. At the time of writing this, 83 of the top 100 worldwide genres on Spotify can be traced back to early 1600's African-American traditions, and many of the other top 100 likely have influence as well. If you would like to support the fight for equality and end of systemic racism and oppression in the United States, please visit and donate to the links below:"
-}
+var roomSource = document.getElementById("create-or-join-room-template").innerHTML,
+    roomTemplate = Handlebars.compile(roomSource),
+    roomPlaceholder = document.getElementById('room');
+
+var genPlaylistSource = document.getElementById('create-or-join-room-template').innerHTML,
+    genPlaylistTemplate = Handlebars.compile(genPlaylistSource),
+    genPlaylistPlaceholder = document.getElementById('create-room');
+
+var oauthSource = document.getElementById('oauth-template').innerHTML,
+    oauthTemplate = Handlebars.compile(oauthSource),
+    oauthPlaceholder = document.getElementById('oauth');
 
 var params = getHashParams();
 
@@ -330,106 +197,6 @@ var access_token = params.access_token,
     refresh_token = params.refresh_token,
     error = params.error;
 
-var windowGlobal = window;
-var view = 0;
-var artistIds = [];
-var artistId = "";
-var numCards = 0;
-var userId;    
-var init = false;
-var loggedin = false;
-var startingGenre;
-var genreList = [];
-var genreInfo = [];
-var connections = [
-    {"start": "sacred traditions", "connections": ["spirituals"], "init": false},
-    {"start": "secular traditions", "connections": ["work songs", "ragtime"], "init": false},
-    {"start": "spirituals", "connections": ["gospel hymns", "civil rights freedom songs", "country"], "init": false},
-    {"start": "work songs", "connections": ["traditional blues", "country"], "init": false},
-    {"start": "country", "connections": [], "init": false},
-    {"start": "traditional blues", "connections": ["boogie-woogie"], "init": false},
-    {"start": "ragtime", "connections": ["new orleans jazz"], "init": false},
-    {"start": "gospel hymns", "connections": ["traditional gospel"], "init": false},
-    {"start": "boogie-woogie", "connections": ["urban blues", "rhythm and blues"], "init": false},
-    {"start": "new orleans jazz", "connections": ["swing"], "init": false},
-    {"start": "swing", "connections": ["bebop"], "init": false},
-    {"start": "traditional gospel", "connections": ["vintage gospel"], "init": false},
-    {"start": "urban blues", "connections": ["rock-and-roll"], "init": false},
-    {"start": "rhythm and blues", "connections": ["rock-and-roll", "soul", "hard bop"], "init": false},
-    {"start": "bebop", "connections": ["hard bop"], "init": false},
-    {"start": "civil rights freedom songs", "connections": [], "init": false},
-    {"start": "rock-and-roll", "connections": ["rock", "soul"], "init": false},
-    {"start": "hard bop", "connections": ["soul jazz", "modern jazz trio"], "init": false},
-    {"start": "rock", "connections": ["metal"], "init": false},
-    {"start": "soul jazz", "connections": ["new jack swing"], "init": false},
-    {"start": "metal", "connections": [], "init": false},
-    {"start": "soul", "connections": ["disco", "hip hop", "funk", "r&b"], "init": false},
-    {"start": "modern jazz trio", "connections": ["new jack swing"], "init": false},
-    {"start": "vintage gospel", "connections": [], "init": false},
-    {"start": "disco", "connections": ["house", "hip hop"], "init": false},
-    {"start": "funk", "connections": ["electro-funk", "hip hop"], "init": false},
-    {"start": "house", "connections": ["techno"], "init": false},
-    {"start": "hip hop", "connections": ["pop"], "init": false},
-    {"start": "electro-funk", "connections": ["pop"], "init": false},
-    {"start": "techno", "connections": [], "init": false},
-    {"start": "r&b", "connections": ["neo soul"], "init": false},
-    {"start": "pop", "connections": ["post-teen pop"], "init": false},
-    {"start": "neo soul", "connections": [], "init": false},
-    {"start": "new jack swing", "connections": [], "init": false},
-    {"start": "post-teen pop", "connections": [], "init": false}];
-var subGenreList = ["big room", "urban contemporary", "trip hop", "hip house", "motown", "singer-songwriter", "edm"]
-var reachedRoots = false;
-var startingLink = "";
-var client_id = '3ab7085db74b43c39a18f6954b8cb595'; // Your client id
-// var redirect_uri = 'http://localhost:80/callback/';
-var redirect_uri = 'http://www.genregenetics.com/callback'; // Your redirect uri
-/*
-0 - post-teen pop ******
-1 - pop ******
-2 - gospel rap
-3 - neo soul
-4 - new jack swing
-5 - techno
-6 - r&b
-7 - house
-8 - electro
-9 - disco
-10 - rap
-11 - hip hop
-12 - funk
-13 - metal ******
-14 - civil rights freedom songs
-15 - rock
-16 - soul
-17 - soul jazz
-18 - modern jazz trio
-19 - vintage gospel
-20 - rock-and-roll
-21 - hard bop
-22 - urban blues
-23 - rhythm and blues
-24 - bebop
-25 - traditional gospel
-26 - swing
-27 - gospel hymns
-28 - country *****
-29 - boogie-woogie
-30 - new orleans jazz
-31 - traditional blues
-32 - ragtime
-33 - spirituals
-34 - work songs
-35 - syncopated dance
-36 - sacred traditions
-37 - secular traditions
-38 - secular traditions instrumental
-*/
-//The templates for the different "pages" of the website
-var oauthSource = document.getElementById('oauth-template').innerHTML,
-    oauthTemplate = Handlebars.compile(oauthSource),
-    oauthPlaceholder = document.getElementById('oauth');
-
-//$('#loginModal').modal('show');
 if (error) {
     alert('There was an error during the authentication');
 } else {
@@ -447,131 +214,249 @@ if (error) {
             'Authorization': 'Bearer ' + access_token
         },
         success: function(response) {
-            setUpSearchbar();
-            setUpBottomSection();
             userId = response.display_name;
-            addDescriptions();
+            callPlaylists(userId, response.href);
             if(!loggedin){
                 $('#login').hide();
                 $('#loggedin').show();
                 loggedin = true;
             }
-            
         }
     });
     } else {
         // render initial screen
         $('#login').show();
         $('#loggedin').hide();
-    } 
+    }          
 
-function resetGenres(){
-    genreList = [{"genreName": "post-teen pop", "date": "2000", "used": false, "href": "https://open.spotify.com/playlist/10FCW9lj0NdeoYI5VVvVtY"}, 
-            {"genreName": "pop", "date": "2000", "used": false, "href": "https://open.spotify.com/playlist/6gS3HhOiI17QNojjPuPzqc"}, 
-            {"genreName": "gospel rap", "date": "1990", "used": false, "href": "https://open.spotify.com/playlist/6aASwBqAt129rxQQbkKvKC"}, 
-            {"genreName": "neo soul", "date": "1990", "used": false, "href": "https://open.spotify.com/playlist/2zxYQBTWiXgpQEyQggYSTm"},
-            {"genreName": "new jack swing", "date": "1990", "used": false, "href": "https://open.spotify.com/playlist/0zn8nuASKC0PISqD9mxCSV"}, 
-            {"genreName": "techno", "date": "1980", "used": false, "href": "https://open.spotify.com/playlist/50kZecUV5pY2SuJv3Ie0vy"},
-            {"genreName": "r&b", "date": "1980", "used": false, "href": "https://open.spotify.com/playlist/1rLnwJimWCmjp3f0mEbnkY"}, 
-            {"genreName": "house", "date": "1980", "used": false, "href": "https://open.spotify.com/playlist/6AzCASXpbvX5o3F8yaj1y0"},
-            {"genreName": "electro-funk", "date": "1980", "used": false, "href": ""}, 
-            {"genreName": "hip hop", "date": "1970", "used": false, "href": "https://open.spotify.com/playlist/6MXkE0uYF4XwU4VTtyrpfP"}, 
-            {"genreName": "disco", "date": "1970", "used": false, "href": "https://open.spotify.com/playlist/0ZVSWcJIf7cvycEn9HUvps"},
-            {"genreName": "rap", "date": "1970", "used": false, "href": "https://open.spotify.com/playlist/6s5MoZzR70Qef7x4bVxDO1"},
-            {"genreName": "funk", "date": "1960", "used": false, "href": "https://open.spotify.com/playlist/0MBvtOIm5fuBbRHEltDY8A"},
-            {"genreName": "metal", "date": "1960", "used": false, "href": "https://open.spotify.com/playlist/3pBfUFu8MkyiCYyZe849Ks"},
-            {"genreName": "civil rights freedom songs", "date": "1960", "used": false ,"href": ""},
-            {"genreName": "rock", "date": "1960", "used": false, "href": "https://open.spotify.com/playlist/7dowgSWOmvdpwNkGFMUs6e"}, 
-            {"genreName": "soul", "date": "1950", "used": false, "href": "https://open.spotify.com/playlist/1YUIw9n6voqxPzawnEf3A2"},
-            {"genreName": "soul jazz", "date": "1900", "used": false, "href": "https://open.spotify.com/playlist/51YToRmnFC3U4iPj6LgHgF"}, 
-            {"genreName": "modern jazz trio", "date": "1960", "used": false, "href": "https://open.spotify.com/playlist/2dvBbBvx5xENN0yta6YVMZ"},
-            {"genreName": "vintage gospel", "date": "1960", "used": false, "href": "https://open.spotify.com/playlist/1nUeq2VFT7rDOsry1KD01T"}, 
-            {"genreName": "rock-and-roll", "date": "1950", "used": false, "href": "https://open.spotify.com/playlist/34bhxCaWrYi4kF67mNYiXW"},
-            {"genreName": "hard bop", "date": "1950", "used": false, "href": "https://open.spotify.com/playlist/3KIoIajdvsFRWMYN3T5Fa5"}, 
-            {"genreName": "urban blues", "date": "1940", "used": false, "href": ""},
-            {"genreName": "rhythm and blues", "date": "1940", "used": false, "href": "https://open.spotify.com/playlist/4uSZwUcMhCdfspqtWaQGwD"}, 
-            {"genreName": "bebop", "date": "1940", "used": false, "href": "https://open.spotify.com/playlist/55s8gstHcaCyfU47mQgLrB"},
-            {"genreName": "traditional gospel", "date": "1930", "used": false, "href": ""}, 
-            {"genreName": "swing", "date": "1930", "used": false, "href": "https://open.spotify.com/playlist/20CFvOMJgvNmysKxUH5GJV"},
-            {"genreName": "gospel hymns", "date": "1900", "used": false, "href": ""}, 
-            {"genreName": "country", "date": "1920", "used": false, "href": "https://open.spotify.com/playlist/4mijVkpSXJziPiOrK7YX4M"},             
-            {"genreName": "boogie-woogie", "date": "1900", "used": false, "href": "https://open.spotify.com/playlist/3VvwVEZaPYQfI8ZZbOCW5h"},
-            {"genreName": "new orleans jazz", "date": "1900", "used": false, "href": "https://open.spotify.com/playlist/0iMiZcvIy26MqHQln5kkrI"}, 
-            {"genreName": "traditional blues", "date": "1880", "used": false, "href": "https://open.spotify.com/playlist/4fPXonBYvsGcigbOEKFudk"},
-            {"genreName": "ragtime", "date": "1900", "used": false, "href": "https://open.spotify.com/playlist/7BKZEIdyav6sz9B628eXSx"}, 
-            {"genreName": "spirituals", "date": "1800", "used": false, "href": "https://open.spotify.com/playlist/7u9s8sobm0vJDxpdkhC3we"},
-            {"genreName": "work songs", "date": "1600", "used": false, "href": ""}, 
-            {"genreName": "syncopated dance", "date": "1600", "used": false, "href": ""},
-            {"genreName": "sacred traditions", "date": "1500", "used": false, "href": ""}, 
-            {"genreName": "secular traditions", "date": "1500", "used": false, "href": ""},
-            {"genreName": "secular traditions instrumental", "date": "1500", "used": false, "href": ""}];
+//gets the users playlists
+//currently not implemented in RQ, not a necessary feature, probably not going to be used in final build
+function callPlaylists(display_name, href){
+    var playlisturl = href + '/playlists'
+    var display = { "display_name": display_name };
+    $.ajax({
+        url: playlisturl,
+        headers: {
+            'Authorization': 'Bearer ' + access_token
+        },
+        success: function(response) {
+            playlistArr = response.items;
+            var playlistData = {"display_name": display_name, "playlists": playlistArr};
+            genPlaylistPlaceholder.innerHTML = genPlaylistTemplate(playlistData);
+            //switches layouts to loggedin layout
+            document.getElementById('create-room-button').addEventListener('click', function(){
+                showSongs("", "");
+            });
+            document.getElementById('join-room-button').addEventListener('click', function(){
+                if(isRoomFieldOut == false){
+                    //open the textField
+                    var roomWrapper = document.getElementById('type-roomid');
+                    var roomField = document.createElement("input");
+                    var button = document.getElementById('join-room-button');
+                    button.innerHTML = "Connect to Room";
+                    roomField.className = "form-control-underlined";
+                    roomField.id = "room-textfield";
+                    roomField.type = "text";
+                    roomField.max = "4";
+                    roomField.style.width = "5%";
+                    roomField.style.marginRight = "8px";
+                    roomField.autocomplete = "new-password";
+                    roomField.placeholder = "Room ID";
+                    roomWrapper.appendChild(roomField);
+                    roomWrapper.appendChild(button);
+                    isRoomFieldOut = true;
+                }
+            });
+            //showPlaylists(playlistData);
+        }
+    });
 }
 
-function addDescriptions(){
-    genreInfo = [{"genreName": "post-teen pop", "description": "Post-Teen Pop is a genre that is an amalgamation of Pop, R&B, Hip-Hop, and Dance, essentially encompassing much of popular music, generally marketed towards “Post-Teens”."}, 
-            {"genreName": "pop", "description": "Pop music as a genre is meant to encompass “popular” music, which has changed meaning across the centuries, depending on what is most popular. Pop music has been known to take influences from Jazz, Soul, Funk, Rock, and most recently, aspects and elements of Hip-Hop and Disco/Electronic music are seen nearly everywhere in Pop music."}, 
-            {"genreName": "gospel rap", "description": "Originating in the 90’s as a mixture of Gospel music and Hip-Hop, also known as “Christian Rap”, this genre utilizes positive and empowering messages with religious overtones to promote faith through music."}, 
-            {"genreName": "neo soul", "description": "This genre originated in the 90’s as a combination of R&B and Soul music, featuring conscious lyricism and a strong female presence, while also infusing elements from other genres such as Jazz and Funk."},
-            {"genreName": "new jack swing", "description": "This is a fusion of Hip-Hop and R&B that became popular in the 90’s. Containing influence from early Dance music, New Jack Swing also took inspiration from Jazz and Funk, and would later go on to greatly influence Pop music, using drum machines to lay down driving beats under light melody lines with a heavy vocal presence."}, 
-            {"genreName": "techno", "description": "Evolving from Electro-Funk music in the mid 1980’s, Techno focused more on having a repetitive melodic line, generally used for long DJ sets. Techno utilizes synthesizers and drum machines, as well as using digital audio workstations for production as opposed to live recording as was previously the standard."},
-            {"genreName": "r&b", "description": "Emerging in the mid 1980’s, R&B formed as a genre combining elements of Rhythm and Blues, Soul, Funk, and Hip-Hop, along with many other sounds. R&B took a lot of the “raw” elements of those genres and used pitch-correction, drum-machines, and lush vocal performances to create danceable, smooth tracks."}, 
-            {"genreName": "house", "description": "House rose to popularity in the 1980’s as a form of electronic dance music, drawing inspiration from Disco and Punk. House music took Disco and gave heavier basslines and more mechanical beats, becoming widely popular and having wide-reaching influences on many modern genres, including Pop music."},
-            {"genreName": "electro-funk", "description": "Electro, or Electro-Funk, is a descendent of Funk that drew heavily influence from Boogie, utilizing drum machines and distortion like talkboxes and vocoding to create danceable, lively music similar to Disco. Electro rose to popularity in the 1970’s and 1980’s and served to influence 80’s Hip-Hop, while also drawing inspiration from early innovation in the genre."}, 
-            {"genreName": "disco", "description": "Emerging in the 1970’s, Disco was formed from a myriad of various genres, including Dance, Rhythm and Blues, Soul, and Funk music. Largely instrumental tracks with a focus on danceability, Disco tracks normally consisted of electric guitar, high-tempo drums, and a synthesizer."},
-            {"genreName": "rap", "description": ""},
-            {"genreName": "hip hop", "description": "Hip-Hop was developed starting in the 1970’s, drawing influences from Funk, Disco, and Rhythm and Blues amongst others. With an initial focus on lyricism, sampling, and record-scratching, this genre emerged as an outlet for disenfranchised black youth, with hip-hop reflecting their culture and the often harsh realities of their lives."}, 
-            {"genreName": "funk", "description": "Funk originated in the 1960’s as a mixture of Soul, Jazz, and Rhythm and Blues. Funk focused on complex rhythms played by overlapping instruments, emphasizing the downbeat of a measure to create a notion of swing, enhancing dancibility."},
-            {"genreName": "metal", "description": "An evolution of Rock music that spawned in the 1960’s and 1970’s, Metal involved heavier distortion of the guitar, more aggressive vocals, and generally just a louder soundscape than found in Rock."},            
-            {"genreName": "civil rights freedom songs", "description": "As the name suggests, these were songs created and performed during the Civil Rights Movement in the 1950’s and 1960’s, used to express emotions that black people had during the movement, and also served as a way to unify and empower the movement, sparking African-Americans across the nation to fight for radical change."},
-            {"genreName": "rock", "description": "Evolving from Rock and Roll, Rock music was characterized by the introduction of the electric guitar in the 1960’s, as well as the continued influence drawn from other genres such as Electric Blues and Folk music, quickly rising to popularity and immediately producing several sub-genre."}, 
-            {"genreName": "soul", "description": "Originating in the 1950’s and 1960’s, Soul music is characterized by catchy rhythms and improvisational additions, drawing influence from Rock and Roll, as well as Rhythm and Blues music. More so than other genres during this time, Soul music reflected the identity of African-Americans and black culture in general, and the importance of both."},
-            {"genreName": "soul jazz", "description": "A development of Jazz in the 1960’s that is incredibly similar to Hard Bop, but with the addition of influence from Soul music. It is considered to be earthy and blues-based, but with overtones of spirit, due to the injection of Soul into the instrumentation."}, 
-            {"genreName": "modern jazz trio", "description": "A style of Jazz that grew to popularity in the 1960’s as an offshoot of Bebop, focusing heavily on complex instrumentation and melodic structures, but specifically restricting the number of musicians performing to 3, creating a much more structured melodic arrangement."},
-            {"genreName": "vintage gospel", "description": "This is a term for the evolution of Gospel music in the 1960’s and continuing through the 1980’s that began to draw inspirations from other genres, such as Disco, Funk, and Jazz. There was also a larger focus on solo artists and performances as opposed to performing in groups and in the traditional church settings."}, 
-            {"genreName": "rock-and-roll", "description": "A genre that became solidified in the early 1950’s, Rock and Roll drew inspiration from many genres coming before it, namely Jump Blues, Rhythm and Blues, and Jazz. The result was a dance rhythm normally played by a piano or guitar, alongside a double-bass and a drum-kit."},
-            {"genreName": "hard bop", "description": "An extension of Bebop music, this genre arose in the 1950’s and took influences from Rhythm and Blues and Gospel music, creating a more rhythmic form of Bebop music, quickly progressing into the formation of Soul Jazz."}, 
-            {"genreName": "urban blues", "description": "Urban Blues is a term used for the type of blues that originated around the 1940’s, where the performers had to adapt to more urban environments to perform, leading to sub-genres such as “Jump Blues”, which was much more up-tempo and aggressive than prior blues music, paving the way for the emergence of new genres. This was also one of the first uses of drum-kits in the instrumentation, which quickly became a commonplace in later music across genres."},
-            {"genreName": "rhythm and blues", "description": "A direct descendant of “Boogie-Woogie”, Rhythm and Blues took on a grittier jazz-based interpretation, sometimes called “Dirty Boogie”, and quickly rose to popularity in the 1940’s."}, 
-            {"genreName": "bebop", "description": "Bebop arose in the 1940’s as a form of Jazz that focused more on the instrumentation as opposed to dancing, as was common in “Swing”, which Bebop drew inspiration from. This focus on music allowed for faster tempos and more complex chords and arrangements, while also having more structure than the improve-heavy “Swing”, creating a single melody to begin and end the arrangements with."},
-            {"genreName": "traditional gospel", "description": "This is the term for gospel music that came about during the 1930’s, with Traditional Gospel evolving directly from Gospel hymns of the 1900’s. This was considered the most prosperous era for gospel music, largely due to the Civil Rights Movement being incorporated and supported by gospel at the time, leading to nationwide popularity and recognition of the genre."}, 
-            {"genreName": "swing", "description": "A direct offshoot of Jazz, Swing music was developed in the 1930s, sharing many similarities to New Orleans Jazz, such as one instrument playing a standard melody while other instruments improvised, but Swing music put special emphasis on the weaker beat, giving the music a “swing” when played."},
-            {"genreName": "gospel hymns", "description": "A precursor to traditional and modern gospel, gospel hymns are characterized by the mixture of religious gospel songs, and black folk spirituals, featuring simple rhythms with complex melodies and memorable lyrics."}, 
-            {"genreName": "country", "description": "Originated in the Southern US during the 1920’s, Country quickly became one of the biggest genres in America. It is a melting pot of many different cultures and genres, with much of the rhythmic aspects tracing back to African-American influences, with the banjo itself being invented in Africa and heavily used in black culture during this time."}, 
-            {"genreName": "boogie-woogie", "description": "Rising in popularity in the early 1900’s, the Boogie-Woogie was an offshoot and evolution of Traditional Blues that focused more on dancing, oftentimes containing high-tempo rhythms and simple melodies."},
-            {"genreName": "new orleans jazz", "description": "Also known as “Traditional Jazz” or “Dixieland”, this genre emerged in New Orleans at the start of the 20th century and incorporated many Ragtime elements, with a Trumpet playing a known melody while other instruments would improvise around it. New Orleans Jazz laid the groundwork for Jazz to continue to mature and grow throughout the 1900’s, and also spawn several other genres taking influence from Dixieland."}, 
-            {"genreName": "traditional blues", "description": "This genre came about around the 1880s as one of the earliest forms of blues music. Developed in the south by newly freed slaves and sharecroppers, it was a vocal-centric genre that mainly consisted of singing alongside acoustic guitar and occasionally a harmonica."},
-            {"genreName": "ragtime", "description": "A genre that gained popularity around the end of the 19th century into the early 1900’s, Ragtime made use of “ragged” syncopated rhythm taken largely from early black syncopated dance music to create infectious dances and grooves. Ragtime was the first real African-American music to have an impact on the mainstream, but certainly wouldn’t be the last."}, 
-            {"genreName": "spirituals", "description": "This form of music originated around the 1800s, after many slaves began converting to Christianity and other forms of spiritual worship. They were used to describe and express the suffering and longing of African-Americans during this time, combining traditional African rhythms with religious hymns and chanting."},
-            {"genreName": "work songs", "description": "Some of the earliest African-American music in the 1600's that originated as songs that slaves would sing while working, as well as protest songs. These songs often had several purposes, such as expressing anger and hardship through a creative medium, and helping to pass down experiences through generations."}, 
-            {"genreName": "syncopated dance", "description": ""},
-            {"genreName": "sacred traditions", "description": "These were traditions that African Americans practiced and had in the 1600's related to spiritual worship and beliefs. Much of their worship and religion was rooted in music, helping to lay the groundwork for nearly all modern music today!"}, 
-            {"genreName": "secular traditions", "description": "These were traditions that African Americans practiced and had in the 1600's and earlier that weren't inherently based in religious practices or worship, but rather black culture and traditions. As much of their tradition and culture was rooted in music, this helped to lay the groundwork for nearly all modern music today!"},
-            {"genreName": "secular traditions instrumental", "description": ""}];
+//shows the users playlists and gives them ability to open a new queue on click
+function showPlaylists(data){
+    var parentDiv = document.getElementById("parentDiv");
+    var length = data.playlists.length;
+    for(let i = 0; i < length; i++){
+        var name = document.createElement("div");
+        name.id = "playlist";
+        name.addEventListener('click', function(){
+            showSongs(data.playlists[i].name, data.playlists[i].id);
+        })
+        name.className = "playlist-name";
+        name.innerHTML = data.playlists[i].name;
+        parentDiv.appendChild(name); 
+    }
+    document.getElementById('create-room-button').addEventListener('click', function(){
+        showSongs("", "");
+    });
+    document.getElementById('join-room-button').addEventListener('click', function(){
+        owner = false;
+        if(isRoomFieldOut == false){
+            //open the textField
+            var roomWrapper = document.getElementById('type-roomid');
+            var roomField = document.createElement("input");
+            var button = document.getElementById('join-room-button');
+            button.innerHTML = "Connect to Room";
+            roomField.className = "form-control-underlined";
+            roomField.id = "room-textfield";
+            roomField.type = "text";
+            roomField.max = "4";
+            roomField.style.width = "15%";
+            roomField.autocomplete = "new-password";
+            roomField.placeholder = "Type in the Room ID";
+            roomWrapper.appendChild(roomField);
+            roomWrapper.appendChild(button);
+            isRoomFieldOut = true;
+        }
+    });
 }
 
-//when find artist button is clicked, collapse autocomplete search results
-function closeResults(){
-    var results = document.getElementById("autocomplete-results");
-    while(results.firstChild){
-        results.removeChild(results.lastChild);
+//get all the songs in a given playlist
+function showSongs(name, id){
+    var playlist_name;
+    if(name.length == 0){
+        owner = true;
+        playlist_name = userId + "'s ouRQueue Playlist";
+        createPlaylist(false, "ouRQueue Playlist"); 
+    }else{
+        playlist_name = name;
+        //query all the songs in the playlist
+        var queryUrl = 'https://api.spotify.com/v1/playlists/' + id + '/tracks';
+        $.ajax({
+            url: queryUrl,
+            headers: {
+                'Authorization': 'Bearer ' + access_token
+            },
+            success: function(response) {
+                var length = response.items.length;
+                playlist_id = id;     
+                for(let i = 0; i < length; i++){        
+                    //calculate song-data and add to queue object
+                    var artists = getArtists(response.items[i].track);
+                    var runTime = convertMs(response.items[i].track.duration_ms);
+                    var song = {"priority": 1,
+                                "liked": false,
+                                "artist_name": artists,
+                                "song_name": response.items[i].track.name,
+                                "runtime": runTime,
+                                "added_by": response.items[i].added_by.id,
+                                "song_id": response.items[i].track.id};
+                    queue.push(song);
+                }
+                playingSongId = queue[0].song_id;
+                //createPlaylist(true, playlist_name);
+                sortQueue();
+            }
+        });
     }
+    var roomId = 1000 + Math.round(Math.random()*8999);
+    //display queue screen
+    let playlistJSON = {"playlist_name": playlist_name, "room_id": roomId};
+    queuePlaceholder.innerHTML = queueTemplate(playlistJSON);
+    $('#loggedin').hide();
+    $('#main-queue').show();
+    //every 5 seconds, check the current playing song and update the queue
+    if(owner){
+        setInterval(function(){
+            if(queuePlaying){
+                    var queryUrl = "https://api.spotify.com/v1/me/player/currently-playing";
+                    $.ajax({
+                        url: queryUrl,
+                        headers: {
+                            'Authorization': 'Bearer ' + access_token
+                        },
+                        success: function(response) {
+                            checkIfNewSong(response.item);
+                        },
+                        error: (error) => {
+                            console.log(JSON.stringify(error));
+                            return "";
+                        }
+                    });
+            }
+        }, 5000);
+    }
+    document.getElementById('search-button').addEventListener('click', function(){
+        if(isSearchbarOut == false){
+            //open the searchbar
+            var addSongsWrapper = document.getElementById('add-songs');
+            var searchbar = document.createElement("input");
+            var button = document.getElementById('search-button');
+            button.value = "Add Song";
+            searchbar.className = "form-control-underlined";
+            searchbar.id = "song-searchbar";
+            searchbar.type = "text";
+            searchbar.autocomplete = "new-password";
+            searchbar.placeholder = "Search For A Song";
+            searchbar.addEventListener('input', function(){
+                if(searchbar.value != ''){
+                    autocompleteSearch(searchbar.value);
+                }
+            });
+            addSongsWrapper.appendChild(searchbar);
+            addSongsWrapper.appendChild(button);
+            isSearchbarOut = true;
+        }else{
+            //otherwise attempt to add the song to the queue
+            var searchbar = document.getElementById("song-searchbar");
+            addToQueue(false);
+        }
+    });
+    document.getElementById('end-session-button').addEventListener('click', function(){
+        if(owner){
+            deletePlaylist();
+        }
+    });
 }
 
-function resetPage(){
-    //reset timeline
-    var timeline = document.getElementById("timeline");
-    while(timeline.firstChild){
-        timeline.removeChild(timeline.lastChild);
-    }
-    startingLink = "";
-    numCards = 0;
-    //reset tree
-    svg = document.getElementById("svg");
-    while(svg.firstChild){
-        svg.removeChild(svg.firstChild);
-    }
-    if(document.getElementById("tree-card") != undefined)
-        document.getElementById("tree-card").remove();
+//creates a playlist when the "create room" button is pressed
+//starts out empty
+function createPlaylist(copy, playlist_name){
+    var queryUrl = 'https://cors-anywhere.herokuapp.com/https://api.spotify.com/v1/users/' + userId + '/playlists';
+    var jsonData = {"name": playlist_name};
+    $.ajax({
+        type: 'POST',
+        url: queryUrl,
+        data: JSON.stringify(jsonData),
+        dataType: 'json',
+        headers: {
+            'Authorization': 'Bearer ' + access_token
+        },
+        contentType: 'application/json',
+        success: function(response) {
+            playlist_id = response.id;   
+        },
+        error: function(){
+            console.log("error");
+        }
+    });
+}
+
+//deletes playlist when "end session" button is pressed, unfollows user from the room and
+//sends them back to the previous screen
+function deletePlaylist(){
+    var queryUrl = 'https://api.spotify.com/v1/playlists/' + playlist_id + '/followers';
+    $.ajax({
+        type: 'DELETE',
+        url: queryUrl,
+        headers: {
+            'Authorization': 'Bearer ' + access_token
+        },
+        success: function(response) {
+            isSearchbarOut = false;
+            //clear out queue
+            queue = [];
+            songIds = [];
+            playingSongId = "";
+            queuePlaying = false;
+            $('#main-queue').hide();
+            $('#loggedin').show();
+
+        },
+        error: function(){
+            console.log("error");
+        }
+    });
 }
 
 //called whenever add-song field is updated, queries to find all results and shows them
@@ -583,7 +468,7 @@ function autocompleteSearch(text){
         }
     }
     //query for all tracks matching text
-    var queryUrl = "https://api.spotify.com/v1/search?q=" + text + "&type=artist";
+    var queryUrl = "https://api.spotify.com/v1/search?q=" + text + "&type=track";
     $.ajax({
         url: queryUrl,
         headers: {
@@ -591,30 +476,28 @@ function autocompleteSearch(text){
         },
         success: function(response) {
             //display all tracks under searchbar
-            displayAutoCompleteArtists(response.artists.items);
+            displayAutocompleteTracks(response.tracks.items);
         }
     });
 }
+
 //show the autocomplete results under searchbar
-function displayAutoCompleteArtists(items){
+function displayAutocompleteTracks(items){
     var parentDiv = document.getElementById("autocomplete-results");
     //delete previous search results
     while(parentDiv.firstChild){
         parentDiv.removeChild(parentDiv.firstChild);
     }
-    artistIds = [];
+    songIds = [];
     var length = items.length;
-    if(length > 10){
-        length = 10;
-    }
     //loop through each track and display the information
     for(var k = 0; k < length; k++){
-        var data = items[k].name;
+        var data = items[k].name + " - " + getArtists(items[k]);
         var result = document.createElement("div");
         result.id = "" + items[k].id;
         result.className = "autocomplete-res";
         result.innerHTML = data;
-        artistIds.push({"id": items[k].id, "artist": data});
+        songIds.push({"id": items[k].id, "song": items[k].name, "artist": getArtists(items[k])});
         parentDiv.appendChild(result);
     }
     setOnClick();
@@ -625,841 +508,368 @@ function setOnClick(){
     var songs = document.getElementsByClassName("autocomplete-res");
     for(let i = 0; i < songs.length; i++){
         songs[i].addEventListener('click', function(){
-            //add onclick to autofill searchbar and set artistId variable
-            var searchbar = document.getElementById('artist-searchbar');
-            artistId = artistIds[i].id;
+            //add onclick to autofill searchbar and set songId variable
+            var searchbar = document.getElementById('song-searchbar');
+            songId = songIds[i].id;
             searchbar.value = songs[i].innerHTML;
         });
     }
 }
 
-function getArtist(){
-    if(artistId == ''){
-        console.log("Try picking one of the artists below, then press 'Select Artist'");
-    }else{
-        //get artist genres and information
-        var queryUrl = "https://api.spotify.com/v1/artists/" + artistId;
-        $.ajax({
-            url: queryUrl,
-            headers: {
-                'Authorization': 'Bearer ' + access_token
-            },
-            success: function(response) {
-                //display all genres
-                showcaseGenres(response.name, response.genres);
-            }
-        });
-    }
-}
-
-function capitalize(word){
-    var newWord = "";
-    var nextCap = true;
-    for(var c = 0; c < word.length; c++){
-        if(nextCap){
-            nextCap = false;
-            newWord = newWord.concat(word.charAt(c).toUpperCase());
-        }
-        else{
-            newWord = newWord.concat(word.charAt(c));
-        }
-        if(word.charAt(c) == " " || word.charAt(c) == "-"){
-            nextCap = true;
-        }
-    }
-    return newWord;
-}
-
-function getID(name){
-    var newString = "";
-    //convert name into the id name
-    for(var c = 0; c < name.length; c++){
-        if(name.charAt(c) != ' '){
-            newString = newString.concat(name.charAt(c));
-        }else{
-            newString = newString.concat("-");
-        }
-    }
-    curGenre = document.getElementById(newString + "-tree");
-    return curGenre;
-}
-
-function showTreeCard(genreName){
-    //reset all circles to un-clicked state
-    resetCircles();
-    var card = document.getElementById("tree-card");
-    if(card == undefined){
-        //create card object
-        cardWrapper = document.createElement("div");
-        cardWrapper.className = "tree-card-wrapper";
-        cardWrapper.id = "tree-card-wrapper";
-        var row1 = document.getElementById("row-1-tree");
-        cardWrapper.style.top = row1.offsetTop + "px";
-        document.getElementById("tree-view").appendChild(cardWrapper);
-        var card = document.createElement("div");
-        card.className = "card tree-card rounded-lg border-dark border-2";
-        card.id = "tree-card"
-        var titleLine = document.createElement("div");
-        titleLine.className ="tree-title-line";
-        var cardBody = document.createElement("div");
-        var cardTitle = document.createElement("h5");
-        cardTitle.id = "tree-card-title";
-        cardTitle.className = "card-title";
-        cardBody.appendChild(cardTitle);
-        card.appendChild(cardBody);
-        card.appendChild(titleLine);
-        card.style.height = "";
-        cardWrapper.appendChild(card);
-    }else{
-        //remove all children of card
-        card.removeChild(document.getElementById("tree-card-link-title"));
-        card.removeChild(document.getElementById("tree-card-link"));
-        card.removeChild(document.getElementById("tree-card-text"));
-    }
-    displayCardInfo(card, genreName);
-    //turn clicked circle green
-    getID(genreName).className = "genre-circle-clicked";
-    
-}
-
-function resetCircles(){
-    genreList.forEach(function(item, i) {
-        var curGenre = getID(item.genreName);
-        if(item.used == true){
-            curGenre.className = "genre-circle-path";
-        }
-        else{
-            if(curGenre != null){
-                curGenre.className = "genre-circle";
-            }
-        }
-    });
-}
-
-function displayCardInfo(card, genreName){
-    var cardTitle = document.getElementById("tree-card-title");
-    cardTitle.innerHTML = capitalize(genreName);
-    var link = document.createElement("a");
-    link.className = "tree-card-link";
-    link.id = "tree-card-link";
-    link.target = "_blank";
-    var linkTitle = document.createElement("p");
-    linkTitle.id = "tree-card-link-title";
-    linkTitle.className = "tree-card-link-title";
-    //check if genre has a link in the data structure
-    var i = 0;
-    var found = 0;
-    while(!found && i < genreList.length){
-        found = (genreList[i].genreName == genreName);
-        i++;
-    }
-    if(found && genreList[i].href != "" && i < genreList.length){
-        link.href = genreList[i-1].href;
-        link.innerHTML = "Sounds of '" + capitalize(genreName) + "' " + "Spotify Playlist";
-        linkTitle.innerHTML = "'" + capitalize(genreName) + "' Spotify Playlist:"
-    }
-    //add body-text
-    var cardBody = document.createElement("p");
-    cardBody.className = "tree-card-text";
-    cardBody.id = "tree-card-text";
-    if(i < genreList.length){
-        cardBody.innerHTML = genreInfo[i-1].description;
-    }
-    card.appendChild(linkTitle);
-    card.appendChild(link);
-    card.appendChild(cardBody);
-    card.style.height = "";
-}
-
-function setTreePath(){
-    genreList.forEach(function(item, i) {
-        var curGenre = getID(item.genreName);
-        if(item.used == true){
-            curGenre.className = "genre-circle-path";
-            curGenre.addEventListener("click", function(){
-                showTreeCard(item.genreName);
-            });
-        }
-        else{
-            if(curGenre != null){
-                curGenre.className = "genre-circle";
-                curGenre.addEventListener("click", function(){
-                    showTreeCard(item.genreName);
-                });
-            }
-        }
-    });
-}
-
-function showcaseGenres(artistName, genres){
-    document.getElementById("circle-beginning").style.visibility = "";
-    document.getElementById("toggle-label").style.visibility = "";
-    if(init == false){
-        init = true;
-        document.getElementById('toggle-label').addEventListener('click', function(){
-            console.log("click!");
-            if(view == 0){
-                $('#timeline-view').hide();
-                $('#tree-view').show();
-                view = 1;
-                setTreePath();
-                initializeTree();
-                document.getElementById("contact-section").style.top = document.getElementById("loggedin").offsetTop + document.getElementById("loggedin").offsetHeight + 64 + "px";
-                var pageSize = document.getElementById("body");
-                var svg = document.getElementById("svg");
-                svg.style.height = pageSize.offsetHeight + "px";
-                svg.style.width = pageSize.offsetWidth + "px";
-            }else{
-                $('#tree-view').hide();
-                $('#timeline-view').show();
-                view = 0;
-                updateTimelineLength(0,0,0);
-            }
-                    
-        });
-    }
-    var informationHeader = document.getElementById('information-header');
-    informationHeader.style.visibility = "";
-    if(genres.length == 0){
-        informationHeader.innerText = "Uh oh, it appears that " + artistName + " doesn't have any genres listed"; 
-        document.getElementById("toggle-label").style.visibility = "hidden";
-        document.getElementById("circle-beginning").style.visibility = "hidden";
-        document.getElementById("circle-end").style.visibility = "hidden";
-    }else{
-        var found = false;
-        for(var i = 0; i < genres.length; i++){
-            if(!found){
-                for(var k = 0; k < subGenreList.length; k++){
-                    if(!found){
-                        if(subGenreList[k] == genres[i]){
-                            startingGenre = genres[i];
-                            informationHeader.innerText = "Roots of " + capitalize(genres[i]) + ":";
-                            found = true;
-                        }
-                    }
-                }
-                for(var j = 0; j < genreList.length; j++){
-                    if(!found){
-                        if(genreList[j].genreName == genres[i] || getLargerGenre(genres[i]) != genres[i]){
-                            startingGenre = genres[i];
-                            informationHeader.innerText = "Roots of " + capitalize(genres[i]) + ":";
-                            found = true;
-                        }   
-                    }
-                }
-            }
-        }
-        if(!found){
-            informationHeader.innerText = "Unfortunatly " + artistName + ", who's primary genre is '" + genres[0] + "', cannot be traced back to African-American roots";
-            document.getElementById("toggle-label").style.visibility = "hidden";
-            document.getElementById("circle-beginning").style.visibility = "hidden";
-            document.getElementById("circle-end").style.visibility = "hidden";
-        }
-        getPlaylist(startingGenre);
-        initiateTimeline();
-        while(!reachedRoots);
-        displayResults();
-    }
-}
-
-//This function spawns in all of the connectors between the nodes on the tree, making sure they are scaled and set
-//to the correct screen resolution(otherwise this would be hard-coded and done in the html section)
-function initializeTree(){
-    var vw = 100.0/document.documentElement.clientWidth;
-    //get coords for starting circle
-    var sacred = document.getElementById("sacred-traditions-tree")
-    var start1 = sacred;
-    var sacredOffset = sacred.parentElement.lastChild.previousSibling.offsetHeight;
-    var secular = document.getElementById("secular-traditions-tree");
-    var start2 = secular;  
-    var secularOffset = secular.parentElement.lastChild.previousSibling.offsetHeight;     
-    connectTree(start1, "sacred traditions", vw, sacredOffset);
-    connectTree(start2, "secular traditions", vw, secularOffset); 
-}
-
-//recursive method to connect the parent (start) to all of the children then make the child the parent and continue
-function connectTree(startPos, name, scale, textHeight){
-    //find start in the connections array 
-    var found = false;
-    var i = 0;
-    while (!found){
-        if(connections[i].start == name){
-            found = true;
-        }else{
-            i++;
-        }
-    }
-        //loop through connections
-        children = connections[i].connections;
-        children.forEach(function(item, i) {
-            childName = getID((item));
-            //create curved line from parent to child
-            var newLine = document.createElementNS('http://www.w3.org/2000/svg','path');
-            newLine.setAttribute('id', name + "-" + item);
-            //calculate start and end pos of line
-            var x1 = startPos.getBoundingClientRect().left + 1.5/scale;
-            var x2 = childName.getBoundingClientRect().left + 1.5/scale;
-            var y1 = startPos.parentElement.parentElement.offsetTop + 3/scale + textHeight + 16;
-            var y2 = childName.parentElement.parentElement.offsetTop + 8;
-            //move cursor to starting position
-            var attribString = "M " + x1 + " " + y1;
-            //get 1/4 of the distance for start and end of curve and start + end pos
-            var curvePtWt = (x2 - x1)/4;
-            var curvePtHt = (y2 - y1)/4;
-            //construct path
-            attribString = attribString.concat(" C " + x1 + " " + (y1 + (7/8)*curvePtHt) + ", " 
-                                                + x2 + " " + (y2 - (1/8)*curvePtHt) + ", "
-                                                + x2 + " " + y2);            
-            newLine.setAttribute("d", attribString);
-            var inPath = checkIfInPath(name, item);
-            if(inPath){
-                newLine.setAttribute("stroke", "#7fcd91")
-
-            }else{
-                newLine.setAttribute("stroke", "#06b4db")
-            }
-            newLine.setAttribute("stroke-width", "4");
-            newLine.setAttribute("fill", "transparent");
-            $("svg").append(newLine);
-            //get text size of child
-            var text = childName.parentElement.lastChild.previousSibling;
-            connectTree(childName, item, scale, text.offsetHeight);
-        });
-}
-
-function checkIfInPath(parent, child){
-    var parentFound = false;
-    var childFound = false;
-    var inPath = true;
-    var index = 0;
-    while(index < genreList.length && ((!parentFound && !childFound) || inPath)){
-        var curGenre = genreList[index];
-        if(curGenre.genreName == parent){
-            parentFound = true;
-            inPath = curGenre.used;
-        }
-        if(curGenre.genreName == child){
-            childFound = true;
-            inPath = curGenre.used;
-        }
-        index++;
-    }
-    return inPath;
-}
-
-function initiateTimeline(){
-    var initGenre = getLargerGenre(startingGenre);
-    var start = makeCamelCase(initGenre);
-    startTimeline(start);
-}
-
-function startTimeline(start){
-    switch(start){
-        case "edm":
-            house();
-            trap();
-            break;
-        case "singerSongwriter":
-            rock();
-            country();
-            pop();
-            break;
-        case "motown":
-            funk();
-            rB();
-            break;
-        case "hipHouse":
-            hipHop();
-            house();
-            break;
-        case "tripHop":
-            hipHop();
-            electro();
-            break;
-        case "urbanContemporary":
-            hipHop();
-            rB();
-            break;
-        case "bigRoom":
-            house();
-            electro();
-            break;
-        default:
-            start += "()";
-            eval(start);
-            break;
-    }
-
-}
-
-function getLargerGenre(initGenre){
-    for(var i = 0; i < subGenreList.length; i++){
-        if(subGenreList[i] == initGenre){
-            return initGenre;
-        }
-    }
-    if(initGenre.includes("rap") || initGenre.includes("hip hop") || initGenre.includes("lo-fi") 
-    || initGenre.includes("grime") || initGenre.includes("raggaeton") || initGenre == "afrofuturism"
-    || initGenre.includes("drill")){
-        return "hip hop";
-    }
-    if(initGenre.includes("rock") || initGenre.includes("grunge") || initGenre == "british invasion" 
-    || initGenre == "mellow gold" || initGenre == "permanent wave" || initGenre == "new wave"
-    || initGenre.includes("punk")){
-        return "rock";
-    }
-    if(initGenre.includes("metal") || initGenre == "screamo" || initGenre.includes("thrash")){
-        return "metal";
-    }
-    if(initGenre.includes("country") || initGenre == "bluegrass"){
-        return "country";
-    }
-    if(initGenre.includes("soul") && !initGenre.includes("soul jazz")){
-        return "soul";
-    }
-    if(initGenre.includes("neo soul")){
-        return "neo soul";
-    }
-    if(initGenre.includes("funk")){
-        return "funk";
-    }
-    if(initGenre.includes("r&b")){
-        return "r&b";
-    }
-    if(initGenre.includes("techno")){
-        return "techno";
-    }
-    if(initGenre.includes("house")){
-        return "house";
-    }
-    if(initGenre.includes("disco")){
-        return "disco";
-    }
-    var exactMatch = false;
-    for(var i = 0; i < genreList.length; i++){
-        if(genreList[i].genreName == initGenre){
-            exactMatch = true;
-        }
-    }
-    if(!exactMatch && initGenre.includes("gospel")){
-        return "vintage gospel";
-    }
-    if(!exactMatch && initGenre.includes("jazz")){
-        return "modern jazz trio";
-    }
-    if(initGenre == "dance pop" || initGenre == "art pop"){
-        return "pop";
-    }
-    return initGenre;
-}
-
-function makeCamelCase(initGenre){
-    var newString = "";
-    //first convert initGenre into camel case form
-    for(var c = 0; c < initGenre.length; c++){
-        if(initGenre.charAt(c) != ' ' && initGenre.charAt(c) != '-' && initGenre.charAt(c) != '&'){
-            newString = newString.concat(initGenre.charAt(c));
-        }else{
-            c++;
-            var upper = initGenre.toUpperCase();
-            newString = newString.concat(upper.charAt(c));
-        }
-    }
-    return newString;
-}
-
-//after the genres have been traced to the roots, show the path on the website
-function displayResults(){
-    var timeline = document.getElementById("timeline");
-    document.getElementById("circle-beginning").style.visibility = "";
-    document.getElementById("circle-end").style.visibility = "";
-    document.getElementById("contact-section").style.visibility = "";
-    document.getElementById("contact-section").style.top = document.getElementById("circle-end").offsetTop + 72 + "px";;
-    var skip = false;
-    //check if startingGenre is equal to one of the genres that alrady exists, if so, then skip it
-    for(var i = 0; i < genreList.length; i++){
-        if(genreList[i].genreName == startingGenre)
-            skip = true;
-    }
-    if(!skip){
-        createCard(startingGenre, timeline);
-        numCards++;
-    }
-    for(var i = 0; i < genreList.length; i++){
-        if(genreList[i].used == true){
-            var timelineConnector = document.createElement("div");
-            timelineConnector.className = "autocomplete-res";
-            timelineConnector.innerHTML = "|";
-            timeline.appendChild(timelineConnector);
-            createCard(genreList[i].genreName, timeline);
-            numCards++;
-        }
-    }
-    updateTimelineLength(0,0,0);
-}
-
-/*For reference: card html heirarchy
-<cardWrapper>
-    <infoWrapper>
-        <curGenre>
-            <cardTitle>
-            <cardLink>
-            <cardText>
-        <dateWrapper>
-            <timelineConnector>
-            <curDate>
-*/
-function createCard(header, parent){
-    var cardWrapper = document.createElement("div");
-    parent.appendChild(cardWrapper);
-    var curGenre = document.createElement("div");
-    curGenre.id = header;
-    curGenre.className = "card genre-card border-dark border-2";
-    var cardDate = document.createElement("h3");
-    cardDate.className = "card-date";
-    cardDate.innerHTML = getDate(header);
-    var cardBody = document.createElement("div");
-    var cardTitle = document.createElement("h5");
-    cardTitle.className = "card-title";
-    cardTitle.innerHTML = capitalize(header);
-    var timelineConnector = document.createElement("div");
-    timelineConnector.className = "timeline-connector";
-    if(cardDate.innerHTML == ""){
-        timelineConnector.style.top = "18px";
-    }
-    var infoWrapper = document.createElement("div");
-    var dateWrapper = document.createElement("div");
-    dateWrapper.className = "date-wrapper";
-    if(numCards%2 == 0){
-        infoWrapper.className = "info-wrapper-right";
-        curGenre.style.float = "left";
-        dateWrapper.style.float = "left";
-        cardDate.style.paddingLeft = "8px";
-        dateWrapper.appendChild(cardDate);
-        dateWrapper.appendChild(timelineConnector);
-        infoWrapper.appendChild(dateWrapper);
-        infoWrapper.appendChild(curGenre);
-    }else{
-        infoWrapper.className = "info-wrapper-left";
-        dateWrapper.style.float = "right";
-        curGenre.style.float = "right";
-        cardDate.style.paddingRight = "8px";
-        dateWrapper.appendChild(timelineConnector);
-        dateWrapper.appendChild(cardDate);
-        infoWrapper.appendChild(dateWrapper);
-        infoWrapper.appendChild(curGenre);
-    }
-    cardWrapper.appendChild(infoWrapper);
-    cardBody.appendChild(cardTitle);
-    curGenre.appendChild(cardBody);
-    curGenre.style.height = "56px";
-    cardTitle.addEventListener('click', function(){
-        toggleCard(header);
-    });
-}
-
-function getDate(cardId){
-    var i = 0;
-    var found = 0;
-    while(!found && i < genreList.length){
-        found = (genreList[i].genreName == cardId);
-        i++;
-    }
-    if(i < genreList.length){
-        return genreList[i-1].date;
-    }else{
-        return "";
-    }
-
-}
-
-function toggleCard(cardId){
-    var card = document.getElementById(cardId);
-    if(card.childElementCount > 1){
-        var heightDiff = card.offsetHeight - 56;
-        card.style.height = "56px";
-        card.style.setProperty('width', '50%', 'important');
-        card.removeChild(card.lastChild);
-        card.removeChild(card.lastChild);
-        updateTimelineLength(-1,cardId, heightDiff);
-    }else{
-        card.style.setProperty('width', '80%', 'important');
-        //add playlist link
-        var link = document.createElement("a");
-        link.className = "card-subtitle";
-        link.target = "_blank";
-        //check if genre has a link in the data structure
-        var i = 0;
-        var found = 0;
-        while(!found && i < genreList.length){
-            found = (genreList[i].genreName == cardId);
-            i++;
-        }
-        if(found && genreList[i].href != "" && i < genreList.length){
-            link.href = genreList[i-1].href;
-            link.innerHTML = "Sounds of '" + capitalize(cardId) + "' " + "Spotify Playlist";
-        }
-        //add body-text
-        var cardBody = document.createElement("p");
-        cardBody.className = "card-text";
-        if(i < genreList.length){
-            cardBody.innerHTML = genreInfo[i-1].description;
-        }else{
-            link.href = startingLink;
-            link.innerHTML = "Sounds of '" + capitalize(cardId) + "' " + "Spotify Playlist";
-        }
-        card.appendChild(link);
-        card.appendChild(cardBody);
-        card.style.height = "";
-        var heightDiff = card.offsetHeight - 56;
-        updateTimelineLength(1,cardId, heightDiff);
-    }
-
-}
-
-function updateTimelineLength(modifier, cardId, heightDiff){
-    if(cardId != 0){
-        var card = document.getElementById(cardId);
-    }
-    //initialize timeline length
-    if(modifier == 0){
-        //get the position of the text element under the searchbar (lowest element of website at this point)
-        //Set absolute position of a div to lowestPos - 16px and make it a fixed width
-        var timeline = document.createElement('div');
-        var timelineWrapper = document.getElementById('timeline');
-        timelineWrapper.insertBefore(timeline, timelineWrapper.firstChild);
-        timeline.id = "line";
-        timeline.className = "timeline";
-        timeline.style.height = numCards*104 + 32 + "px";
-        var timelineTop = document.getElementById("circle-beginning");
-        var timelineBottom = document.getElementById("circle-end");
-        timelineTop.style.top = timeline.offsetTop - 32 + "px";
-        timelineBottom.style.top = timeline.offsetTop + timeline.offsetHeight - 4 + "px";
-        document.getElementById("contact-section").style.top = timeline.offsetTop + timeline.offsetHeight + 64 + "px";
-    }else{
-        //increase the size of the line by a set amount
-        var timeline = document.getElementById("line");
-        var height = parseInt(timeline.style.height.substr(0, (timeline.style.height.length - 2)));
-        timeline.style.height = (height + (modifier)*heightDiff) + "px";
-        var timelineTop = document.getElementById("circle-beginning");
-        var timelineBottom = document.getElementById("circle-end");
-        var height = parseInt(timelineTop.style.top.substr(0, (timelineTop.style.top.length - 2)));
-        timelineBottom.style.top = height + timeline.offsetHeight + "px";
-        document.getElementById("contact-section").style.top = height + timeline.offsetHeight + 64 + "px";
-    }
-}
-
-//gets the playlists from the "Sounds of ____" account
-function getPlaylist(cardId){
-    var genreName = "";
-    for(var c = 0; c < cardId.length; c++){
-        if(cardId.charAt(c) != ' '){
-            genreName = genreName.concat(cardId.charAt(c));
-        }else{
-            genreName = genreName.concat("%20");
-        }
-    }
-    var playlisturl = "https://api.spotify.com/v1/search?q=The%20Sound%20of%20" + genreName + "&type=playlist";
+//gets the specific track that was added by the user, then adds it to both the 
+//spotify playlist, and the website table
+function getTrack(){
+    var queryUrl = "https://api.spotify.com/v1/tracks/" + songId;
     $.ajax({
-        url: playlisturl,
+        url: queryUrl,
         headers: {
             'Authorization': 'Bearer ' + access_token
         },
         success: function(response) {
-            startingLink = response.playlists.items[0].external_urls.spotify;
+            if(response.uri != ""){
+                songUris.push(response.uri);
+                var uArr = [];
+                uArr.push(response.uri);
+                if(owner){
+                    addToTable(response, songId);
+                    addToPlaylist(uArr);
+                }else{
+                    //propogate event 
+                    //ex: 
+                    //add_song(response,songId, uArr);
+                }
+
+            }
+            return response;
+        },
+        error: (error) => {
+            console.log(JSON.stringify(error));
+            return "";
         }
     });
 }
 
-function metal(){
-    genreList[13].used = true;
-    rock();
+//get the track that was requested, and add to queue
+function addToQueue(initial){
+    if(songId != ""){
+        var isDuplicate = checkIfDuplicate();
+        //if the track hasn't already been added or is the first track in the queue, add it
+        if(!isDuplicate || initial){
+            getTrack();
+        }else{
+            if(owner){
+                alterPriority(songId, 1);
+            }else{
+                //send trigger for owner to update the priority
+                //alter_priority(songId, 1);
+            }
+        }
+    }else{
+        console.log("not a valid track, please select a track from the searchbar");
+    }
 }
 
-function country(){
-    genreList[28].used = true;
-    spirituals();
-    workSongs();
+//check queue to see if song picked has already been requested
+function checkIfDuplicate(){
+    var found = false;
+    var index = 0;
+    while(!found && index < queue.length){
+        if(queue[index].song_id == songId){
+            found = true;
+            return found;
+        }
+        index++;
+    }
+    return found;
 }
 
-function pop(){
-    genreList[1].used = true;
-    hipHop();
-    house();
+//add the song to the spotify playlist
+function addToPlaylist(uriArr){
+    queryUrl = "https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks";
+    $.ajax({
+        url: queryUrl,
+        headers: {
+            'Authorization': 'Bearer ' + access_token,
+        },
+        contentType: 'application/json',
+        type: 'POST',
+        data: JSON.stringify({"uris": uriArr}),
+        success: function(response) {
+            //if first song added, then start playing from playlist
+            if(!queuePlaying && owner){
+                queuePlaying = true;
+                startPlaylist();
+            }
+        }
+    });
 }
 
-function postTeenPop(){
-    genreList[0].used = true;
-    hipHop();
-    rockAndRoll();
-    rB();
-    pop();
+//alter user playback to begin playing from playlist
+//make sure to set shuffle to off
+function startPlaylist(){
+    queryUrl = "https://api.spotify.com/v1/me/player/play";
+    $.ajax({
+        url: queryUrl,
+        headers: {
+            'Authorization': 'Bearer ' + access_token,
+        },
+        contentType: 'application/json',
+        type: 'PUT',
+        data: JSON.stringify({"context_uri": "spotify:playlist:" + playlist_id})
+    });
 }
 
-function gospelHymns(){
-    genreList[27].used = true;
-    spirituals();
+//put the added song into the table 
+function addToTable(songData, songId){
+    //calculate song-data and add to queue object
+    var artists = getArtists(songData);
+    var runTime = convertMs(songData.duration_ms);
+    console.log(queue);
+    var song = {"priority": 1,
+                "liked": true,
+                "artist_name": artists,
+                "song_name": songData.name,
+                "runtime": runTime,
+                "added_by": userId,
+                "song_id": songId};
+    queue.push(song);
+    playingSongId = queue[0].song_id;
+    sortQueue();
 }
 
-function trap(){
-    hipHop();
+//update song based on upvote/downvote
+function alterPriority(songId, val){
+    //find the song based on songId in the queue, and change priority by val
+    var found = false;
+    var index = 0;
+    while(!found && index < queue.length){
+        if(queue[index].song_id == songId){ found = true; }
+        index++;
+    }
+    var curRow = document.getElementsByClassName("queue-table-row")[index];
+    index--;
+    if(index != 0){
+        //if it was upvote, make thumbs-up green if not already liked
+        //also works to prevent user queuing same song a bunch of times, can only upvote/add once
+        if(val > 0 && !queue[index].liked){
+            queue[index].priority += val;
+            curRow.children[1].children[0].className = "icon-thumbs-up";
+            queue[index].liked = true;
+            //call function to resort queue based on priority
+            sortQueue();
+        }else if(val < 0 && queue[index].liked){
+            queue[index].priority += val;
+            curRow.children[1].children[0].className = "icon-thumbs-up not-pressed";
+            queue[index].liked = false;
+            //call function to resort queue based on priority
+            sortQueue();
+        }
+    }
 }
 
-function newJackSwing(){
-    genreList[4].used = true;  
-    soulJazz();
+//resorts the queue based on priority(high to low)
+function sortQueue(){
+    //go through and find max val, append to front, then decrement max by 1 and find 
+    //all songs with priority equal to val-i. Continue and stop once you have the queue
+    //completely sorted(make a numSorted variable that keeps track of how many elements you move,
+    //and exit loop when numSorted==queue.length)
+    var maxVal = 0;
+    var numSorted = 1;
+    var tempQueue = [];
+    var tempSongUris = [];
+    //always keep front element in front
+    tempQueue.push(queue[0]);
+    tempSongUris.push(songUris[0]);
+    //first do a loop to find max value 
+    for(var i = 1; i < queue.length; i++){
+        if(queue[i].priority > maxVal){
+            maxVal = queue[i].priority;
+        }
+    }
+    //now loop while decrementing maxVal and continue adding to tempQueue
+    while((numSorted < queue.length)){
+        for(var i = 1; i < queue.length; i++){
+            if(queue[i].priority == maxVal){
+                tempSongUris.push(songUris[i]);
+                tempQueue.push(queue[i]);
+                numSorted++;
+            }
+        }
+        maxVal--;
+    }
+    //set the actual queue and songUri arrays to the temp ones that now store the sorted variants
+    queue = tempQueue;
+    songUris = tempSongUris;
+    //reset the playlist and website queue to reflect the new sorting
+    refreshPlaylist();
+    refreshTable();
 }
 
-function soulJazz(){
-    genreList[17].used = true;    
-    hardBop();
+//Alter playlist to match the queue
+function refreshPlaylist(){
+    var queryUrl = 'https://api.spotify.com/v1/playlists/' + playlist_id + '/tracks';
+    $.ajax({
+        url: queryUrl,
+        headers: {
+            'Authorization': 'Bearer ' + access_token,
+        },
+        contentType: 'application/json',
+        type: 'PUT',
+        data: JSON.stringify({"uris": songUris}),
+        error: function(response){
+            console.log("Error with updating playlist");
+        }
+    });
 }
 
-function rock(){
-    genreList[15].used = true;
-    rockAndRoll();
+//refresh the table based on changed priorities and added/removed tracks
+function refreshTable(){
+    //clear out current table
+    var parentDiv = document.getElementById("queue-body")
+    while(parentDiv.firstChild){
+        parentDiv.removeChild(parentDiv.firstChild);
+    }
+    //repopulate table
+    for(let i = 0; i < queue.length; i++){
+        var curRow = document.createElement("tr");
+        curRow.className = "queue-table-row";
+        var position = document.createElement("th");
+        position.scope = "row";
+        position.innerHTML = queue[i].priority;
+        curRow.appendChild(position);
+        var thumbsUp = document.createElement("i");
+        if(queue[i].liked){
+            thumbsUp.className = "icon-thumbs-up";
+        }else{
+            thumbsUp.className = "icon-thumbs-up not-pressed";
+        }
+        thumbsUp.addEventListener('click', function(){
+            if(!queue[i].liked){
+                if(owner){
+                    alterPriority(queue[i].song_id, 1);
+                }else{
+                    //trigger alter_priority(queue[i].song_id, 1);
+                }
+            }else{
+                if(owner){
+                    alterPriority(queue[i].song_id, -1);
+                }else{
+                    //trigger alter_priority(queue[i].song_id, -1);
+                }
+            }
+        })
+        var like = document.createElement("td");
+        like.appendChild(thumbsUp);
+        curRow.appendChild(like);
+        var song_name = document.createElement("td");
+        song_name.innerHTML = queue[i].song_name;
+        var artist_name = document.createElement("td");
+        artist_name.innerHTML = queue[i].artist_name;
+        var runtime = document.createElement("td");
+        runtime.innerHTML = queue[i].runtime;
+        var added_by = document.createElement("td");
+        added_by.innerHTML = queue[i].added_by;
+        curRow.appendChild(song_name);
+        curRow.appendChild(artist_name);
+        curRow.appendChild(runtime);
+        curRow.appendChild(added_by);
+        parentDiv.appendChild(curRow);
+        //make highlighted green
+        if(i == 0){
+            position.style.color = "#1db954";
+            song_name.style.color = "#1db954";
+            artist_name.style.color = "#1db954";
+            runtime.style.color = "#1db954";
+            added_by.style.color = "#1db954";
+            playingSongId = queue[i].song_id;
+        }
+        //send the updated table to the database
+        //then send out trigger for users to update their information(requery from DB)
+        //update_queue_information();
+        //update_queue_information() should also force user to requery information from the playlist
+        //itself, to update any local variables that it uses
+        //The users(and owner) also need a way to keep track locally of which tracks were liked or not
+        //so that when requeried, their likes persist.
+    }
 }
 
-function modernJazzTrio(){
-    genreList[18].used = true;
-    bebop();
+//gets the artists on a given song(could be multiple, seperate with ',')
+function getArtists(trackInfo){
+    if(trackInfo.artists.length > 1){
+        var artist = trackInfo.artists[0].name;
+        for(var i = 1; i < trackInfo.artists.length; i++){
+            artist += ', ' + trackInfo.artists[i].name;
+        }
+        return artist;
+    }else{
+        return trackInfo.artists[0].name;
+    }
 }
 
-function bebop(){
-    genreList[24].used = true;
-    swing();
+//converts runtime in ms to MM:SS format
+function convertMs(milliseconds){
+    var time;
+    var numMin = Math.floor(milliseconds/60000);
+    var numSec = "" + ((milliseconds - numMin*60000)/100000).toFixed(2);
+    time = numMin + ':' + numSec.substring(2);
+    return time;
 }
 
-function swing(){
-    genreList[26].used = true;
-    newOrleansJazz();
+//check if the song currently playing has changed, and if it has, then update the playlist and
+//table/queue to move to the new song
+function checkIfNewSong(songData){
+    if(playingSongId != ""){
+        if(songData.id != playingSongId){
+            //get the uri to remove, then remove from spotify playlist
+            getFirstSongUri();
+            //delete old song from queue
+            var tempQueue = [];
+            for(var i = 1; i < queue.length; i++){
+                tempQueue.push(queue[i]);
+            }
+            queue = tempQueue;
+            refreshTable();
+        }
+    }
 }
 
-function ragtime(){
-    genreList[32].used = true;
-    secular();
+//get first songs uri, then remove it from the playlist
+//this is called when the first song finishes playing so the playlist always displays the
+//currently playing track at the top, and doesn't store played songs in the playlist
+function getFirstSongUri(){
+    var queryUrl = 'https://api.spotify.com/v1/playlists/' + playlist_id + '/tracks';
+    $.ajax({
+        url: queryUrl,
+        headers: {
+            'Authorization': 'Bearer ' + access_token
+        },
+        success: function(response) {
+            //if there is more than 1 song in the playlist, then get the track uri and
+            //remove from playlist
+            if(response.items.length > 0){
+                var uri = response.items[0].track.uri;
+                var uriArr = [];
+                var jsonData = {"uri": uri};
+                uriArr.push(jsonData);
+                deleteFromPlaylist(uriArr);
+            }
+        }
+    });
 }
 
-function newOrleansJazz(){
-    genreList[30].used = true;
-    ragtime();
+//deletes a given track(always the first one) from the playlist
+function deleteFromPlaylist(uriArr){
+    queryUrl = "https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks";
+    $.ajax({
+        url: queryUrl,
+        headers: {
+            'Authorization': 'Bearer ' + access_token,
+        },
+        contentType: 'application/json',
+        type: 'DELETE',
+        data: JSON.stringify({"tracks": uriArr})
+    });
 }
-
-function vintageGospel(){
-    genreList[19].used = true;
-    traditionalGospel();
-}
-
-function traditionalGospel(){
-    genreList[25].used = true;
-    gospelHymns();
-}
-
-function civilRightsFreedomSongs(){
-    genreList[14].used = true;
-    spirituals();
-}
-
-function neoSoul(){
-    genreList[3].used = true;
-    rB();
-}
-
-function rB(){
-    genreList[6].used = true;
-    soul();
-}
-
-function electro(){
-    genreList[8].used = true;
-    funk();
-    hipHop();
-}
-
-function techno(){
-    genreList[5].used = true;
-    house();
-}
-
-function house(){
-    genreList[7].used = true;
-    disco();
-}
-
-function disco(){
-    genreList[10].used = true;
-    soul();
-}
-
-function hipHop(){
-    genreList[9].used = true;
-    funk();
-    soul();
-    disco();
-}
-
-function funk(){
-    genreList[12].used = true;
-    soul();
-}
-
-function soul(){
-    genreList[16].used = true;
-    rockAndRoll();
-}
-
-function rockAndRoll(){
-    genreList[20].used = true;
-    urbanBlues();
-    rhythmAndBlues();
-}
-
-function urbanBlues(){
-    genreList[22].used = true;
-    boogieWoogie();
-}
-
-function hardBop(){
-    genreList[21].used = true;
-    bebop();
-}
-
-function traditionalBlues(){
-    genreList[31].used = true;
-    workSongs();
-}
-
-function rhythmAndBlues(){
-    genreList[23].used = true;
-    boogieWoogie();
-}
-
-function boogieWoogie(){
-    genreList[29].used = true;
-    traditionalBlues();
-}
-
-function spirituals(){
-    genreList[33].used = true;
-    sacred();
-}
-
-function sacred(){
-    genreList[36].used = true;
-    reachedRoots = true;
-}
-
-function workSongs(){
-    genreList[34].used = true;
-    secular();
-}
-
-function secular(){
-    genreList[37].used = true;
-    reachedRoots = true;
-}
-
-
 
 }
       })();
